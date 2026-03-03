@@ -1,0 +1,262 @@
+---
+title: Select
+description: A dropdown select component for choosing options from a list.
+---
+
+The Select component provides a comprehensive dropdown selection interface with support for single and multiple selection, autocomplete, and custom styling.
+
+## Basic usage
+
+```jsx
+import { Select } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Select>
+      <Select.Trigger>
+        <Select.Value placeholder="Select an option" />
+      </Select.Trigger>
+      <Select.Content>
+        <Select.Item value="option1">Option 1</Select.Item>
+        <Select.Item value="option2">Option 2</Select.Item>
+        <Select.Item value="option3">Option 3</Select.Item>
+      </Select.Content>
+    </Select>
+  );
+}
+```
+
+## Props
+
+### Select (Root)
+
+<ParamField path="value" type="string | string[]">
+  The controlled value of the select. Use string for single selection, string array for multiple selection.
+</ParamField>
+
+<ParamField path="onValueChange" type="(value: string | string[]) => void">
+  Callback fired when the selected value changes.
+</ParamField>
+
+<ParamField path="defaultValue" type="string | string[]">
+  The default value for uncontrolled usage.
+</ParamField>
+
+<ParamField path="open" type="boolean">
+  Controls the open state of the select dropdown.
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean" default="false">
+  The default open state for uncontrolled usage.
+</ParamField>
+
+<ParamField path="onOpenChange" type="(open: boolean) => void">
+  Callback fired when the open state changes.
+</ParamField>
+
+<ParamField path="multiple" type="boolean" default="false">
+  Whether multiple selections are allowed.
+</ParamField>
+
+<ParamField path="autocomplete" type="boolean" default="false">
+  Enables autocomplete/search functionality.
+</ParamField>
+
+<ParamField path="autocompleteMode" type="'auto' | 'manual'" default="'auto'">
+  The autocomplete filtering mode. 'auto' filters automatically, 'manual' requires custom filtering logic.
+</ParamField>
+
+<ParamField path="searchValue" type="string">
+  Controlled search value for autocomplete mode.
+</ParamField>
+
+<ParamField path="onSearch" type="(value: string) => void">
+  Callback fired when the search value changes.
+</ParamField>
+
+<ParamField path="defaultSearchValue" type="string" default="''">
+  Default search value for uncontrolled autocomplete.
+</ParamField>
+
+### Select.Trigger
+
+<ParamField path="size" type="'small' | 'medium'" default="'medium'">
+  The size of the select trigger.
+</ParamField>
+
+<ParamField path="variant" type="'outline' | 'text'" default="'outline'">
+  The visual variant of the trigger.
+</ParamField>
+
+<ParamField path="iconProps" type="IconProps">
+  Props to customize the dropdown chevron icon.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the trigger.
+</ParamField>
+
+### Select.Item
+
+<ParamField path="value" type="string" required>
+  The value of the select item.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the item is disabled.
+</ParamField>
+
+## Single selection
+
+```jsx
+function SingleSelect() {
+  const [value, setValue] = useState('');
+
+  return (
+    <Select value={value} onValueChange={setValue}>
+      <Select.Trigger>
+        <Select.Value placeholder="Choose a fruit" />
+      </Select.Trigger>
+      <Select.Content>
+        <Select.Item value="apple">Apple</Select.Item>
+        <Select.Item value="banana">Banana</Select.Item>
+        <Select.Item value="orange">Orange</Select.Item>
+      </Select.Content>
+    </Select>
+  );
+}
+```
+
+## Multiple selection
+
+```jsx
+function MultiSelect() {
+  const [values, setValues] = useState([]);
+
+  return (
+    <Select multiple value={values} onValueChange={setValues}>
+      <Select.Trigger>
+        <Select.Value placeholder="Choose fruits" />
+      </Select.Trigger>
+      <Select.Content>
+        <Select.Item value="apple">Apple</Select.Item>
+        <Select.Item value="banana">Banana</Select.Item>
+        <Select.Item value="orange">Orange</Select.Item>
+        <Select.Item value="grape">Grape</Select.Item>
+      </Select.Content>
+    </Select>
+  );
+}
+```
+
+## With groups and labels
+
+```jsx
+<Select>
+  <Select.Trigger>
+    <Select.Value placeholder="Select a food" />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Group>
+      <Select.Label>Fruits</Select.Label>
+      <Select.Item value="apple">Apple</Select.Item>
+      <Select.Item value="banana">Banana</Select.Item>
+    </Select.Group>
+    <Select.Separator />
+    <Select.Group>
+      <Select.Label>Vegetables</Select.Label>
+      <Select.Item value="carrot">Carrot</Select.Item>
+      <Select.Item value="potato">Potato</Select.Item>
+    </Select.Group>
+  </Select.Content>
+</Select>
+```
+
+## With autocomplete
+
+```jsx
+<Select autocomplete>
+  <Select.Trigger>
+    <Select.Value placeholder="Search and select" />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Item value="react">React</Select.Item>
+    <Select.Item value="vue">Vue</Select.Item>
+    <Select.Item value="angular">Angular</Select.Item>
+    <Select.Item value="svelte">Svelte</Select.Item>
+  </Select.Content>
+</Select>
+```
+
+## Size variants
+
+```jsx
+<Select>
+  <Select.Trigger size="small">
+    <Select.Value placeholder="Small select" />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Item value="1">Option 1</Select.Item>
+  </Select.Content>
+</Select>
+
+<Select>
+  <Select.Trigger size="medium">
+    <Select.Value placeholder="Medium select" />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Item value="1">Option 1</Select.Item>
+  </Select.Content>
+</Select>
+```
+
+## Trigger variants
+
+```jsx
+<Select>
+  <Select.Trigger variant="outline">
+    <Select.Value placeholder="Outline variant" />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Item value="1">Option 1</Select.Item>
+  </Select.Content>
+</Select>
+
+<Select>
+  <Select.Trigger variant="text">
+    <Select.Value placeholder="Text variant" />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Item value="1">Option 1</Select.Item>
+  </Select.Content>
+</Select>
+```
+
+## With scroll buttons
+
+```jsx
+<Select>
+  <Select.Trigger>
+    <Select.Value placeholder="Long list" />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.ScrollUpButton />
+    <Select.Viewport>
+      {Array.from({ length: 50 }).map((_, i) => (
+        <Select.Item key={i} value={`item-${i}`}>
+          Item {i + 1}
+        </Select.Item>
+      ))}
+    </Select.Viewport>
+    <Select.ScrollDownButton />
+  </Select.Content>
+</Select>
+```
+
+## Accessibility
+
+- The Select component is built on Radix UI Select primitive with full keyboard navigation support.
+- Supports arrow keys for navigation, Enter/Space for selection, and Escape to close.
+- Proper ARIA attributes including `aria-label` and `aria-haspopup` are automatically applied.
+- In autocomplete mode, the component uses `aria-haspopup="dialog"` for better screen reader support.
+- Multiple selection state is indicated with `data-multiselectable` attribute.

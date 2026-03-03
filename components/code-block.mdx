@@ -1,0 +1,390 @@
+---
+title: Code block
+description: Display syntax-highlighted code with copy functionality and language selection.
+---
+
+The CodeBlock component provides syntax highlighting using Prism, with support for multiple languages, line numbers, copy functionality, and collapsible content.
+
+## Basic usage
+
+```tsx
+import { CodeBlock } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <CodeBlock>
+      <CodeBlock.Content>
+        <CodeBlock.Code language="javascript">
+          {`function hello() {
+  console.log('Hello, world!');
+}`}
+        </CodeBlock.Code>
+      </CodeBlock.Content>
+    </CodeBlock>
+  );
+}
+```
+
+## With header and copy button
+
+Add a header with a label and copy button.
+
+```tsx
+import { CodeBlock } from '@raystack/apsara';
+
+function WithHeader() {
+  return (
+    <CodeBlock>
+      <CodeBlock.Header>
+        <CodeBlock.Label>example.js</CodeBlock.Label>
+        <CodeBlock.CopyButton />
+      </CodeBlock.Header>
+      <CodeBlock.Content>
+        <CodeBlock.Code language="javascript">
+          {`const greeting = 'Hello, world!';
+console.log(greeting);`}
+        </CodeBlock.Code>
+      </CodeBlock.Content>
+    </CodeBlock>
+  );
+}
+```
+
+## Language selection
+
+Allow users to switch between different code examples.
+
+```tsx
+import { CodeBlock } from '@raystack/apsara';
+
+function MultiLanguage() {
+  return (
+    <CodeBlock defaultValue="javascript">
+      <CodeBlock.Header>
+        <CodeBlock.LanguageSelect>
+          <CodeBlock.LanguageSelectTrigger />
+          <CodeBlock.LanguageSelectContent>
+            <CodeBlock.LanguageSelectItem value="javascript">
+              JavaScript
+            </CodeBlock.LanguageSelectItem>
+            <CodeBlock.LanguageSelectItem value="typescript">
+              TypeScript
+            </CodeBlock.LanguageSelectItem>
+            <CodeBlock.LanguageSelectItem value="python">
+              Python
+            </CodeBlock.LanguageSelectItem>
+          </CodeBlock.LanguageSelectContent>
+        </CodeBlock.LanguageSelect>
+        <CodeBlock.CopyButton />
+      </CodeBlock.Header>
+      <CodeBlock.Content>
+        <CodeBlock.Code language="javascript" value="javascript">
+          {`function hello() {
+  console.log('Hello!');
+}`}
+        </CodeBlock.Code>
+        <CodeBlock.Code language="typescript" value="typescript">
+          {`function hello(): void {
+  console.log('Hello!');
+}`}
+        </CodeBlock.Code>
+        <CodeBlock.Code language="python" value="python">
+          {`def hello():
+    print('Hello!')`}
+        </CodeBlock.Code>
+      </CodeBlock.Content>
+    </CodeBlock>
+  );
+}
+```
+
+## Collapsible code
+
+Collapse long code blocks to save space.
+
+```tsx
+import { CodeBlock } from '@raystack/apsara';
+
+function CollapsibleCode() {
+  return (
+    <CodeBlock maxLines={5} defaultCollapsed={true}>
+      <CodeBlock.Header>
+        <CodeBlock.Label>Long file</CodeBlock.Label>
+        <CodeBlock.CopyButton />
+      </CodeBlock.Header>
+      <CodeBlock.Content>
+        <CodeBlock.Code language="javascript">
+          {`// This is a long code file
+function line1() {}
+function line2() {}
+function line3() {}
+function line4() {}
+function line5() {}
+function line6() {}
+function line7() {}
+function line8() {}
+function line9() {}
+function line10() {}`}
+        </CodeBlock.Code>
+        <CodeBlock.CollapseTrigger />
+      </CodeBlock.Content>
+    </CodeBlock>
+  );
+}
+```
+
+## Without line numbers
+
+Hide line numbers for cleaner display.
+
+```tsx
+import { CodeBlock } from '@raystack/apsara';
+
+function NoLineNumbers() {
+  return (
+    <CodeBlock hideLineNumbers>
+      <CodeBlock.Content>
+        <CodeBlock.Code language="bash">
+          {`npm install @raystack/apsara`}
+        </CodeBlock.Code>
+      </CodeBlock.Content>
+    </CodeBlock>
+  );
+}
+```
+
+## Floating copy button
+
+Add a floating copy button that appears on hover.
+
+```tsx
+import { CodeBlock } from '@raystack/apsara';
+
+function FloatingCopy() {
+  return (
+    <CodeBlock>
+      <CodeBlock.Content>
+        <CodeBlock.Code language="typescript">
+          {`interface User {
+  id: string;
+  name: string;
+  email: string;
+}`}
+        </CodeBlock.Code>
+        <CodeBlock.CopyButton variant="floating" />
+      </CodeBlock.Content>
+    </CodeBlock>
+  );
+}
+```
+
+## Controlled value
+
+Control the selected language/tab externally.
+
+```tsx
+import { CodeBlock } from '@raystack/apsara';
+import { useState } from 'react';
+
+function ControlledExample() {
+  const [language, setLanguage] = useState('javascript');
+
+  return (
+    <CodeBlock value={language} onValueChange={setLanguage}>
+      <CodeBlock.Header>
+        <CodeBlock.LanguageSelect>
+          <CodeBlock.LanguageSelectTrigger />
+          <CodeBlock.LanguageSelectContent>
+            <CodeBlock.LanguageSelectItem value="javascript">
+              JavaScript
+            </CodeBlock.LanguageSelectItem>
+            <CodeBlock.LanguageSelectItem value="typescript">
+              TypeScript
+            </CodeBlock.LanguageSelectItem>
+          </CodeBlock.LanguageSelectContent>
+        </CodeBlock.LanguageSelect>
+      </CodeBlock.Header>
+      <CodeBlock.Content>
+        <CodeBlock.Code language="javascript" value="javascript">
+          {`console.log('JS');`}
+        </CodeBlock.Code>
+        <CodeBlock.Code language="typescript" value="typescript">
+          {`console.log('TS');`}
+        </CodeBlock.Code>
+      </CodeBlock.Content>
+    </CodeBlock>
+  );
+}
+```
+
+## Custom styling
+
+Apply custom styles and classes.
+
+```tsx
+import { CodeBlock } from '@raystack/apsara';
+
+function StyledCodeBlock() {
+  return (
+    <CodeBlock className="custom-code-block" maxHeight="300px">
+      <CodeBlock.Content>
+        <CodeBlock.Code language="javascript">
+          {`// Custom styled code block
+const config = {
+  theme: 'dark',
+  fontSize: 14
+};`}
+        </CodeBlock.Code>
+      </CodeBlock.Content>
+    </CodeBlock>
+  );
+}
+```
+
+## Supported languages
+
+CodeBlock supports all languages provided by Prism React Renderer, including:
+
+- JavaScript / TypeScript
+- Python
+- Java
+- Go
+- Rust
+- Ruby
+- PHP
+- C / C++
+- C#
+- Swift
+- Kotlin
+- HTML / CSS
+- SQL
+- Bash / Shell
+- And many more
+
+## API reference
+
+### CodeBlock (root)
+
+<ParamField path="hideLineNumbers" type="boolean" default="false">
+  Whether to hide line numbers.
+</ParamField>
+
+<ParamField path="value" type="string">
+  Currently selected language/tab (controlled).
+</ParamField>
+
+<ParamField path="defaultValue" type="string">
+  Default selected language/tab (uncontrolled).
+</ParamField>
+
+<ParamField path="onValueChange" type="(value: string) => void">
+  Callback when the selected language/tab changes.
+</ParamField>
+
+<ParamField path="maxLines" type="number">
+  Maximum number of lines to show before collapsing.
+</ParamField>
+
+<ParamField path="maxHeight" type="string | number">
+  Maximum height of the code block container.
+</ParamField>
+
+<ParamField path="collapsed" type="boolean">
+  Whether the code block is collapsed (controlled).
+</ParamField>
+
+<ParamField path="defaultCollapsed" type="boolean" default="true">
+  Default collapsed state (uncontrolled).
+</ParamField>
+
+<ParamField path="onCollapseChange" type="(value: boolean) => void">
+  Callback when the collapsed state changes.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+### CodeBlock.Header
+
+<ParamField path="children" type="ReactNode" required>
+  Header content, typically label and copy button.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+### CodeBlock.Content
+
+<ParamField path="children" type="ReactNode" required>
+  Content, typically `CodeBlock.Code` elements.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+### CodeBlock.Code
+
+<ParamField path="children" type="string" required>
+  Code content to syntax highlight.
+</ParamField>
+
+<ParamField path="language" type="Language" required>
+  Programming language for syntax highlighting.
+</ParamField>
+
+<ParamField path="value" type="string">
+  Value to match against the CodeBlock's value prop for conditional rendering.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+### CodeBlock.Label
+
+<ParamField path="children" type="ReactNode" required>
+  Label content.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+### CodeBlock.CopyButton
+
+<ParamField path="variant" type="'default' | 'floating'" default="'default'">
+  Visual variant of the copy button.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+### CodeBlock.CollapseTrigger
+
+<ParamField path="children" type="ReactNode | ((collapsed: boolean) => ReactNode)">
+  Button content. Can be a function that receives the collapsed state.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+### CodeBlock.LanguageSelect
+
+Wrapper for the language selection dropdown. See Select component documentation for full API.
+
+### CodeBlock.LanguageSelectTrigger
+
+Trigger button for the language dropdown.
+
+### CodeBlock.LanguageSelectContent
+
+Dropdown content container.
+
+### CodeBlock.LanguageSelectItem
+
+Individual language option in the dropdown.

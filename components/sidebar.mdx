@@ -1,0 +1,436 @@
+---
+title: Sidebar
+description: A collapsible navigation sidebar component for organizing hierarchical navigation.
+---
+
+## Overview
+
+The Sidebar component provides a vertical navigation panel that can be collapsed and expanded. It supports hierarchical navigation with groups, icons, and tooltips, making it ideal for complex application layouts.
+
+## Use cases
+
+- Display hierarchical application navigation
+- Organize navigation items into logical groups
+- Save screen space with collapsible functionality
+- Provide contextual tooltips when collapsed
+- Build dashboard and admin panel layouts
+- Create file explorer or resource browser interfaces
+
+## Anatomy
+
+The Sidebar component consists of:
+
+- `Sidebar` - Root container with collapse functionality
+- `Sidebar.Header` - Top section for branding or user info
+- `Sidebar.Main` - Primary navigation area
+- `Sidebar.Footer` - Bottom section for settings or actions
+- `Sidebar.Group` - Navigation group with label
+- `Sidebar.Item` - Individual navigation link
+
+## Props
+
+### Sidebar (root)
+
+<ParamField path="position" type="'left' | 'right'" default="'left'">
+  Position of the sidebar on the screen.
+</ParamField>
+
+<ParamField path="hideCollapsedItemTooltip" type="boolean" default="false">
+  When true, tooltips will not be shown for navigation items when the sidebar is collapsed.
+</ParamField>
+
+<ParamField path="collapsible" type="boolean" default="true">
+  When false, disables the collapse/expand functionality.
+</ParamField>
+
+<ParamField path="tooltipMessage" type="ReactNode">
+  Custom tooltip message for the collapse/expand handle. Defaults to "Click to collapse" or "Click to expand".
+</ParamField>
+
+<ParamField path="open" type="boolean">
+  Controlled open state of the sidebar. Use with `onOpenChange` for controlled behavior.
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean" default="true">
+  Default open state for uncontrolled usage.
+</ParamField>
+
+<ParamField path="onOpenChange" type="(open: boolean) => void">
+  Callback fired when the sidebar open state changes.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the sidebar.
+</ParamField>
+
+### Sidebar.Header
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the header section.
+</ParamField>
+
+### Sidebar.Main
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the main navigation section.
+</ParamField>
+
+### Sidebar.Footer
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the footer section.
+</ParamField>
+
+### Sidebar.Group
+
+<ParamField path="label" type="string" required>
+  The label text for the navigation group.
+</ParamField>
+
+<ParamField path="leadingIcon" type="ReactNode">
+  Icon to display before the group label.
+</ParamField>
+
+<ParamField path="classNames" type="object">
+  Object containing className overrides for different parts:
+  - `header` - Group header container
+  - `items` - Group items container
+  - `label` - Label text
+  - `icon` - Leading icon
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the group.
+</ParamField>
+
+### Sidebar.Item
+
+<ParamField path="leadingIcon" type="ReactNode">
+  Icon to display before the item label. When collapsed and no icon is provided, an avatar with the first letter will be shown.
+</ParamField>
+
+<ParamField path="active" type="boolean" default="false">
+  Indicates whether this item is currently active/selected.
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  When true, the item is disabled and cannot be interacted with.
+</ParamField>
+
+<ParamField path="as" type="ReactElement">
+  Custom element to render instead of the default anchor tag. Useful for integration with routing libraries.
+</ParamField>
+
+<ParamField path="classNames" type="object">
+  Object containing className overrides for different parts:
+  - `root` - Item container
+  - `leadingIcon` - Icon container
+  - `text` - Label text
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the item (legacy, use `classNames.root` instead).
+</ParamField>
+
+## Usage
+
+### Basic sidebar
+
+```jsx
+import { Sidebar } from '@raystack/apsara';
+import { HomeIcon, SettingsIcon } from '@radix-ui/react-icons';
+
+function App() {
+  return (
+    <Sidebar>
+      <Sidebar.Header>
+        <h2>MyApp</h2>
+      </Sidebar.Header>
+      <Sidebar.Main>
+        <Sidebar.Item href="/" leadingIcon={<HomeIcon />}>
+          Home
+        </Sidebar.Item>
+        <Sidebar.Item href="/settings" leadingIcon={<SettingsIcon />}>
+          Settings
+        </Sidebar.Item>
+      </Sidebar.Main>
+    </Sidebar>
+  );
+}
+```
+
+### With navigation groups
+
+```jsx
+import { Sidebar } from '@raystack/apsara';
+import {
+  FileIcon,
+  ImageIcon,
+  VideoIcon,
+  PersonIcon,
+  GearIcon
+} from '@radix-ui/react-icons';
+
+function App() {
+  return (
+    <Sidebar>
+      <Sidebar.Main>
+        <Sidebar.Group label="Content">
+          <Sidebar.Item href="/documents" leadingIcon={<FileIcon />}>
+            Documents
+          </Sidebar.Item>
+          <Sidebar.Item href="/images" leadingIcon={<ImageIcon />}>
+            Images
+          </Sidebar.Item>
+          <Sidebar.Item href="/videos" leadingIcon={<VideoIcon />}>
+            Videos
+          </Sidebar.Item>
+        </Sidebar.Group>
+        
+        <Sidebar.Group label="Settings">
+          <Sidebar.Item href="/profile" leadingIcon={<PersonIcon />}>
+            Profile
+          </Sidebar.Item>
+          <Sidebar.Item href="/preferences" leadingIcon={<GearIcon />}>
+            Preferences
+          </Sidebar.Item>
+        </Sidebar.Group>
+      </Sidebar.Main>
+    </Sidebar>
+  );
+}
+```
+
+### Controlled sidebar
+
+```jsx
+import { Sidebar } from '@raystack/apsara';
+import { useState } from 'react';
+
+function App() {
+  const [open, setOpen] = useState(true);
+
+  return (
+    <>
+      <button onClick={() => setOpen(!open)}>
+        Toggle Sidebar
+      </button>
+      
+      <Sidebar open={open} onOpenChange={setOpen}>
+        <Sidebar.Main>
+          <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
+          <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+        </Sidebar.Main>
+      </Sidebar>
+    </>
+  );
+}
+```
+
+### With active state
+
+```jsx
+import { Sidebar } from '@raystack/apsara';
+import { usePathname } from 'next/navigation';
+
+function App() {
+  const pathname = usePathname();
+
+  return (
+    <Sidebar>
+      <Sidebar.Main>
+        <Sidebar.Item href="/" active={pathname === '/'}>
+          Home
+        </Sidebar.Item>
+        <Sidebar.Item href="/about" active={pathname === '/about'}>
+          About
+        </Sidebar.Item>
+        <Sidebar.Item href="/contact" active={pathname === '/contact'}>
+          Contact
+        </Sidebar.Item>
+      </Sidebar.Main>
+    </Sidebar>
+  );
+}
+```
+
+### With header and footer
+
+```jsx
+import { Sidebar, Avatar } from '@raystack/apsara';
+import { ExitIcon } from '@radix-ui/react-icons';
+
+function App() {
+  return (
+    <Sidebar>
+      <Sidebar.Header>
+        <Avatar fallback="JD" />
+        <div>
+          <div>John Doe</div>
+          <div className="text-sm">john@example.com</div>
+        </div>
+      </Sidebar.Header>
+      
+      <Sidebar.Main>
+        <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
+        <Sidebar.Item href="/projects">Projects</Sidebar.Item>
+        <Sidebar.Item href="/tasks">Tasks</Sidebar.Item>
+      </Sidebar.Main>
+      
+      <Sidebar.Footer>
+        <Sidebar.Item href="/settings">Settings</Sidebar.Item>
+        <Sidebar.Item href="/logout" leadingIcon={<ExitIcon />}>
+          Logout
+        </Sidebar.Item>
+      </Sidebar.Footer>
+    </Sidebar>
+  );
+}
+```
+
+### Right-positioned sidebar
+
+```jsx
+import { Sidebar } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Sidebar position="right">
+      <Sidebar.Main>
+        <Sidebar.Item href="/help">Help</Sidebar.Item>
+        <Sidebar.Item href="/support">Support</Sidebar.Item>
+      </Sidebar.Main>
+    </Sidebar>
+  );
+}
+```
+
+### Non-collapsible sidebar
+
+```jsx
+import { Sidebar } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Sidebar collapsible={false}>
+      <Sidebar.Main>
+        <Sidebar.Item href="/home">Home</Sidebar.Item>
+        <Sidebar.Item href="/products">Products</Sidebar.Item>
+      </Sidebar.Main>
+    </Sidebar>
+  );
+}
+```
+
+### With Next.js Link
+
+```jsx
+import { Sidebar } from '@raystack/apsara';
+import Link from 'next/link';
+
+function App() {
+  return (
+    <Sidebar>
+      <Sidebar.Main>
+        <Sidebar.Item as={<Link href="/" />}>Home</Sidebar.Item>
+        <Sidebar.Item as={<Link href="/dashboard" />}>Dashboard</Sidebar.Item>
+        <Sidebar.Item as={<Link href="/settings" />}>Settings</Sidebar.Item>
+      </Sidebar.Main>
+    </Sidebar>
+  );
+}
+```
+
+### With disabled items
+
+```jsx
+import { Sidebar } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Sidebar>
+      <Sidebar.Main>
+        <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
+        <Sidebar.Item href="/analytics" disabled>
+          Analytics (Coming Soon)
+        </Sidebar.Item>
+        <Sidebar.Item href="/reports">Reports</Sidebar.Item>
+      </Sidebar.Main>
+    </Sidebar>
+  );
+}
+```
+
+## Accessibility
+
+- Uses semantic `<aside>` element with `role="navigation"` attribute
+- Includes `aria-label="Navigation Sidebar"` for screen readers
+- Collapse/expand handle is keyboard accessible with Enter and Space keys
+- Each item has `role="menuitem"` for proper navigation semantics
+- Active items use `aria-current="page"` attribute
+- Disabled items use `aria-disabled` attribute
+- Collapsed state is communicated via `aria-expanded` attribute
+- Navigation groups have proper `aria-label` attributes
+- Tooltips provide context when sidebar is collapsed
+
+## Styling customization
+
+Customize the sidebar using className props:
+
+```jsx
+<Sidebar className="custom-sidebar">
+  <Sidebar.Header className="custom-header">
+    {/* Content */}
+  </Sidebar.Header>
+  
+  <Sidebar.Main className="custom-main">
+    <Sidebar.Group
+      label="Pages"
+      classNames={{
+        header: 'custom-group-header',
+        items: 'custom-group-items',
+        label: 'custom-label',
+        icon: 'custom-icon'
+      }}
+    >
+      <Sidebar.Item
+        classNames={{
+          root: 'custom-item',
+          leadingIcon: 'custom-item-icon',
+          text: 'custom-item-text'
+        }}
+      >
+        Item
+      </Sidebar.Item>
+    </Sidebar.Group>
+  </Sidebar.Main>
+  
+  <Sidebar.Footer className="custom-footer">
+    {/* Content */}
+  </Sidebar.Footer>
+</Sidebar>
+```
+
+The component exposes data attributes for state-based styling:
+
+```css
+/* Style based on position */
+aside[data-position="left"] {
+  border-right: 1px solid var(--border);
+}
+
+/* Style when open */
+aside[data-open] {
+  width: 240px;
+}
+
+/* Style when closed */
+aside[data-closed] {
+  width: 64px;
+}
+
+/* Style non-collapsible sidebar */
+aside[data-collapse-disabled] {
+  width: 240px;
+}
+```

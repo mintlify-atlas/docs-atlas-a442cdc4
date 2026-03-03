@@ -1,0 +1,95 @@
+---
+title: Collapsible
+description: An interactive component that can be expanded or collapsed to show and hide content.
+---
+
+The Collapsible component provides a simple way to show and hide content. It consists of a trigger that controls the visibility of a panel.
+
+## Usage
+
+```jsx
+import { Collapsible } from '@raystack/apsara';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
+
+export default function Example() {
+  return (
+    <Collapsible>
+      <Collapsible.Trigger>
+        <span>Show more information</span>
+        <ChevronDownIcon />
+      </Collapsible.Trigger>
+      <Collapsible.Panel>
+        <p>This is the collapsible content that can be shown or hidden.</p>
+      </Collapsible.Panel>
+    </Collapsible>
+  );
+}
+```
+
+## Controlled collapsible
+
+```jsx
+import { Collapsible } from '@raystack/apsara';
+import { useState } from 'react';
+
+export default function ControlledExample() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Collapsible open={open} onOpenChange={setOpen}>
+      <Collapsible.Trigger>
+        {open ? 'Hide' : 'Show'} details
+      </Collapsible.Trigger>
+      <Collapsible.Panel>
+        <p>Controlled collapsible content.</p>
+      </Collapsible.Panel>
+    </Collapsible>
+  );
+}
+```
+
+## API reference
+
+### Collapsible (Root)
+
+The root container for the collapsible.
+
+<ParamField path="open" type="boolean">
+  The controlled open state of the collapsible.
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean" default="false">
+  The default open state when uncontrolled.
+</ParamField>
+
+<ParamField path="onOpenChange" type="(open: boolean) => void">
+  Callback fired when the open state changes.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the collapsible is disabled.
+</ParamField>
+
+### Collapsible.Trigger
+
+The button that toggles the collapsible state.
+
+<ParamField path="className" type="string">
+  Additional CSS class for the trigger.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The content of the trigger button.
+</ParamField>
+
+### Collapsible.Panel
+
+The collapsible content area.
+
+<ParamField path="className" type="string">
+  Additional CSS class for the panel.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The content to display when expanded.
+</ParamField>

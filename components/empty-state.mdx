@@ -1,0 +1,240 @@
+---
+title: Empty state
+description: Communicate when content is unavailable with actionable empty states.
+---
+
+The EmptyState component provides a consistent way to display messages when content is unavailable, with support for icons, headings, descriptions, and action buttons.
+
+## Basic usage
+
+```tsx
+import { EmptyState } from '@raystack/apsara';
+import { InboxIcon } from '@heroicons/react/24/outline';
+
+function NoMessages() {
+  return (
+    <EmptyState
+      icon={<InboxIcon />}
+      heading="No messages"
+      subHeading="You don't have any messages yet"
+    />
+  );
+}
+```
+
+## With primary action
+
+Include a primary call-to-action button.
+
+```tsx
+import { EmptyState } from '@raystack/apsara';
+import { Button } from '@raystack/apsara';
+import { PlusIcon } from '@heroicons/react/24/outline';
+
+function NoProjects() {
+  return (
+    <EmptyState
+      icon={<PlusIcon />}
+      heading="No projects"
+      subHeading="Get started by creating your first project"
+      primaryAction={
+        <Button onClick={() => console.log('Create project')}>
+          Create Project
+        </Button>
+      }
+    />
+  );
+}
+```
+
+## With secondary action
+
+Add a secondary action for alternative paths.
+
+```tsx
+import { EmptyState } from '@raystack/apsara';
+import { Button } from '@raystack/apsara';
+import { FolderIcon } from '@heroicons/react/24/outline';
+
+function NoFiles() {
+  return (
+    <EmptyState
+      icon={<FolderIcon />}
+      heading="No files"
+      subHeading="Upload files or import from another source"
+      primaryAction={
+        <Button variant="filled">Upload Files</Button>
+      }
+      secondaryAction={
+        <Button variant="outline">Import Files</Button>
+      }
+    />
+  );
+}
+```
+
+## Variant: empty1 (default)
+
+Centered layout with vertically stacked elements.
+
+```tsx
+import { EmptyState } from '@raystack/apsara';
+import { Button } from '@raystack/apsara';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+
+function NoResults() {
+  return (
+    <EmptyState
+      variant="empty1"
+      icon={<MagnifyingGlassIcon />}
+      heading="No results found"
+      subHeading="Try adjusting your search or filter criteria"
+      primaryAction={<Button>Clear Filters</Button>}
+    />
+  );
+}
+```
+
+## Variant: empty2
+
+Full-page layout with larger icon and left-aligned content.
+
+```tsx
+import { EmptyState } from '@raystack/apsara';
+import { Button } from '@raystack/apsara';
+import { DocumentIcon } from '@heroicons/react/24/outline';
+
+function NoDocuments() {
+  return (
+    <EmptyState
+      variant="empty2"
+      icon={<DocumentIcon />}
+      heading="No documents"
+      subHeading="Start by creating your first document or importing existing ones"
+      primaryAction={<Button variant="filled">Create Document</Button>}
+      secondaryAction={<Button variant="outline">Import</Button>}
+    />
+  );
+}
+```
+
+## Custom styling
+
+Customize individual elements with the `classNames` prop.
+
+```tsx
+import { EmptyState } from '@raystack/apsara';
+import { InboxIcon } from '@heroicons/react/24/outline';
+
+function CustomEmptyState() {
+  return (
+    <EmptyState
+      icon={<InboxIcon />}
+      heading="Custom styled empty state"
+      subHeading="All elements can be customized"
+      classNames={{
+        container: 'custom-container',
+        iconContainer: 'custom-icon-container',
+        icon: 'custom-icon',
+        heading: 'custom-heading',
+        subHeading: 'custom-subheading'
+      }}
+    />
+  );
+}
+```
+
+## Search results
+
+Perfect for displaying when search returns no results.
+
+```tsx
+import { EmptyState } from '@raystack/apsara';
+import { Button } from '@raystack/apsara';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+
+function SearchEmpty({ query }: { query: string }) {
+  return (
+    <EmptyState
+      icon={<MagnifyingGlassIcon />}
+      heading={`No results for "${query}"`}
+      subHeading="Try different keywords or check your spelling"
+      primaryAction={<Button onClick={() => console.log('Clear search')}>Clear Search</Button>}
+    />
+  );
+}
+```
+
+## List or table empty state
+
+Display when a list or table has no data.
+
+```tsx
+import { EmptyState } from '@raystack/apsara';
+import { Button } from '@raystack/apsara';
+import { UsersIcon } from '@heroicons/react/24/outline';
+
+function NoTeamMembers() {
+  return (
+    <EmptyState
+      icon={<UsersIcon />}
+      heading="No team members"
+      subHeading="Invite people to collaborate on your projects"
+      primaryAction={<Button>Invite Team Members</Button>}
+    />
+  );
+}
+```
+
+## Error state
+
+Use EmptyState to communicate errors.
+
+```tsx
+import { EmptyState } from '@raystack/apsara';
+import { Button } from '@raystack/apsara';
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
+
+function ErrorState() {
+  return (
+    <EmptyState
+      icon={<ExclamationCircleIcon />}
+      heading="Something went wrong"
+      subHeading="We couldn't load your data. Please try again."
+      primaryAction={<Button onClick={() => window.location.reload()}>Retry</Button>}
+    />
+  );
+}
+```
+
+## API reference
+
+### EmptyState
+
+<ParamField path="icon" type="ReactNode" required>
+  Icon element to display.
+</ParamField>
+
+<ParamField path="heading" type="ReactNode">
+  Main heading text.
+</ParamField>
+
+<ParamField path="subHeading" type="ReactNode">
+  Supporting description text.
+</ParamField>
+
+<ParamField path="primaryAction" type="ReactNode">
+  Primary action button or element.
+</ParamField>
+
+<ParamField path="secondaryAction" type="ReactNode">
+  Secondary action button or element.
+</ParamField>
+
+<ParamField path="variant" type="'empty1' | 'empty2'" default="'empty1'">
+  Layout variant. `empty1` is centered and compact, `empty2` is full-page with left alignment.
+</ParamField>
+
+<ParamField path="classNames" type="{ container?: string; iconContainer?: string; icon?: string; heading?: string; subHeading?: string }">
+  Custom CSS classes for individual elements.
+</ParamField>

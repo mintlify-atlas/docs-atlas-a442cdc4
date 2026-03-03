@@ -1,0 +1,197 @@
+---
+title: Input field
+description: A text input component with support for labels, validation, icons, and chip display.
+---
+
+The InputField component provides a comprehensive text input solution with built-in support for labels, helper text, validation errors, icons, and chip tags.
+
+## Basic usage
+
+```jsx
+import { InputField } from '@raystack/apsara';
+
+function App() {
+  return <InputField label="Email" placeholder="Enter your email" />;
+}
+```
+
+## Props
+
+<ParamField path="label" type="string">
+  The label text displayed above the input field.
+</ParamField>
+
+<ParamField path="helperText" type="string">
+  Helper text displayed below the input field.
+</ParamField>
+
+<ParamField path="error" type="string">
+  Error message to display. When provided, the input shows an error state.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the input is disabled.
+</ParamField>
+
+<ParamField path="leadingIcon" type="ReactNode">
+  Icon element to display at the start of the input.
+</ParamField>
+
+<ParamField path="trailingIcon" type="ReactNode">
+  Icon element to display at the end of the input.
+</ParamField>
+
+<ParamField path="optional" type="boolean">
+  When true, displays "(optional)" text next to the label.
+</ParamField>
+
+<ParamField path="prefix" type="string">
+  Text prefix to display before the input value.
+</ParamField>
+
+<ParamField path="suffix" type="string">
+  Text suffix to display after the input value.
+</ParamField>
+
+<ParamField path="width" type="string | number">
+  Width of the input container.
+</ParamField>
+
+<ParamField path="chips" type="Array<{ label: string; onRemove?: () => void }>">
+  Array of chip objects to display inside the input field.
+</ParamField>
+
+<ParamField path="maxChipsVisible" type="number" default="2">
+  Maximum number of chips to display before showing overflow count.
+</ParamField>
+
+<ParamField path="infoTooltip" type="string">
+  Tooltip text to display next to the label.
+</ParamField>
+
+<ParamField path="variant" type="'default' | 'borderless'" default="'default'">
+  The visual variant of the input field.
+</ParamField>
+
+<ParamField path="size" type="'small' | 'large'" default="'large'">
+  The size of the input field.
+</ParamField>
+
+<ParamField path="containerRef" type="RefObject<HTMLDivElement | null>">
+  Ref to the input wrapper container element.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the input element.
+</ParamField>
+
+## With label and helper text
+
+```jsx
+<InputField
+  label="Username"
+  helperText="Choose a unique username"
+  placeholder="Enter username"
+/>
+```
+
+## Optional field
+
+```jsx
+<InputField label="Middle name" optional placeholder="Enter middle name" />
+```
+
+## With validation error
+
+```jsx
+<InputField
+  label="Email"
+  error="Please enter a valid email address"
+  value="invalid-email"
+/>
+```
+
+## With icons
+
+```jsx
+import { MagnifyingGlassIcon, CheckIcon } from '@radix-ui/react-icons';
+
+<InputField
+  label="Search"
+  leadingIcon={<MagnifyingGlassIcon />}
+  placeholder="Search..."
+/>
+
+<InputField
+  label="Verified email"
+  trailingIcon={<CheckIcon />}
+  value="user@example.com"
+/>
+```
+
+## With prefix and suffix
+
+```jsx
+<InputField label="Price" prefix="$" placeholder="0.00" />
+
+<InputField label="Website" suffix=".com" placeholder="yoursite" />
+```
+
+## With chips
+
+```jsx
+const [chips, setChips] = useState([
+  { label: 'React', onRemove: () => removeChip('React') },
+  { label: 'TypeScript', onRemove: () => removeChip('TypeScript') },
+  { label: 'Node.js', onRemove: () => removeChip('Node.js') }
+]);
+
+<InputField
+  label="Technologies"
+  chips={chips}
+  maxChipsVisible={2}
+  placeholder="Add more..."
+/>
+```
+
+## With info tooltip
+
+```jsx
+<InputField
+  label="API Key"
+  infoTooltip="You can find your API key in the settings page"
+  placeholder="Enter API key"
+/>
+```
+
+## Size variants
+
+```jsx
+<InputField size="small" placeholder="Small input" />
+<InputField size="large" placeholder="Large input" />
+```
+
+## Borderless variant
+
+```jsx
+<InputField variant="borderless" placeholder="Borderless input" />
+```
+
+## Disabled state
+
+```jsx
+<InputField label="Username" value="john_doe" disabled />
+```
+
+## Custom width
+
+```jsx
+<InputField label="Code" width="150px" placeholder="Enter code" />
+```
+
+## Accessibility
+
+- The input field includes proper `aria-invalid` attribute when in error state.
+- Labels are properly associated with their input elements.
+- Helper text and error messages are announced to screen readers.
+- The info tooltip icon has appropriate keyboard navigation support.

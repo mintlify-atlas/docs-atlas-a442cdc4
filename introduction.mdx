@@ -1,0 +1,126 @@
+---
+title: "Introduction"
+description: "Apsara is an open-source React UI component library built on Radix UI primitives and vanilla CSS for building accessible, enterprise-grade data interfaces"
+---
+
+## Welcome to Apsara
+
+Apsara is an open-source React UI component library built on Radix UI primitives and vanilla CSS. It provides enterprise-grade, accessible components designed for building complex data interfaces with a focus on flexibility and developer experience.
+
+<CardGroup cols={3}>
+  <Card
+    title="Installation"
+    icon="download"
+    href="/installation"
+  >
+    Get started by installing Apsara in your React project
+  </Card>
+  <Card
+    title="Quick start"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Build your first app with Apsara components
+  </Card>
+  <Card
+    title="Components"
+    icon="grid"
+    href="/components/button"
+  >
+    Explore 55+ accessible React components
+  </Card>
+</CardGroup>
+
+## Key features
+
+Apsara is designed to help you build production-ready applications quickly without compromising on accessibility or customization.
+
+<CardGroup cols={2}>
+  <Card title="55+ accessible components" icon="puzzle-piece">
+    Built on Radix UI primitives ensuring ARIA compliance and keyboard navigation out of the box
+  </Card>
+  <Card title="Flexible styling system" icon="paintbrush">
+    Uses vanilla CSS with HTML data-attributes for powerful theming and style customization
+  </Card>
+  <Card title="Enterprise-ready data tables" icon="table">
+    Advanced data tables with sorting, filtering, and virtualization for handling large datasets
+  </Card>
+  <Card title="Full TypeScript support" icon="code">
+    Written in TypeScript with comprehensive type definitions for better developer experience
+  </Card>
+  <Card title="Dark mode built-in" icon="moon">
+    Comprehensive theme provider with dark mode support and customizable accent colors
+  </Card>
+  <Card title="Icons and hooks library" icon="bolt">
+    Includes comprehensive icon set and reusable hooks for common UI patterns
+  </Card>
+</CardGroup>
+
+## Simple and powerful
+
+Apsara components are designed to be intuitive to use while giving you full control over styling and behavior.
+
+```jsx
+import { Button, Flex } from "@raystack/apsara";
+import "@raystack/apsara/style.css";
+
+function App() {
+  return (
+    <Flex gap="medium" align="center">
+      <Button variant="solid" color="accent">
+        Primary Action
+      </Button>
+      <Button variant="outline" color="neutral">
+        Secondary Action
+      </Button>
+    </Flex>
+  );
+}
+```
+
+## Component categories
+
+Apsara provides a comprehensive set of components organized into logical categories:
+
+<AccordionGroup>
+  <Accordion title="Layout Components">
+    Build your application structure with `Box`, `Flex`, `Grid`, and `Container` components that provide flexible layout options.
+  </Accordion>
+  
+  <Accordion title="Navigation Components">
+    Create intuitive navigation with `Breadcrumb`, `Navbar`, `Sidebar`, `Tabs`, and `Command` palette components.
+  </Accordion>
+  
+  <Accordion title="Data Display">
+    Present data effectively with `Table`, `DataTable`, `Avatar`, `Badge`, `Chip`, `EmptyState`, and more.
+  </Accordion>
+  
+  <Accordion title="Form Components">
+    Build forms with `Button`, `InputField`, `Select`, `Combobox`, `Checkbox`, `Radio`, `Switch`, `Slider`, and `Calendar` components.
+  </Accordion>
+  
+  <Accordion title="Feedback Components">
+    Provide user feedback with `Tooltip`, `Callout`, `Toast`, `Indicator`, `Spinner`, and `Skeleton` components.
+  </Accordion>
+  
+  <Accordion title="Overlay Components">
+    Create layered interfaces with `Dialog`, `Drawer`, `Popover`, `Menu`, and `SidePanel` components.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  All components follow accessibility best practices and are fully keyboard navigable.
+</Note>
+
+## Built on solid foundations
+
+Apsara leverages industry-standard libraries to provide you with reliable, well-tested components:
+
+- **Radix UI** - Unstyled, accessible component primitives
+- **Vanilla CSS** - Simple, performant styling with no runtime overhead
+- **TypeScript** - Full type safety and IntelliSense support
+- **React 18+** - Modern React features and patterns
+
+<Tip>
+  Ready to get started? Head over to the [installation guide](/installation) to add Apsara to your project.
+</Tip>

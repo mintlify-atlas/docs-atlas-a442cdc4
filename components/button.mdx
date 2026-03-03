@@ -1,0 +1,158 @@
+---
+title: Button
+description: A versatile button component with multiple variants, sizes, and states for user interactions.
+---
+
+The Button component provides a flexible and accessible way to trigger actions in your application. It supports multiple visual variants, loading states, and can be customized with icons.
+
+## Basic usage
+
+```jsx
+import { Button } from '@raystack/apsara';
+
+function App() {
+  return <Button>Click me</Button>;
+}
+```
+
+## Props
+
+<ParamField path="variant" type="'solid' | 'outline' | 'ghost' | 'text'" default="'solid'">
+  The visual style variant of the button.
+</ParamField>
+
+<ParamField path="color" type="'accent' | 'danger' | 'neutral' | 'success'" default="'accent'">
+  The color theme of the button.
+</ParamField>
+
+<ParamField path="size" type="'small' | 'normal'" default="'normal'">
+  The size of the button.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the button is disabled.
+</ParamField>
+
+<ParamField path="loading" type="boolean">
+  Whether the button is in a loading state. Shows a spinner when true.
+</ParamField>
+
+<ParamField path="loaderText" type="ReactNode">
+  Text to display alongside the loading spinner.
+</ParamField>
+
+<ParamField path="leadingIcon" type="ReactNode">
+  Icon element to display before the button text.
+</ParamField>
+
+<ParamField path="trailingIcon" type="ReactNode">
+  Icon element to display after the button text.
+</ParamField>
+
+<ParamField path="maxWidth" type="string | number">
+  Maximum width of the button.
+</ParamField>
+
+<ParamField path="width" type="string | number">
+  Width of the button.
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties">
+  Additional inline styles to apply to the button.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the button.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The content to display inside the button.
+</ParamField>
+
+## Variants
+
+### Solid
+
+The default filled button style.
+
+```jsx
+<Button variant="solid">Solid Button</Button>
+```
+
+### Outline
+
+A button with a border and transparent background.
+
+```jsx
+<Button variant="outline">Outline Button</Button>
+```
+
+### Ghost
+
+A minimal button with no border or background in its default state.
+
+```jsx
+<Button variant="ghost">Ghost Button</Button>
+```
+
+### Text
+
+A text-only button with no background or border.
+
+```jsx
+<Button variant="text">Text Button</Button>
+```
+
+## Colors
+
+```jsx
+<Button color="accent">Accent</Button>
+<Button color="danger">Danger</Button>
+<Button color="neutral">Neutral</Button>
+<Button color="success">Success</Button>
+```
+
+## Sizes
+
+```jsx
+<Button size="small">Small Button</Button>
+<Button size="normal">Normal Button</Button>
+```
+
+## With icons
+
+```jsx
+import { PlusIcon, ArrowRightIcon } from '@radix-ui/react-icons';
+
+<Button leadingIcon={<PlusIcon />}>Add Item</Button>
+<Button trailingIcon={<ArrowRightIcon />}>Continue</Button>
+```
+
+## Loading state
+
+```jsx
+<Button loading>Loading...</Button>
+<Button loading loaderText="Saving">
+  Save
+</Button>
+```
+
+## Disabled state
+
+```jsx
+<Button disabled>Disabled Button</Button>
+```
+
+## Custom width
+
+```jsx
+<Button width="200px">Fixed Width</Button>
+<Button maxWidth="300px">Max Width Button</Button>
+```
+
+## Accessibility
+
+- The Button component is built on Base UI's Button primitive, ensuring proper accessibility.
+- It maintains focus states and keyboard navigation.
+- When in loading state, the button becomes focusable even when disabled using `focusableWhenDisabled`.
+- Ensure to provide meaningful button text or `aria-label` for icon-only buttons.

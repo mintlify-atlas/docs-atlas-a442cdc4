@@ -1,0 +1,265 @@
+---
+title: Combobox
+description: An autocomplete input component that combines a text input with a dropdown list.
+---
+
+The Combobox component provides a searchable dropdown interface that allows users to filter and select from a list of options. It supports both single and multiple selection modes.
+
+## Basic usage
+
+```jsx
+import { Combobox } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Combobox>
+      <Combobox.Input placeholder="Search..." />
+      <Combobox.Content>
+        <Combobox.Item value="react">React</Combobox.Item>
+        <Combobox.Item value="vue">Vue</Combobox.Item>
+        <Combobox.Item value="angular">Angular</Combobox.Item>
+      </Combobox.Content>
+    </Combobox>
+  );
+}
+```
+
+## Props
+
+### Combobox (Root)
+
+<ParamField path="value" type="Value | Value[] | null">
+  The controlled value of the combobox. Use single value for single selection, array for multiple.
+</ParamField>
+
+<ParamField path="defaultValue" type="Value | Value[] | null">
+  The default value for uncontrolled usage.
+</ParamField>
+
+<ParamField path="onValueChange" type="(value: Value | Value[] | null) => void">
+  Callback fired when the selected value changes.
+</ParamField>
+
+<ParamField path="onInputValueChange" type="(inputValue: string) => void">
+  Callback fired when the input value changes.
+</ParamField>
+
+<ParamField path="multiple" type="boolean" default="false">
+  Whether multiple selections are allowed.
+</ParamField>
+
+<ParamField path="items" type="Value[]">
+  Array of items for the combobox. Used for controlled item filtering.
+</ParamField>
+
+<ParamField path="open" type="boolean">
+  Controls the open state of the combobox dropdown.
+</ParamField>
+
+<ParamField path="onOpenChange" type="(open: boolean) => void">
+  Callback fired when the open state changes.
+</ParamField>
+
+### Combobox.Input
+
+Inherits all props from InputField component except `trailingIcon`, `suffix`, `chips`, and `maxChipsVisible`.
+
+<ParamField path="label" type="string">
+  The label text displayed above the input.
+</ParamField>
+
+<ParamField path="placeholder" type="string">
+  Placeholder text for the input.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the input is disabled.
+</ParamField>
+
+<ParamField path="error" type="string">
+  Error message to display.
+</ParamField>
+
+<ParamField path="helperText" type="string">
+  Helper text displayed below the input.
+</ParamField>
+
+<ParamField path="size" type="'small' | 'large'">
+  The size of the input.
+</ParamField>
+
+### Combobox.Item
+
+<ParamField path="value" type="string" required>
+  The value of the combobox item.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the item is disabled.
+</ParamField>
+
+## Single selection
+
+```jsx
+function SingleCombobox() {
+  const [value, setValue] = useState(null);
+
+  return (
+    <Combobox value={value} onValueChange={setValue}>
+      <Combobox.Input label="Framework" placeholder="Select a framework" />
+      <Combobox.Content>
+        <Combobox.Item value="react">React</Combobox.Item>
+        <Combobox.Item value="vue">Vue</Combobox.Item>
+        <Combobox.Item value="angular">Angular</Combobox.Item>
+        <Combobox.Item value="svelte">Svelte</Combobox.Item>
+      </Combobox.Content>
+    </Combobox>
+  );
+}
+```
+
+## Multiple selection
+
+```jsx
+function MultiCombobox() {
+  const [values, setValues] = useState([]);
+
+  return (
+    <Combobox multiple value={values} onValueChange={setValues}>
+      <Combobox.Input label="Technologies" placeholder="Select technologies" />
+      <Combobox.Content>
+        <Combobox.Item value="react">React</Combobox.Item>
+        <Combobox.Item value="typescript">TypeScript</Combobox.Item>
+        <Combobox.Item value="nodejs">Node.js</Combobox.Item>
+        <Combobox.Item value="graphql">GraphQL</Combobox.Item>
+      </Combobox.Content>
+    </Combobox>
+  );
+}
+```
+
+## With groups and labels
+
+```jsx
+<Combobox>
+  <Combobox.Input placeholder="Select a tool" />
+  <Combobox.Content>
+    <Combobox.Group>
+      <Combobox.Label>Frontend</Combobox.Label>
+      <Combobox.Item value="react">React</Combobox.Item>
+      <Combobox.Item value="vue">Vue</Combobox.Item>
+    </Combobox.Group>
+    <Combobox.Separator />
+    <Combobox.Group>
+      <Combobox.Label>Backend</Combobox.Label>
+      <Combobox.Item value="nodejs">Node.js</Combobox.Item>
+      <Combobox.Item value="python">Python</Combobox.Item>
+    </Combobox.Group>
+  </Combobox.Content>
+</Combobox>
+```
+
+## With input value tracking
+
+```jsx
+function SearchableCombobox() {
+  const [value, setValue] = useState(null);
+  const [inputValue, setInputValue] = useState('');
+
+  return (
+    <div>
+      <Combobox
+        value={value}
+        onValueChange={setValue}
+        onInputValueChange={setInputValue}
+      >
+        <Combobox.Input placeholder="Search items" />
+        <Combobox.Content>
+          <Combobox.Item value="apple">Apple</Combobox.Item>
+          <Combobox.Item value="banana">Banana</Combobox.Item>
+          <Combobox.Item value="orange">Orange</Combobox.Item>
+        </Combobox.Content>
+      </Combobox>
+      <p>Searching for: {inputValue}</p>
+    </div>
+  );
+}
+```
+
+## With custom filtering
+
+```jsx
+function FilteredCombobox() {
+  const [value, setValue] = useState(null);
+  const [inputValue, setInputValue] = useState('');
+  
+  const allItems = [
+    { value: 'apple', label: 'Apple' },
+    { value: 'banana', label: 'Banana' },
+    { value: 'orange', label: 'Orange' },
+    { value: 'grape', label: 'Grape' }
+  ];
+  
+  const filteredItems = allItems.filter(item =>
+    item.label.toLowerCase().includes(inputValue.toLowerCase())
+  );
+
+  return (
+    <Combobox
+      value={value}
+      onValueChange={setValue}
+      onInputValueChange={setInputValue}
+      items={filteredItems.map(i => i.value)}
+    >
+      <Combobox.Input placeholder="Filter items" />
+      <Combobox.Content>
+        {filteredItems.map(item => (
+          <Combobox.Item key={item.value} value={item.value}>
+            {item.label}
+          </Combobox.Item>
+        ))}
+      </Combobox.Content>
+    </Combobox>
+  );
+}
+```
+
+## With validation
+
+```jsx
+<Combobox>
+  <Combobox.Input
+    label="Country"
+    error="Please select a country"
+    placeholder="Select your country"
+  />
+  <Combobox.Content>
+    <Combobox.Item value="us">United States</Combobox.Item>
+    <Combobox.Item value="uk">United Kingdom</Combobox.Item>
+    <Combobox.Item value="ca">Canada</Combobox.Item>
+  </Combobox.Content>
+</Combobox>
+```
+
+## Multiple selection with chips
+
+When using multiple selection mode, selected items are automatically displayed as removable chips in the input field.
+
+```jsx
+<Combobox multiple value={['react', 'typescript']} onValueChange={setValues}>
+  <Combobox.Input label="Skills" placeholder="Add skills" />
+  <Combobox.Content>
+    <Combobox.Item value="react">React</Combobox.Item>
+    <Combobox.Item value="typescript">TypeScript</Combobox.Item>
+    <Combobox.Item value="nodejs">Node.js</Combobox.Item>
+  </Combobox.Content>
+</Combobox>
+```
+
+## Accessibility
+
+- Built on Base UI Combobox primitive with full accessibility support.
+- Supports keyboard navigation with arrow keys, Enter to select, and Escape to close.
+- Proper ARIA attributes are automatically applied.
+- Screen readers announce the number of available options and selected values.
+- In multiple selection mode, chips can be removed using keyboard navigation.

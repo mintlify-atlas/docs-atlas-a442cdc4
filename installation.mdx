@@ -1,0 +1,251 @@
+---
+title: "Installation"
+description: "Learn how to install and set up Apsara in your React project"
+---
+
+## Prerequisites
+
+Before installing Apsara, make sure you have:
+
+- **Node.js 22 or higher** installed on your system
+- A React project with **React 18 or 19**
+- Package manager: npm, yarn, or pnpm
+
+<Note>
+  Apsara requires React 18+ and Node.js 22+ to work properly.
+</Note>
+
+## Install the package
+
+Install Apsara using your preferred package manager:
+
+<CodeGroup>
+
+```bash npm
+npm install @raystack/apsara
+```
+
+```bash yarn
+yarn add @raystack/apsara
+```
+
+```bash pnpm
+pnpm add @raystack/apsara
+```
+
+</CodeGroup>
+
+## Import styles
+
+Apsara uses vanilla CSS for styling. You need to import the CSS file in your application root (e.g., `main.tsx`, `App.tsx`, or `_app.tsx`).
+
+<Steps>
+  <Step title="Import the CSS file">
+    Add the following import at the top of your root file:
+
+    ```tsx
+    import "@raystack/apsara/style.css";
+    ```
+
+    <Tip>
+      The CSS import should be done once at the root of your application.
+    </Tip>
+  </Step>
+
+  <Step title="Optional: Import normalize CSS">
+    For consistent cross-browser styling, you can also import the normalize CSS:
+
+    ```tsx
+    import "@raystack/apsara/normalize.css";
+    ```
+  </Step>
+</Steps>
+
+## TypeScript setup
+
+Apsara is written in TypeScript and includes comprehensive type definitions. No additional setup is required - types are automatically included when you install the package.
+
+```tsx
+import { Button, Flex } from "@raystack/apsara";
+import type { ButtonProps } from "@raystack/apsara";
+
+// TypeScript will automatically infer types
+const MyComponent = () => {
+  return (
+    <Flex gap="medium">
+      <Button variant="solid" color="accent">
+        Click me
+      </Button>
+    </Flex>
+  );
+};
+```
+
+<Note>
+  The `@types/react` peer dependency is optional. TypeScript will work with or without it.
+</Note>
+
+## Package exports
+
+Apsara provides several entry points for different use cases:
+
+<CodeGroup>
+
+```tsx Components
+// Import components from the main entry
+import { Button, Flex, Input } from "@raystack/apsara";
+```
+
+```tsx Icons
+// Import icons separately
+import { IconName } from "@raystack/apsara/icons";
+```
+
+```tsx Hooks
+// Import hooks separately
+import { useCopyToClipboard, useTheme } from "@raystack/apsara/hooks";
+```
+
+```css Styles
+/* Import CSS files */
+@import "@raystack/apsara/style.css";
+@import "@raystack/apsara/normalize.css";
+```
+
+</CodeGroup>
+
+## Basic setup example
+
+Here's a complete example of setting up Apsara in a React application:
+
+<Steps>
+  <Step title="Install the package">
+    ```bash
+    npm install @raystack/apsara
+    ```
+  </Step>
+
+  <Step title="Import styles in your root file">
+    ```tsx App.tsx
+    import "@raystack/apsara/style.css";
+    import { Button, Flex } from "@raystack/apsara";
+
+    function App() {
+      return (
+        <div className="app">
+          <h1>My Apsara App</h1>
+          <Flex gap="medium">
+            <Button variant="solid">Get Started</Button>
+          </Flex>
+        </div>
+      );
+    }
+
+    export default App;
+    ```
+  </Step>
+
+  <Step title="Start using components">
+    Import and use any Apsara component in your application:
+
+    ```tsx
+    import { Button, InputField, Select } from "@raystack/apsara";
+    ```
+  </Step>
+</Steps>
+
+## Framework-specific setup
+
+<AccordionGroup>
+  <Accordion title="Next.js">
+    For Next.js applications, import the CSS in your root layout or `_app.tsx`:
+
+    ```tsx app/layout.tsx
+    import "@raystack/apsara/style.css";
+
+    export default function RootLayout({
+      children,
+    }: {
+      children: React.ReactNode;
+    }) {
+      return (
+        <html lang="en">
+          <body>{children}</body>
+        </html>
+      );
+    }
+    ```
+
+    <Note>
+      If using the Pages Router, import in `pages/_app.tsx` instead.
+    </Note>
+  </Accordion>
+
+  <Accordion title="Vite">
+    For Vite applications, import the CSS in your `main.tsx`:
+
+    ```tsx main.tsx
+    import React from "react";
+    import ReactDOM from "react-dom/client";
+    import "@raystack/apsara/style.css";
+    import App from "./App";
+
+    ReactDOM.createRoot(document.getElementById("root")!).render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+    ```
+  </Accordion>
+
+  <Accordion title="Create React App">
+    For Create React App, import the CSS in your `index.tsx` or `App.tsx`:
+
+    ```tsx index.tsx
+    import React from "react";
+    import ReactDOM from "react-dom/client";
+    import "@raystack/apsara/style.css";
+    import App from "./App";
+
+    const root = ReactDOM.createRoot(
+      document.getElementById("root") as HTMLElement
+    );
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Peer dependencies
+
+Apsara has the following peer dependencies:
+
+- `react`: ^18 || ^19
+- `react-dom`: ^18 || ^19
+- `@types/react`: ^18 || ^19 (optional)
+
+<Warning>
+  Make sure your project meets these peer dependency requirements to avoid compatibility issues.
+</Warning>
+
+## Next steps
+
+Now that you have Apsara installed, you're ready to start building!
+
+<CardGroup cols={2}>
+  <Card title="Quick start" icon="rocket" href="/quickstart">
+    Follow the quick start guide to build your first component
+  </Card>
+  <Card title="Theming" icon="palette" href="/guides/theming">
+    Learn how to customize the look and feel
+  </Card>
+  <Card title="Components" icon="grid" href="/components/button">
+    Browse the complete component library
+  </Card>
+  <Card title="Dark mode" icon="moon" href="/guides/dark-mode">
+    Set up dark mode in your application
+  </Card>
+</CardGroup>

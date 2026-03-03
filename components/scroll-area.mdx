@@ -1,0 +1,78 @@
+---
+title: Scroll area
+description: A customizable scrollable area with styled scrollbars.
+---
+
+The ScrollArea component provides a consistent, styled scrollbar experience across different browsers and operating systems. It supports both vertical and horizontal scrolling.
+
+## Usage
+
+```jsx
+import { ScrollArea } from '@raystack/apsara';
+
+export default function Example() {
+  return (
+    <ScrollArea style={{ height: '200px', width: '300px' }}>
+      <div style={{ padding: '16px' }}>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa.</p>
+      </div>
+    </ScrollArea>
+  );
+}
+```
+
+## Scrollbar types
+
+```jsx
+{/* Always visible scrollbar */}
+<ScrollArea type="always">
+  {/* content */}
+</ScrollArea>
+
+{/* Show on hover */}
+<ScrollArea type="hover">
+  {/* content */}
+</ScrollArea>
+
+{/* Show on scroll */}
+<ScrollArea type="scroll">
+  {/* content */}
+</ScrollArea>
+```
+
+## Horizontal scrolling
+
+```jsx
+<ScrollArea style={{ height: '150px' }}>
+  <div style={{ width: '1000px', padding: '16px' }}>
+    Wide content that requires horizontal scrolling...
+  </div>
+</ScrollArea>
+```
+
+## API reference
+
+### ScrollArea
+
+<ParamField path="type" type="'always' | 'hover' | 'scroll'" default="hover">
+  Controls when the scrollbar is visible:
+  - `always`: Scrollbar is always visible
+  - `hover`: Scrollbar appears on hover
+  - `scroll`: Scrollbar appears during scroll
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class for the scroll area root.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The scrollable content.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles for the scroll area. Use to set height and width constraints.
+</ParamField>

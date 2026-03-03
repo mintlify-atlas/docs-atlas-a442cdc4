@@ -1,0 +1,379 @@
+---
+title: Calendar
+description: Calendar components for date selection including single dates and date ranges.
+---
+
+The Calendar component provides flexible date selection interfaces. It includes Calendar for inline display, DatePicker for single date selection, and RangePicker for selecting date ranges.
+
+## Components
+
+The calendar module exports three main components:
+- **Calendar**: Base calendar component for inline date display and selection
+- **DatePicker**: Input field with popover calendar for single date selection
+- **RangePicker**: Input fields with popover calendar for date range selection
+
+## Calendar
+
+The base Calendar component displays a calendar interface for date selection.
+
+### Basic usage
+
+```jsx
+import { Calendar } from '@raystack/apsara';
+
+function App() {
+  return <Calendar mode="single" selected={new Date()} />;
+}
+```
+
+### Props
+
+<ParamField path="mode" type="'single' | 'multiple' | 'range'" default="'single'">
+  The selection mode of the calendar.
+</ParamField>
+
+<ParamField path="selected" type="Date | Date[] | DateRange">
+  The selected date(s). Type depends on mode.
+</ParamField>
+
+<ParamField path="onSelect" type="(date: Date | Date[] | DateRange) => void">
+  Callback fired when a date is selected.
+</ParamField>
+
+<ParamField path="month" type="Date">
+  The month to display.
+</ParamField>
+
+<ParamField path="onMonthChange" type="(month: Date) => void">
+  Callback fired when the month changes.
+</ParamField>
+
+<ParamField path="startMonth" type="Date">
+  The earliest month that can be displayed.
+</ParamField>
+
+<ParamField path="endMonth" type="Date">
+  The latest month that can be displayed.
+</ParamField>
+
+<ParamField path="disabled" type="boolean | Date | Date[] | ((date: Date) => boolean)">
+  Dates to disable. Can be a boolean, specific dates, or a function.
+</ParamField>
+
+<ParamField path="showOutsideDays" type="boolean" default="true">
+  Whether to show days outside the current month.
+</ParamField>
+
+<ParamField path="showTooltip" type="boolean" default="false">
+  Whether to show tooltips on date hover.
+</ParamField>
+
+<ParamField path="tooltipMessages" type="Record<string, ReactNode>" default="{}">
+  Tooltip messages for specific dates. Keys should be in 'dd-MM-yyyy' format.
+</ParamField>
+
+<ParamField path="dateInfo" type="Record<string, ReactNode> | ((date: Date) => ReactNode | null)" default="{}">
+  Additional info to display on dates. Can be an object or function.
+</ParamField>
+
+<ParamField path="loadingData" type="boolean" default="false">
+  Whether the calendar is in a loading state.
+</ParamField>
+
+<ParamField path="timeZone" type="string">
+  The timezone to use for date calculations.
+</ParamField>
+
+<ParamField path="numberOfMonths" type="number">
+  Number of months to display.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the calendar.
+</ParamField>
+
+### Single date selection
+
+```jsx
+function SingleDateCalendar() {
+  const [date, setDate] = useState(new Date());
+
+  return (
+    <Calendar
+      mode="single"
+      selected={date}
+      onSelect={setDate}
+    />
+  );
+}
+```
+
+### With tooltips and date info
+
+```jsx
+<Calendar
+  mode="single"
+  showTooltip
+  tooltipMessages={{
+    '25-12-2024': 'Christmas Day',
+    '01-01-2025': 'New Year'
+  }}
+  dateInfo={{
+    '25-12-2024': '🎄',
+    '01-01-2025': '🎉'
+  }}
+/>
+```
+
+## DatePicker
+
+A date picker with an input field that opens a calendar popover.
+
+### Basic usage
+
+```jsx
+import { DatePicker } from '@raystack/apsara';
+
+function App() {
+  return <DatePicker onSelect={(date) => console.log(date)} />;
+}
+```
+
+### Props
+
+<ParamField path="value" type="Date" default="new Date()">
+  The selected date value.
+</ParamField>
+
+<ParamField path="onSelect" type="(date: Date) => void">
+  Callback fired when a date is selected.
+</ParamField>
+
+<ParamField path="dateFormat" type="string" default="'DD/MM/YYYY'">
+  The format for displaying the date in the input field.
+</ParamField>
+
+<ParamField path="inputFieldProps" type="InputFieldProps">
+  Props to pass to the underlying InputField component.
+</ParamField>
+
+<ParamField path="calendarProps" type="CalendarProps">
+  Props to pass to the underlying Calendar component.
+</ParamField>
+
+<ParamField path="showCalendarIcon" type="boolean" default="true">
+  Whether to show the calendar icon in the input field.
+</ParamField>
+
+<ParamField path="timeZone" type="string">
+  The timezone to use for date calculations.
+</ParamField>
+
+<ParamField path="popoverProps" type="PopoverContentProps">
+  Props to pass to the Popover.Content component.
+</ParamField>
+
+<ParamField path="children" type="ReactNode | ((props: { selectedDate: string }) => ReactNode)">
+  Custom trigger element or render function.
+</ParamField>
+
+### Controlled date picker
+
+```jsx
+function ControlledDatePicker() {
+  const [date, setDate] = useState(new Date());
+
+  return (
+    <DatePicker
+      value={date}
+      onSelect={setDate}
+      inputFieldProps={{
+        label: 'Select date',
+        helperText: 'Choose a date from the calendar'
+      }}
+    />
+  );
+}
+```
+
+### Custom date format
+
+```jsx
+<DatePicker
+  dateFormat="MM-DD-YYYY"
+  inputFieldProps={{ label: 'Date' }}
+/>
+```
+
+### With date restrictions
+
+```jsx
+<DatePicker
+  calendarProps={{
+    startMonth: new Date(2024, 0, 1),
+    endMonth: new Date(2024, 11, 31),
+    disabled: (date) => date.getDay() === 0 || date.getDay() === 6
+  }}
+/>
+```
+
+### Custom trigger
+
+```jsx
+<DatePicker>
+  {({ selectedDate }) => (
+    <button>{selectedDate || 'Pick a date'}</button>
+  )}
+</DatePicker>
+```
+
+## RangePicker
+
+A date range picker with two input fields for start and end dates.
+
+### Basic usage
+
+```jsx
+import { RangePicker } from '@raystack/apsara';
+
+function App() {
+  return <RangePicker onSelect={(range) => console.log(range)} />;
+}
+```
+
+### Props
+
+<ParamField path="value" type="DateRange">
+  The selected date range value with `from` and `to` properties.
+</ParamField>
+
+<ParamField path="defaultValue" type="DateRange" default="{ from: new Date(), to: new Date() }">
+  The default date range for uncontrolled usage.
+</ParamField>
+
+<ParamField path="onSelect" type="(range: DateRange) => void">
+  Callback fired when a date range is selected.
+</ParamField>
+
+<ParamField path="dateFormat" type="string" default="'DD/MM/YYYY'">
+  The format for displaying dates in the input fields.
+</ParamField>
+
+<ParamField path="inputFieldsProps" type="{ startDate?: InputFieldProps; endDate?: InputFieldProps }">
+  Props for the start and end date input fields.
+</ParamField>
+
+<ParamField path="calendarProps" type="CalendarProps">
+  Props to pass to the underlying Calendar component.
+</ParamField>
+
+<ParamField path="showCalendarIcon" type="boolean" default="true">
+  Whether to show calendar icons in the input fields.
+</ParamField>
+
+<ParamField path="pickerGroupClassName" type="string">
+  CSS class for the container wrapping both input fields.
+</ParamField>
+
+<ParamField path="footer" type="ReactNode">
+  Footer content to display below the calendar.
+</ParamField>
+
+<ParamField path="timeZone" type="string">
+  The timezone to use for date calculations.
+</ParamField>
+
+<ParamField path="popoverProps" type="PopoverContentProps">
+  Props to pass to the Popover.Content component.
+</ParamField>
+
+<ParamField path="children" type="ReactNode | ((props: { startDate: string; endDate: string }) => ReactNode)">
+  Custom trigger element or render function.
+</ParamField>
+
+### Controlled range picker
+
+```jsx
+function ControlledRangePicker() {
+  const [range, setRange] = useState({
+    from: new Date(),
+    to: new Date()
+  });
+
+  return (
+    <RangePicker
+      value={range}
+      onSelect={setRange}
+      inputFieldsProps={{
+        startDate: { label: 'Start date' },
+        endDate: { label: 'End date' }
+      }}
+    />
+  );
+}
+```
+
+### With footer
+
+```jsx
+<RangePicker
+  footer={
+    <Button size="small" onClick={() => handleApply()}>
+      Apply Range
+    </Button>
+  }
+/>
+```
+
+### Custom date format
+
+```jsx
+<RangePicker dateFormat="YYYY-MM-DD" />
+```
+
+### Preset ranges example
+
+```jsx
+function RangePickerWithPresets() {
+  const [range, setRange] = useState({ from: new Date(), to: new Date() });
+  
+  const presets = {
+    'Last 7 days': {
+      from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+      to: new Date()
+    },
+    'Last 30 days': {
+      from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+      to: new Date()
+    }
+  };
+
+  return (
+    <div>
+      <div>
+        {Object.entries(presets).map(([label, preset]) => (
+          <Button
+            key={label}
+            size="small"
+            variant="outline"
+            onClick={() => setRange(preset)}
+          >
+            {label}
+          </Button>
+        ))}
+      </div>
+      <RangePicker value={range} onSelect={setRange} />
+    </div>
+  );
+}
+```
+
+## Accessibility
+
+- All calendar components support full keyboard navigation.
+- Arrow keys navigate between dates, Enter/Space to select.
+- Month and year dropdowns are keyboard accessible.
+- Proper ARIA labels are applied to navigation buttons.
+- Screen readers announce selected dates and date ranges.
+- The DatePicker input field supports manual date entry with validation.
+- Focus management ensures smooth interaction between input and calendar.

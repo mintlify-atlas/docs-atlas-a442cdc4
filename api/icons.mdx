@@ -1,0 +1,222 @@
+---
+title: Icons
+description: Pre-built SVG icons available in the Apsara component library.
+---
+
+## Usage
+
+Apsara includes a collection of SVG icons exported as React components. All icons are imported from the `@raystack/apsara/icons` package.
+
+```tsx
+import { BellIcon, CheckCircleFilledIcon } from '@raystack/apsara/icons';
+
+function App() {
+  return (
+    <div>
+      <BellIcon width={24} height={24} />
+      <CheckCircleFilledIcon width={24} height={24} />
+    </div>
+  );
+}
+```
+
+## Available icons
+
+All icons are exported as React components with the `Icon` suffix. They accept standard SVG attributes as props.
+
+<ParamField path="width" type="number">
+  Width of the icon in pixels.
+</ParamField>
+
+<ParamField path="height" type="number">
+  Height of the icon in pixels.
+</ParamField>
+
+<ParamField path="className" type="string">
+  CSS class name for styling.
+</ParamField>
+
+<ParamField path="fill" type="string">
+  Fill color for the icon.
+</ParamField>
+
+### Icon list
+
+<ResponseField name="BellIcon" type="React.Component">
+  Bell notification icon.
+</ResponseField>
+
+<ResponseField name="BellSlashIcon" type="React.Component">
+  Bell with slash icon (notifications disabled).
+</ResponseField>
+
+<ResponseField name="BuildingsFilledIcon" type="React.Component">
+  Filled buildings icon.
+</ResponseField>
+
+<ResponseField name="CheckCircleFilledIcon" type="React.Component">
+  Filled check circle icon (success indicator).
+</ResponseField>
+
+<ResponseField name="CoinIcon" type="React.Component">
+  Coin icon.
+</ResponseField>
+
+<ResponseField name="CoinColoredIcon" type="React.Component">
+  Colored coin icon variant.
+</ResponseField>
+
+<ResponseField name="CrossCircleFilledIcon" type="React.Component">
+  Filled cross circle icon (error indicator).
+</ResponseField>
+
+<ResponseField name="FilterIcon" type="React.Component">
+  Filter icon.
+</ResponseField>
+
+<ResponseField name="OrganizationIcon" type="React.Component">
+  Organization icon.
+</ResponseField>
+
+<ResponseField name="ResetIcon" type="React.Component">
+  Reset icon.
+</ResponseField>
+
+<ResponseField name="ShoppingBagFilledIcon" type="React.Component">
+  Filled shopping bag icon.
+</ResponseField>
+
+<ResponseField name="SidebarIcon" type="React.Component">
+  Sidebar icon.
+</ResponseField>
+
+<ResponseField name="TriangleRightIcon" type="React.Component">
+  Right-pointing triangle icon.
+</ResponseField>
+
+## Examples
+
+### Basic usage
+
+```tsx
+import { BellIcon } from '@raystack/apsara/icons';
+
+function Notification() {
+  return (
+    <button>
+      <BellIcon width={20} height={20} />
+      <span>Notifications</span>
+    </button>
+  );
+}
+```
+
+### Custom styling
+
+```tsx
+import { CheckCircleFilledIcon } from '@raystack/apsara/icons';
+
+function SuccessMessage() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <CheckCircleFilledIcon
+        width={24}
+        height={24}
+        className="success-icon"
+        style={{ color: 'green' }}
+      />
+      <span>Operation completed successfully!</span>
+    </div>
+  );
+}
+```
+
+### With IconButton component
+
+```tsx
+import { IconButton } from '@raystack/apsara';
+import { FilterIcon } from '@raystack/apsara/icons';
+
+function FilterButton() {
+  return (
+    <IconButton>
+      <FilterIcon width={20} height={20} />
+    </IconButton>
+  );
+}
+```
+
+### Status indicators
+
+```tsx
+import {
+  CheckCircleFilledIcon,
+  CrossCircleFilledIcon
+} from '@raystack/apsara/icons';
+
+function StatusBadge({ status }: { status: 'success' | 'error' }) {
+  const Icon = status === 'success' ? CheckCircleFilledIcon : CrossCircleFilledIcon;
+  const color = status === 'success' ? '#30a46c' : '#e5484d';
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Icon width={16} height={16} style={{ color }} />
+      <span style={{ marginLeft: '4px' }}>
+        {status === 'success' ? 'Success' : 'Error'}
+      </span>
+    </div>
+  );
+}
+```
+
+### Navigation icons
+
+```tsx
+import { SidebarIcon, OrganizationIcon } from '@raystack/apsara/icons';
+
+function NavigationMenu() {
+  return (
+    <nav>
+      <button>
+        <SidebarIcon width={20} height={20} />
+        <span>Dashboard</span>
+      </button>
+      <button>
+        <OrganizationIcon width={20} height={20} />
+        <span>Organizations</span>
+      </button>
+    </nav>
+  );
+}
+```
+
+### Conditional rendering
+
+```tsx
+import { BellIcon, BellSlashIcon } from '@raystack/apsara/icons';
+
+function NotificationToggle({ enabled }: { enabled: boolean }) {
+  const Icon = enabled ? BellIcon : BellSlashIcon;
+
+  return (
+    <button>
+      <Icon width={24} height={24} />
+      <span>{enabled ? 'Notifications On' : 'Notifications Off'}</span>
+    </button>
+  );
+}
+```
+
+## Notes
+
+- All icons are exported as React components from SVG files
+- Icons are generated automatically by the build process (see comment in source file)
+- Icons support all standard SVG props including `width`, `height`, `className`, `style`, `fill`, etc.
+- For consistent sizing, it's recommended to always specify both `width` and `height`
+- Icons inherit the current text color by default, which can be overridden with the `color` CSS property
+- Use with the `IconButton` component for consistent icon button styling
+
+## Related
+
+- [IconButton](/components/icon-button)
+- [Button](/components/button)

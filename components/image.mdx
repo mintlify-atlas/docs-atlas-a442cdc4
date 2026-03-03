@@ -1,0 +1,304 @@
+---
+title: Image
+description: Display images with automatic fallback handling and responsive sizing.
+---
+
+The Image component provides enhanced image handling with automatic fallback support, object-fit controls, and border radius options.
+
+## Basic usage
+
+```tsx
+import { Image } from '@raystack/apsara';
+
+function ProductImage() {
+  return (
+    <Image
+      src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+      alt="Product photo"
+      width={400}
+      height={300}
+    />
+  );
+}
+```
+
+## With fallback
+
+Provide a fallback image URL that displays if the primary image fails to load.
+
+```tsx
+import { Image } from '@raystack/apsara';
+
+function UserPhoto() {
+  return (
+    <Image
+      src="https://example.com/user-photo.jpg"
+      fallback="https://example.com/default-avatar.jpg"
+      alt="User photo"
+      width={200}
+      height={200}
+    />
+  );
+}
+```
+
+## Object fit
+
+Control how the image fits within its container.
+
+```tsx
+import { Image } from '@raystack/apsara';
+
+function FitExamples() {
+  return (
+    <div style={{ display: 'flex', gap: '16px' }}>
+      <div style={{ width: 200, height: 200 }}>
+        <Image
+          src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          alt="Cover fit"
+          fit="cover"
+        />
+      </div>
+      <div style={{ width: 200, height: 200 }}>
+        <Image
+          src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          alt="Contain fit"
+          fit="contain"
+        />
+      </div>
+      <div style={{ width: 200, height: 200 }}>
+        <Image
+          src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          alt="Fill fit"
+          fit="fill"
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+## Border radius
+
+Apply different border radius styles.
+
+```tsx
+import { Image } from '@raystack/apsara';
+
+function RadiusExamples() {
+  return (
+    <div style={{ display: 'flex', gap: '16px' }}>
+      <Image
+        src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+        alt="No radius"
+        radius="none"
+        width={150}
+        height={150}
+      />
+      <Image
+        src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+        alt="Small radius"
+        radius="small"
+        width={150}
+        height={150}
+      />
+      <Image
+        src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+        alt="Medium radius"
+        radius="medium"
+        width={150}
+        height={150}
+      />
+      <Image
+        src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+        alt="Full radius"
+        radius="full"
+        width={150}
+        height={150}
+      />
+    </div>
+  );
+}
+```
+
+## Responsive images
+
+Set width and height with CSS units for responsive behavior.
+
+```tsx
+import { Image } from '@raystack/apsara';
+
+function ResponsiveImage() {
+  return (
+    <Image
+      src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+      alt="Responsive"
+      width="100%"
+      height="auto"
+      style={{ maxWidth: '600px' }}
+    />
+  );
+}
+```
+
+## Lazy loading
+
+Images are lazy-loaded by default for better performance.
+
+```tsx
+import { Image } from '@raystack/apsara';
+
+function LazyImages() {
+  return (
+    <div>
+      {Array.from({ length: 20 }).map((_, i) => (
+        <Image
+          key={i}
+          src={`https://images.unsplash.com/photo-${i}`}
+          alt={`Image ${i}`}
+          width={300}
+          height={200}
+          loading="lazy"
+        />
+      ))}
+    </div>
+  );
+}
+```
+
+## Error handling
+
+Handle image load errors with custom logic.
+
+```tsx
+import { Image } from '@raystack/apsara';
+
+function ErrorHandling() {
+  const handleError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    console.error('Image failed to load:', event.currentTarget.src);
+  };
+
+  return (
+    <Image
+      src="https://example.com/image.jpg"
+      fallback="https://example.com/fallback.jpg"
+      alt="With error handling"
+      onError={handleError}
+      width={300}
+      height={200}
+    />
+  );
+}
+```
+
+## Custom styling
+
+Apply custom styles and classes.
+
+```tsx
+import { Image } from '@raystack/apsara';
+
+function StyledImage() {
+  return (
+    <Image
+      src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+      alt="Styled image"
+      width={300}
+      height={300}
+      className="custom-image"
+      style={{
+        border: '2px solid #ddd',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+      }}
+    />
+  );
+}
+```
+
+## Image gallery
+
+Combine with other components for a gallery layout.
+
+```tsx
+import { Image } from '@raystack/apsara';
+
+function ImageGallery() {
+  const images = [
+    'photo-1505740420928-5e560c06d30e',
+    'photo-1542291026-7eec264c27ff',
+    'photo-1546768292-fb1f08a1c5e0'
+  ];
+
+  return (
+    <div style={{ 
+      display: 'grid', 
+      gridTemplateColumns: 'repeat(3, 1fr)', 
+      gap: '16px' 
+    }}>
+      {images.map((id, index) => (
+        <Image
+          key={id}
+          src={`https://images.unsplash.com/${id}`}
+          alt={`Gallery image ${index + 1}`}
+          width={300}
+          height={300}
+          fit="cover"
+          radius="small"
+        />
+      ))}
+    </div>
+  );
+}
+```
+
+## API reference
+
+### Image
+
+<ParamField path="src" type="string">
+  Image source URL.
+</ParamField>
+
+<ParamField path="alt" type="string" default="''">
+  Alternative text for the image. Important for accessibility.
+</ParamField>
+
+<ParamField path="fallback" type="string">
+  Fallback image URL to display if the primary image fails to load.
+</ParamField>
+
+<ParamField path="width" type="string | number">
+  Width of the image. Can be a number (pixels) or string (CSS unit).
+</ParamField>
+
+<ParamField path="height" type="string | number">
+  Height of the image. Can be a number (pixels) or string (CSS unit).
+</ParamField>
+
+<ParamField path="fit" type="'contain' | 'cover' | 'fill'" default="'cover'">
+  How the image should fit within its container (object-fit CSS property).
+</ParamField>
+
+<ParamField path="radius" type="'none' | 'small' | 'medium' | 'full'" default="'none'">
+  Border radius style for the image.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties">
+  Inline styles to apply to the image.
+</ParamField>
+
+<ParamField path="loading" type="'lazy' | 'eager'" default="'lazy'">
+  Loading behavior for the image.
+</ParamField>
+
+<ParamField path="decoding" type="'sync' | 'async' | 'auto'" default="'async'">
+  Image decoding behavior.
+</ParamField>
+
+<ParamField path="onError" type="(event: React.SyntheticEvent<HTMLImageElement>) => void">
+  Callback fired when the image fails to load.
+</ParamField>

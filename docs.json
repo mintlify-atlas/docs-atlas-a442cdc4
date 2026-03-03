@@ -1,122 +1,160 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Apsara",
+  "theme": "willow",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#3e63dd",
+    "light": "#e6edfe",
+    "dark": "#1c274f"
   },
-  "favicon": "/favicon.svg",
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/raystack/apsara"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/raystack/apsara"
+    }
+  },
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Get Started",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "introduction",
+              "installation",
+              "quickstart"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Guides",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "guides/theming",
+              "guides/styling",
+              "guides/dark-mode",
+              "guides/accessibility"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Layout Components",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "components/box",
+              "components/flex",
+              "components/grid",
+              "components/container"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Navigation Components",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "components/breadcrumb",
+              "components/navbar",
+              "components/sidebar",
+              "components/tabs",
+              "components/command"
+            ]
+          },
+          {
+            "group": "Data Display",
+            "pages": [
+              "components/table",
+              "components/data-table",
+              "components/avatar",
+              "components/badge",
+              "components/chip",
+              "components/empty-state",
+              "components/code-block",
+              "components/image",
+              "components/list"
+            ]
+          },
+          {
+            "group": "Form Components",
+            "pages": [
+              "components/button",
+              "components/input-field",
+              "components/text-area",
+              "components/select",
+              "components/combobox",
+              "components/checkbox",
+              "components/radio",
+              "components/switch",
+              "components/slider",
+              "components/calendar",
+              "components/color-picker",
+              "components/search"
+            ]
+          },
+          {
+            "group": "Feedback Components",
+            "pages": [
+              "components/tooltip",
+              "components/callout",
+              "components/toast",
+              "components/indicator",
+              "components/spinner",
+              "components/skeleton"
+            ]
+          },
+          {
+            "group": "Overlay Components",
+            "pages": [
+              "components/dialog",
+              "components/drawer",
+              "components/popover",
+              "components/menu",
+              "components/side-panel"
+            ]
+          },
+          {
+            "group": "Utility Components",
+            "pages": [
+              "components/accordion",
+              "components/collapsible",
+              "components/separator",
+              "components/scroll-area",
+              "components/copy-button",
+              "components/icon-button",
+              "components/filter-chip",
+              "components/announcement-bar",
+              "components/theme-provider"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Hooks",
             "pages": [
-              "api-reference/introduction"
+              "api/hooks/use-copy-to-clipboard",
+              "api/hooks/use-debounced-state",
+              "api/hooks/use-mouse",
+              "api/hooks/use-isomorphic-layout-effect",
+              "api/hooks/use-theme"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Icons",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api/icons"
+            ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "api/utilities/styling",
+              "api/utilities/colors"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+    ]
   }
 }

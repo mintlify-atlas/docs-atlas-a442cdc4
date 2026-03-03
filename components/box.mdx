@@ -1,0 +1,155 @@
+---
+title: Box
+description: A fundamental layout component that serves as a basic building block with box-sizing applied
+---
+
+## Description
+
+The Box component is a versatile container component that provides a foundation for building layouts. It's a simple wrapper around a div element with consistent box-sizing behavior, allowing you to pass any standard HTML attributes and custom styling.
+
+## Props
+
+Box extends all standard HTML div attributes and accepts the following props:
+
+<ParamField path="children" type="React.ReactNode">
+  The content to be rendered inside the Box component
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the Box
+</ParamField>
+
+<ParamField path="ref" type="React.RefObject<HTMLDivElement>">
+  A ref object to access the underlying div element
+</ParamField>
+
+<ParamField path="...props" type="HTMLAttributes<HTMLDivElement>">
+  All standard HTML div attributes are supported including:
+  - `id` - Element ID
+  - `role` - ARIA role attribute
+  - `aria-label` - Accessibility label
+  - `aria-labelledby` - ID of the labeling element
+  - `data-*` - Data attributes
+  - Event handlers (`onClick`, `onMouseEnter`, etc.)
+</ParamField>
+
+## Usage examples
+
+### Basic usage
+
+```tsx
+import { Box } from '@raystack/apsara';
+
+function Example() {
+  return <Box>Test content</Box>;
+}
+```
+
+### With custom className
+
+```tsx
+import { Box } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Box className="custom-class">
+      Content with custom styling
+    </Box>
+  );
+}
+```
+
+### With multiple children
+
+```tsx
+import { Box } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Box>
+      <span>Child 1</span>
+      <span>Child 2</span>
+    </Box>
+  );
+}
+```
+
+### Nested boxes
+
+```tsx
+import { Box } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Box className="outer">
+      <Box className="inner">Nested content</Box>
+    </Box>
+  );
+}
+```
+
+### With ref
+
+```tsx
+import { Box } from '@raystack/apsara';
+import { useRef } from 'react';
+
+function Example() {
+  const ref = useRef<HTMLDivElement>(null);
+  
+  return (
+    <Box ref={ref}>
+      Content with ref access
+    </Box>
+  );
+}
+```
+
+### With ARIA attributes
+
+```tsx
+import { Box } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Box 
+      role="region" 
+      aria-labelledby="heading"
+    >
+      Content
+    </Box>
+  );
+}
+```
+
+### With dynamic children
+
+```tsx
+import { Box } from '@raystack/apsara';
+
+function Example() {
+  const items = ['Item 1', 'Item 2', 'Item 3'];
+  
+  return (
+    <Box>
+      {items.map((item, index) => (
+        <span key={index}>{item}</span>
+      ))}
+    </Box>
+  );
+}
+```
+
+## Styling notes
+
+The Box component applies a single CSS property by default:
+
+- `box-sizing: border-box` - Ensures padding and border are included in the element's total width and height
+
+This ensures consistent sizing behavior across all Box instances. You can apply additional styles through the `className` prop or inline styles.
+
+## Related components
+
+- [Flex](/components/flex) - For flexbox layouts
+- [Grid](/components/grid) - For grid layouts  
+- [Container](/components/container) - For constrained-width containers

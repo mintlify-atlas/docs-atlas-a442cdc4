@@ -1,0 +1,271 @@
+---
+title: Color picker
+description: A color picker component for selecting and adjusting colors.
+---
+
+The ColorPicker component provides an interactive interface for selecting colors with support for different color modes (HEX, RGB, HSL) and alpha channel control.
+
+## Basic usage
+
+```jsx
+import { ColorPicker } from '@raystack/apsara';
+
+function App() {
+  return (
+    <ColorPicker>
+      <ColorPicker.Area />
+      <ColorPicker.Hue />
+      <ColorPicker.Alpha />
+      <ColorPicker.Input />
+      <ColorPicker.Mode />
+    </ColorPicker>
+  );
+}
+```
+
+## Props
+
+### ColorPicker (Root)
+
+<ParamField path="value" type="ColorLike">
+  The controlled color value. Can be any valid CSS color string.
+</ParamField>
+
+<ParamField path="defaultValue" type="ColorLike" default="'#ffffff'">
+  The default color value for uncontrolled usage.
+</ParamField>
+
+<ParamField path="onValueChange" type="(value: string, mode: string) => void">
+  Callback fired when the color value changes. Receives the color string and current mode.
+</ParamField>
+
+<ParamField path="mode" type="'hex' | 'rgb' | 'hsl'">
+  The controlled color mode.
+</ParamField>
+
+<ParamField path="defaultMode" type="'hex' | 'rgb' | 'hsl'" default="'hex'">
+  The default color mode for uncontrolled usage.
+</ParamField>
+
+<ParamField path="onModeChange" type="(mode: ModeType) => void">
+  Callback fired when the color mode changes.
+</ParamField>
+
+### ColorPicker.Area
+
+The 2D color selection area for saturation and lightness.
+
+### ColorPicker.Hue
+
+The hue slider for selecting the base color.
+
+### ColorPicker.Alpha
+
+The alpha/opacity slider.
+
+### ColorPicker.Input
+
+The text input for entering color values.
+
+### ColorPicker.Mode
+
+The mode selector for switching between HEX, RGB, and HSL.
+
+## Controlled color picker
+
+```jsx
+function ControlledColorPicker() {
+  const [color, setColor] = useState('#ff0000');
+
+  return (
+    <div>
+      <ColorPicker value={color} onValueChange={(value) => setColor(value)}>
+        <ColorPicker.Area />
+        <ColorPicker.Hue />
+        <ColorPicker.Input />
+      </ColorPicker>
+      <p>Selected color: {color}</p>
+    </div>
+  );
+}
+```
+
+## With alpha channel
+
+```jsx
+<ColorPicker defaultValue="rgba(255, 0, 0, 0.5)">
+  <ColorPicker.Area />
+  <ColorPicker.Hue />
+  <ColorPicker.Alpha />
+  <ColorPicker.Input />
+</ColorPicker>
+```
+
+## With mode selector
+
+```jsx
+<ColorPicker>
+  <ColorPicker.Area />
+  <ColorPicker.Hue />
+  <ColorPicker.Alpha />
+  <ColorPicker.Mode />
+  <ColorPicker.Input />
+</ColorPicker>
+```
+
+## Controlled mode
+
+```jsx
+function ColorPickerWithMode() {
+  const [color, setColor] = useState('#3b82f6');
+  const [mode, setMode] = useState('hex');
+
+  return (
+    <ColorPicker
+      value={color}
+      onValueChange={setColor}
+      mode={mode}
+      onModeChange={setMode}
+    >
+      <ColorPicker.Area />
+      <ColorPicker.Hue />
+      <ColorPicker.Mode />
+      <ColorPicker.Input />
+    </ColorPicker>
+  );
+}
+```
+
+## Without alpha
+
+```jsx
+<ColorPicker defaultValue="#00ff00">
+  <ColorPicker.Area />
+  <ColorPicker.Hue />
+  <ColorPicker.Input />
+</ColorPicker>
+```
+
+## Custom layout
+
+```jsx
+<ColorPicker>
+  <div style={{ display: 'flex', gap: '1rem' }}>
+    <div style={{ flex: 1 }}>
+      <ColorPicker.Area />
+    </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      <ColorPicker.Hue />
+      <ColorPicker.Alpha />
+    </div>
+  </div>
+  <div style={{ marginTop: '1rem' }}>
+    <ColorPicker.Input />
+    <ColorPicker.Mode />
+  </div>
+</ColorPicker>
+```
+
+## Theme color picker example
+
+```jsx
+function ThemeColorPicker() {
+  const [primaryColor, setPrimaryColor] = useState('#3b82f6');
+  const [secondaryColor, setSecondaryColor] = useState('#8b5cf6');
+
+  return (
+    <div>
+      <div>
+        <h4>Primary Color</h4>
+        <ColorPicker
+          value={primaryColor}
+          onValueChange={(value) => setPrimaryColor(value)}
+        >
+          <ColorPicker.Area />
+          <ColorPicker.Hue />
+          <ColorPicker.Input />
+        </ColorPicker>
+      </div>
+      
+      <div>
+        <h4>Secondary Color</h4>
+        <ColorPicker
+          value={secondaryColor}
+          onValueChange={(value) => setSecondaryColor(value)}
+        >
+          <ColorPicker.Area />
+          <ColorPicker.Hue />
+          <ColorPicker.Input />
+        </ColorPicker>
+      </div>
+      
+      <div>
+        <p>Primary: {primaryColor}</p>
+        <p>Secondary: {secondaryColor}</p>
+      </div>
+    </div>
+  );
+}
+```
+
+## With preview swatch
+
+```jsx
+function ColorPickerWithPreview() {
+  const [color, setColor] = useState('#ff6b6b');
+
+  return (
+    <div>
+      <div
+        style={{
+          width: '50px',
+          height: '50px',
+          borderRadius: '8px',
+          backgroundColor: color,
+          border: '2px solid #ddd'
+        }}
+      />
+      <ColorPicker value={color} onValueChange={setColor}>
+        <ColorPicker.Area />
+        <ColorPicker.Hue />
+        <ColorPicker.Alpha />
+        <ColorPicker.Input />
+      </ColorPicker>
+    </div>
+  );
+}
+```
+
+## Different color formats
+
+```jsx
+// HEX
+<ColorPicker defaultValue="#ff0000" defaultMode="hex">
+  <ColorPicker.Area />
+  <ColorPicker.Hue />
+  <ColorPicker.Input />
+</ColorPicker>
+
+// RGB
+<ColorPicker defaultValue="rgb(255, 0, 0)" defaultMode="rgb">
+  <ColorPicker.Area />
+  <ColorPicker.Hue />
+  <ColorPicker.Input />
+</ColorPicker>
+
+// HSL
+<ColorPicker defaultValue="hsl(0, 100%, 50%)" defaultMode="hsl">
+  <ColorPicker.Area />
+  <ColorPicker.Hue />
+  <ColorPicker.Input />
+</ColorPicker>
+```
+
+## Accessibility
+
+- All interactive elements (area, sliders, inputs) are keyboard accessible.
+- The color area supports arrow key navigation for precise color selection.
+- Sliders support arrow keys for adjusting values.
+- The input field allows direct color value entry.
+- Focus states are clearly visible on all interactive elements.
+- Color values are properly validated and converted between formats.

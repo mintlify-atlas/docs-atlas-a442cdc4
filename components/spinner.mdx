@@ -1,0 +1,181 @@
+---
+title: Spinner
+description: A loading indicator that shows an animated spinning state to indicate processing or loading.
+---
+
+## Import
+
+```tsx
+import { Spinner } from '@raystack/apsara';
+```
+
+## Usage
+
+```tsx
+<Spinner />
+```
+
+## Sizes
+
+```tsx
+<Spinner size={1} />
+<Spinner size={2} />
+<Spinner size={3} />
+<Spinner size={4} />
+<Spinner size={5} />
+<Spinner size={6} />
+```
+
+## Colors
+
+```tsx
+<Spinner color="default" />
+
+<Spinner color="neutral" />
+
+<Spinner color="accent" />
+
+<Spinner color="danger" />
+
+<Spinner color="success" />
+
+<Spinner color="attention" />
+```
+
+## In buttons
+
+```tsx
+import { Button } from '@raystack/apsara';
+
+<Button disabled>
+  <Spinner size={2} />
+  Loading...
+</Button>
+```
+
+## Centered loading
+
+```tsx
+<div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
+  <Spinner size={4} />
+</div>
+```
+
+## Full page loading
+
+```tsx
+<div style={{
+  position: 'fixed',
+  inset: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: 'rgba(0, 0, 0, 0.5)'
+}}>
+  <Spinner size={6} />
+</div>
+```
+
+## With text
+
+```tsx
+import { Flex, Text } from '@raystack/apsara';
+
+<Flex direction="column" align="center" gap="2">
+  <Spinner size={4} />
+  <Text>Loading your data...</Text>
+</Flex>
+```
+
+## Loading states
+
+### Inline loading
+
+```tsx
+function InlineLoader() {
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+      <Spinner size={1} />
+      Processing...
+    </span>
+  );
+}
+```
+
+### Card loading
+
+```tsx
+import { Card } from '@raystack/apsara';
+
+function LoadingCard() {
+  return (
+    <Card>
+      <Flex direction="column" align="center" gap="3" style={{ padding: '2rem' }}>
+        <Spinner size={4} color="accent" />
+        <Text>Loading content...</Text>
+      </Flex>
+    </Card>
+  );
+}
+```
+
+### Conditional loading
+
+```tsx
+function DataDisplay() {
+  const { data, isLoading } = useData();
+
+  if (isLoading) {
+    return (
+      <Flex justify="center" style={{ padding: '4rem' }}>
+        <Spinner size={5} />
+      </Flex>
+    );
+  }
+
+  return <div>{data}</div>;
+}
+```
+
+### Button loading state
+
+```tsx
+function SubmitButton() {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    await submitForm();
+    setLoading(false);
+  };
+
+  return (
+    <Button onClick={handleSubmit} disabled={loading}>
+      {loading ? (
+        <>
+          <Spinner size={2} />
+          Submitting...
+        </>
+      ) : (
+        'Submit'
+      )}
+    </Button>
+  );
+}
+```
+
+## API reference
+
+### Spinner
+
+<ParamField path="size" type="1 | 2 | 3 | 4 | 5 | 6" default="1">
+  The size of the spinner. Larger numbers create bigger spinners.
+</ParamField>
+
+<ParamField path="color" type="'default' | 'neutral' | 'accent' | 'danger' | 'success' | 'attention'" default="'neutral'">
+  The color variant of the spinner.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the spinner.
+</ParamField>

@@ -1,0 +1,257 @@
+---
+title: Popover
+description: A floating content container that appears relative to a trigger element with smart positioning.
+---
+
+## Overview
+
+Popover displays floating content anchored to a trigger element. It includes smart positioning with collision detection, automatic focus management, and keyboard navigation.
+
+## Basic usage
+
+```jsx
+import { Popover } from '@raystack/apsara';
+
+<Popover>
+  <Popover.Trigger asChild>
+    <button>Open popover</button>
+  </Popover.Trigger>
+  
+  <Popover.Content>
+    <div>Popover content</div>
+  </Popover.Content>
+</Popover>
+```
+
+## Components
+
+### Popover (Root)
+
+The root component that manages popover state and positioning context.
+
+<ParamField path="open" type="boolean">
+  Controls the open state of the popover (controlled mode).
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean">
+  The initial open state in uncontrolled mode.
+</ParamField>
+
+<ParamField path="onOpenChange" type="(open: boolean) => void">
+  Callback fired when the open state changes.
+</ParamField>
+
+<ParamField path="modal" type="boolean" default="false">
+  Whether the popover is modal (blocks interaction with content behind it).
+</ParamField>
+
+<ParamField path="openOnHover" type="boolean">
+  Whether to open the popover on hover instead of click.
+</ParamField>
+
+### Popover.Trigger
+
+A button that opens the popover when activated.
+
+<ParamField path="asChild" type="boolean">
+  When true, merges props with the immediate child element instead of rendering a button.
+</ParamField>
+
+### Popover.Content
+
+The popover content container with positioning logic.
+
+<ParamField path="side" type="'top' | 'right' | 'bottom' | 'left'" default="'bottom'">
+  The preferred side of the trigger to render the popover.
+</ParamField>
+
+<ParamField path="align" type="'start' | 'center' | 'end'" default="'center'">
+  The preferred alignment against the trigger.
+</ParamField>
+
+<ParamField path="sideOffset" type="number" default="4">
+  The distance in pixels from the trigger.
+</ParamField>
+
+<ParamField path="alignOffset" type="number">
+  The offset in pixels from the aligned edge.
+</ParamField>
+
+<ParamField path="collisionPadding" type="number" default="3">
+  The padding in pixels from the viewport edges for collision detection.
+</ParamField>
+
+<ParamField path="sticky" type="'partial' | 'always'">
+  The sticky behavior of the popover during scrolling.
+</ParamField>
+
+<ParamField path="hideWhenDetached" type="boolean">
+  Whether to hide the popover when the trigger is fully occluded.
+</ParamField>
+
+<ParamField path="initialFocus" type="number | React.RefObject">
+  The element that receives focus when the popover opens.
+</ParamField>
+
+<ParamField path="finalFocus" type="React.RefObject">
+  The element that receives focus when the popover closes.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes for the popover content.
+</ParamField>
+
+### Popover.Close
+
+A button that closes the popover when clicked.
+
+<ParamField path="asChild" type="boolean">
+  When true, merges props with the immediate child element instead of rendering a button.
+</ParamField>
+
+## Usage examples
+
+### Positioned popover
+
+```jsx
+<Popover>
+  <Popover.Trigger asChild>
+    <button>Open above</button>
+  </Popover.Trigger>
+  
+  <Popover.Content side="top" align="start">
+    <div>This popover appears above the trigger, aligned to the start.</div>
+  </Popover.Content>
+</Popover>
+```
+
+### With custom offset
+
+```jsx
+<Popover>
+  <Popover.Trigger asChild>
+    <button>Open popover</button>
+  </Popover.Trigger>
+  
+  <Popover.Content sideOffset={12} alignOffset={8}>
+    <div>Popover with custom offset values.</div>
+  </Popover.Content>
+</Popover>
+```
+
+### Hover trigger
+
+```jsx
+<Popover openOnHover>
+  <Popover.Trigger asChild>
+    <button>Hover me</button>
+  </Popover.Trigger>
+  
+  <Popover.Content>
+    <div>Opens on hover instead of click.</div>
+  </Popover.Content>
+</Popover>
+```
+
+### Controlled popover
+
+```jsx
+function ControlledPopover() {
+  const [open, setOpen] = useState(false);
+  
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <Popover.Trigger asChild>
+        <button>Toggle popover</button>
+      </Popover.Trigger>
+      
+      <Popover.Content>
+        <div>
+          <p>Controlled popover content</p>
+          <button onClick={() => setOpen(false)}>Close</button>
+        </div>
+      </Popover.Content>
+    </Popover>
+  );
+}
+```
+
+### With close button
+
+```jsx
+<Popover>
+  <Popover.Trigger asChild>
+    <button>Open popover</button>
+  </Popover.Trigger>
+  
+  <Popover.Content>
+    <div>
+      <h3>Popover title</h3>
+      <p>Some content here.</p>
+      <Popover.Close asChild>
+        <button>Close</button>
+      </Popover.Close>
+    </div>
+  </Popover.Content>
+</Popover>
+```
+
+### Modal popover
+
+```jsx
+<Popover modal>
+  <Popover.Trigger asChild>
+    <button>Open modal popover</button>
+  </Popover.Trigger>
+  
+  <Popover.Content>
+    <div>This popover blocks interaction with content behind it.</div>
+  </Popover.Content>
+</Popover>
+```
+
+## Positioning
+
+The Popover uses smart positioning logic:
+
+1. **Preferred side**: Set via the `side` prop
+2. **Collision detection**: Automatically flips to the opposite side if there isn't enough space
+3. **Alignment**: Control via the `align` prop (`start`, `center`, `end`)
+4. **Offsets**: Fine-tune position with `sideOffset` and `alignOffset`
+
+All positioning is handled automatically with viewport boundary detection:
+
+```jsx
+<Popover.Content
+  side="bottom"
+  align="start"
+  sideOffset={8}
+  collisionPadding={10}
+/>
+```
+
+## Accessibility features
+
+- **Keyboard navigation**: Arrow keys to navigate, Enter/Space to activate
+- **ESC to close**: Press Escape to close the popover
+- **Focus management**: Automatic focus handling with `initialFocus` and `finalFocus` props
+- **Focus return**: Focus returns to the trigger when closed
+- **ARIA attributes**: Proper ARIA relationships between trigger and content
+- **Screen reader support**: Announces popover state changes
+
+## Trigger patterns
+
+The `Popover.Trigger` component supports two usage patterns:
+
+1. **Default button**: Renders a button when no children provided or `asChild` is false
+2. **Custom trigger**: Use `asChild` to merge popover functionality with your component
+
+```jsx
+{/* Default button */}
+<Popover.Trigger>Open</Popover.Trigger>
+
+{/* Custom trigger */}
+<Popover.Trigger asChild>
+  <button className="custom-button">Open</button>
+</Popover.Trigger>
+```

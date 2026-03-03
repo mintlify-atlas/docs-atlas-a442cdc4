@@ -1,0 +1,315 @@
+---
+title: Styling
+description: Learn how to style Apsara components using vanilla CSS and data attributes
+---
+
+Apsara uses vanilla CSS with CSS Modules and HTML data attributes for styling. This approach provides powerful customization capabilities while maintaining predictable specificity and avoiding runtime style injection.
+
+## Styling approach
+
+Apsara components are styled using:
+
+1. **CSS Modules** - Scoped CSS classes that prevent naming conflicts
+2. **Data attributes** - Semantic HTML attributes for styling variants and states
+3. **CSS variables** - Design tokens for theming and customization
+
+### Benefits of this approach
+
+- No runtime CSS-in-JS overhead
+- Predictable CSS specificity
+- Easy to override with standard CSS
+- Works with any bundler that supports CSS imports
+- Full control over styling without JavaScript
+
+## Component CSS structure
+
+Here's how a typical Apsara component is styled (from `button.module.css`):
+
+```css button.module.css
+.button {
+  font-weight: var(--rs-font-weight-medium);
+  font-size: var(--rs-font-size-small);
+  line-height: var(--rs-line-height-small);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  padding: var(--rs-space-3) var(--rs-space-4);
+  border-radius: var(--rs-radius-2);
+  transition: all 0.2s ease-in-out;
+}
+
+.button-small {
+  padding: var(--rs-space-2) var(--rs-space-3);
+  font-size: var(--rs-font-size-mini);
+}
+
+.button-normal {
+  padding: var(--rs-space-3) var(--rs-space-4);
+  font-size: var(--rs-font-size-small);
+}
+```
+
+## Using data attributes
+
+Components use data attributes to handle variants and states. This makes the HTML semantic and the CSS easy to override:
+
+```css
+/* Variant styles */
+.button-solid {
+  color: var(--rs-color-foreground-accent-emphasis);
+  background-color: var(--rs-color-background-accent-emphasis);
+}
+
+.button-outline {
+  background-color: var(--rs-color-background-base-primary);
+  color: var(--rs-color-foreground-accent-primary);
+  border: 0.5px solid var(--rs-color-border-accent-emphasis);
+}
+
+/* State styles */
+.button-solid:hover {
+  background-color: var(--rs-color-background-accent-emphasis-hover);
+}
+
+.button:disabled,
+.button-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: initial;
+}
+```
+
+## Customizing component styles
+
+There are several ways to customize component styles:
+
+### Method 1: Override CSS variables
+
+The easiest way to customize components globally:
+
+```css
+:root {
+  /* Change button padding globally */
+  --rs-space-3: 10px;
+  --rs-space-4: 16px;
+  
+  /* Change button border radius */
+  --rs-radius-2: 8px;
+  
+  /* Change button colors */
+  --rs-color-background-accent-emphasis: #7c3aed;
+}
+```
+
+### Method 2: Target component classes
+
+Override specific components using CSS selectors:
+
+```css custom.css
+/* Make all buttons uppercase */
+.button {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Customize solid buttons */
+.button-solid {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Customize specific variants */
+.button-solid-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+```
+
+### Method 3: Use className prop
+
+All Apsara components accept a `className` prop for custom styling:
+
+```jsx
+import { Button } from "@raystack/apsara";
+import styles from "./MyButton.module.css";
+
+function MyComponent() {
+  return (
+    <Button className={styles.customButton}>
+      Custom Button
+    </Button>
+  );
+}
+```
+
+```css MyButton.module.css
+.customButton {
+  font-family: "Comic Sans MS";
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  transform: rotate(-1deg);
+}
+
+.customButton:hover {
+  transform: rotate(0deg);
+}
+```
+
+## Real-world examples
+
+### Example 1: Badge component
+
+The Badge component uses size and variant classes (from `badge.module.css`):
+
+```css
+.badge {
+  font-weight: var(--rs-font-weight-regular);
+  display: inline-flex;
+  padding: var(--rs-space-1) var(--rs-space-2);
+  justify-content: center;
+  align-items: center;
+  gap: var(--rs-space-2);
+  border-radius: var(--rs-radius-1);
+  white-space: nowrap;
+}
+
+/* Sizes */
+.badge-micro {
+  font-size: var(--rs-font-size-micro);
+  line-height: var(--rs-line-height-micro);
+  height: 18px;
+}
+
+.badge-small {
+  font-size: var(--rs-font-size-small);
+  line-height: var(--rs-line-height-small);
+  height: 22px;
+}
+
+/* Variants */
+.badge-neutral {
+  background: var(--rs-color-background-neutral-secondary);
+  color: var(--rs-color-foreground-base-primary);
+}
+
+.badge-accent {
+  background: var(--rs-color-background-accent-primary);
+  color: var(--rs-color-foreground-base-primary);
+}
+
+.badge-danger {
+  background: var(--rs-color-background-danger-primary);
+  color: var(--rs-color-foreground-base-primary);
+}
+```
+
+### Example 2: Hover and active states
+
+Components define interactive states with pseudo-classes:
+
+```css
+.button-outline:hover {
+  background-color: var(--rs-color-background-accent-primary);
+  border-color: var(--rs-color-border-accent-emphasis);
+}
+
+.button-outline:active {
+  background-color: var(--rs-color-background-accent-emphasis);
+  color: var(--rs-color-foreground-accent-emphasis);
+  border-color: var(--rs-color-border-accent-emphasis);
+}
+```
+
+### Example 3: Radix UI state attributes
+
+Components integrate with Radix UI's data attributes for complex states:
+
+```css
+/* Style button when it triggers an open popover */
+.button-solid[data-radix-popover-trigger][data-state="open"],
+.button-solid[data-radix-dropdown-menu-trigger][data-state="open"] {
+  background-color: var(--rs-color-background-accent-emphasis-hover);
+}
+```
+
+## Working with CSS Modules
+
+If you're using CSS Modules in your project, you can import and compose Apsara styles:
+
+```css MyComponent.module.css
+@import "@raystack/apsara/style.css";
+
+.myCustomButton {
+  composes: button from "@raystack/apsara/components/button/button.module.css";
+  /* Add your customizations */
+  text-decoration: underline;
+}
+```
+
+<Warning>
+Be careful when composing styles from Apsara's CSS modules as the internal structure may change between versions. Prefer using CSS variables or className overrides.
+</Warning>
+
+## Accessibility considerations
+
+When customizing styles, maintain accessibility:
+
+```css
+/* Good: Maintains focus visibility */
+.button:focus-visible {
+  outline: 2px solid var(--rs-color-border-accent-emphasis);
+  outline-offset: 2px;
+}
+
+/* Bad: Removes focus indicator */
+.button:focus {
+  outline: none; /* Don't do this! */
+}
+```
+
+<Tip>
+Apsara components include `.sr-only` utility classes for screen reader-only content. Use these for accessible icons and labels:
+
+```css
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+```
+</Tip>
+
+## Best practices
+
+<CardGroup cols={2}>
+  <Card title="Prefer CSS variables" icon="slider">
+    Use CSS variables for theming instead of hardcoding values
+  </Card>
+  <Card title="Maintain specificity" icon="layer-group">
+    Avoid using `!important` - leverage CSS specificity correctly
+  </Card>
+  <Card title="Test responsively" icon="mobile">
+    Ensure custom styles work across different screen sizes
+  </Card>
+  <Card title="Keep accessibility" icon="universal-access">
+    Maintain focus states, contrast ratios, and semantic HTML
+  </Card>
+</CardGroup>
+
+## Related resources
+
+<CardGroup cols={2}>
+  <Card title="Theming" icon="palette" href="/guides/theming">
+    Customize colors, spacing, and typography
+  </Card>
+  <Card title="Dark mode" icon="moon" href="/guides/dark-mode">
+    Implement dark theme support
+  </Card>
+</CardGroup>

@@ -1,0 +1,379 @@
+---
+title: Tabs
+description: A tabbed interface component for organizing content into separate views.
+---
+
+## Overview
+
+The Tabs component provides a way to organize related content into separate views that users can switch between. It features an animated indicator and supports icons, making it suitable for various navigation and content organization needs.
+
+## Use cases
+
+- Organize related content into logical sections
+- Create settings panels with multiple categories
+- Display different data views (e.g., table vs. chart)
+- Build multi-step forms with navigation
+- Show code examples in different languages
+- Implement document editors with multiple tabs
+
+## Anatomy
+
+The Tabs component consists of:
+
+- `Tabs` - Root container that manages tab state
+- `Tabs.List` - Container for tab triggers with animated indicator
+- `Tabs.Tab` - Individual tab trigger button
+- `Tabs.Content` - Content panel associated with a tab
+
+## Props
+
+### Tabs (root)
+
+Inherits all props from the Base UI Tabs.Root component.
+
+<ParamField path="defaultValue" type="string | number">
+  The value of the tab that should be active by default.
+</ParamField>
+
+<ParamField path="value" type="string | number">
+  The controlled value of the active tab. Use with `onValueChange` for controlled behavior.
+</ParamField>
+
+<ParamField path="onValueChange" type="(value: string | number) => void">
+  Callback fired when the active tab changes.
+</ParamField>
+
+<ParamField path="orientation" type="'horizontal' | 'vertical'" default="'horizontal'">
+  The orientation of the tabs.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the tabs container.
+</ParamField>
+
+### Tabs.List
+
+Inherits all props from the Base UI Tabs.List component.
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the tab list.
+</ParamField>
+
+### Tabs.Tab
+
+<ParamField path="value" type="string | number" required>
+  The unique value that identifies this tab.
+</ParamField>
+
+<ParamField path="leadingIcon" type="ReactNode">
+  Icon to display before the tab label.
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  When true, the tab cannot be activated.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the tab trigger.
+</ParamField>
+
+### Tabs.Content
+
+<ParamField path="value" type="string | number" required>
+  The value of the tab that this content is associated with.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the content panel.
+</ParamField>
+
+## Usage
+
+### Basic tabs
+
+```jsx
+import { Tabs } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Tabs defaultValue="tab1">
+      <Tabs.List>
+        <Tabs.Tab value="tab1">Overview</Tabs.Tab>
+        <Tabs.Tab value="tab2">Details</Tabs.Tab>
+        <Tabs.Tab value="tab3">Settings</Tabs.Tab>
+      </Tabs.List>
+      
+      <Tabs.Content value="tab1">
+        <h2>Overview</h2>
+        <p>This is the overview content.</p>
+      </Tabs.Content>
+      
+      <Tabs.Content value="tab2">
+        <h2>Details</h2>
+        <p>This is the details content.</p>
+      </Tabs.Content>
+      
+      <Tabs.Content value="tab3">
+        <h2>Settings</h2>
+        <p>This is the settings content.</p>
+      </Tabs.Content>
+    </Tabs>
+  );
+}
+```
+
+### Tabs with icons
+
+```jsx
+import { Tabs } from '@raystack/apsara';
+import {
+  HomeIcon,
+  PersonIcon,
+  GearIcon
+} from '@radix-ui/react-icons';
+
+function App() {
+  return (
+    <Tabs defaultValue="home">
+      <Tabs.List>
+        <Tabs.Tab value="home" leadingIcon={<HomeIcon />}>
+          Home
+        </Tabs.Tab>
+        <Tabs.Tab value="profile" leadingIcon={<PersonIcon />}>
+          Profile
+        </Tabs.Tab>
+        <Tabs.Tab value="settings" leadingIcon={<GearIcon />}>
+          Settings
+        </Tabs.Tab>
+      </Tabs.List>
+      
+      <Tabs.Content value="home">
+        Home content
+      </Tabs.Content>
+      <Tabs.Content value="profile">
+        Profile content
+      </Tabs.Content>
+      <Tabs.Content value="settings">
+        Settings content
+      </Tabs.Content>
+    </Tabs>
+  );
+}
+```
+
+### Controlled tabs
+
+```jsx
+import { Tabs } from '@raystack/apsara';
+import { useState } from 'react';
+
+function App() {
+  const [activeTab, setActiveTab] = useState('overview');
+
+  return (
+    <div>
+      <p>Current tab: {activeTab}</p>
+      
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <Tabs.List>
+          <Tabs.Tab value="overview">Overview</Tabs.Tab>
+          <Tabs.Tab value="analytics">Analytics</Tabs.Tab>
+          <Tabs.Tab value="reports">Reports</Tabs.Tab>
+        </Tabs.List>
+        
+        <Tabs.Content value="overview">
+          Overview content
+        </Tabs.Content>
+        <Tabs.Content value="analytics">
+          Analytics content
+        </Tabs.Content>
+        <Tabs.Content value="reports">
+          Reports content
+        </Tabs.Content>
+      </Tabs>
+    </div>
+  );
+}
+```
+
+### Disabled tabs
+
+```jsx
+import { Tabs } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Tabs defaultValue="available">
+      <Tabs.List>
+        <Tabs.Tab value="available">Available</Tabs.Tab>
+        <Tabs.Tab value="pending" disabled>
+          Pending
+        </Tabs.Tab>
+        <Tabs.Tab value="archived" disabled>
+          Archived
+        </.Tab>
+      </Tabs.List>
+      
+      <Tabs.Content value="available">
+        Available items content
+      </Tabs.Content>
+    </Tabs>
+  );
+}
+```
+
+### Code example tabs
+
+```jsx
+import { Tabs, CodeBlock } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Tabs defaultValue="javascript">
+      <Tabs.List>
+        <Tabs.Tab value="javascript">JavaScript</Tabs.Tab>
+        <Tabs.Tab value="typescript">TypeScript</Tabs.Tab>
+        <Tabs.Tab value="python">Python</Tabs.Tab>
+      </Tabs.List>
+      
+      <Tabs.Content value="javascript">
+        <CodeBlock language="javascript">
+          {`const greeting = "Hello, World!";\nconsole.log(greeting);`}
+        </CodeBlock>
+      </Tabs.Content>
+      
+      <Tabs.Content value="typescript">
+        <CodeBlock language="typescript">
+          {`const greeting: string = "Hello, World!";\nconsole.log(greeting);`}
+        </CodeBlock>
+      </Tabs.Content>
+      
+      <Tabs.Content value="python">
+        <CodeBlock language="python">
+          {`greeting = "Hello, World!"\nprint(greeting)`}
+        </CodeBlock>
+      </Tabs.Content>
+    </Tabs>
+  );
+}
+```
+
+### Tabs with dynamic content
+
+```jsx
+import { Tabs } from '@raystack/apsara';
+import { useState, useEffect } from 'react';
+
+function App() {
+  const [data, setData] = useState(null);
+  const [activeTab, setActiveTab] = useState('users');
+
+  useEffect(() => {
+    // Fetch data when tab changes
+    fetch(`/api/${activeTab}`)
+      .then(res => res.json())
+      .then(setData);
+  }, [activeTab]);
+
+  return (
+    <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <Tabs.List>
+        <Tabs.Tab value="users">Users</Tabs.Tab>
+        <Tabs.Tab value="posts">Posts</Tabs.Tab>
+        <Tabs.Tab value="comments">Comments</Tabs.Tab>
+      </Tabs.List>
+      
+      <Tabs.Content value="users">
+        {data ? JSON.stringify(data) : 'Loading...'}
+      </Tabs.Content>
+      <Tabs.Content value="posts">
+        {data ? JSON.stringify(data) : 'Loading...'}
+      </Tabs.Content>
+      <Tabs.Content value="comments">
+        {data ? JSON.stringify(data) : 'Loading...'}
+      </Tabs.Content>
+    </Tabs>
+  );
+}
+```
+
+### Settings panel with tabs
+
+```jsx
+import { Tabs, InputField, Button } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Tabs defaultValue="general">
+      <Tabs.List>
+        <Tabs.Tab value="general">General</Tabs.Tab>
+        <Tabs.Tab value="security">Security</Tabs.Tab>
+        <Tabs.Tab value="notifications">Notifications</Tabs.Tab>
+      </Tabs.List>
+      
+      <Tabs.Content value="general">
+        <form>
+          <InputField label="Name" />
+          <InputField label="Email" type="email" />
+          <Button>Save Changes</Button>
+        </form>
+      </Tabs.Content>
+      
+      <Tabs.Content value="security">
+        <form>
+          <InputField label="Current Password" type="password" />
+          <InputField label="New Password" type="password" />
+          <Button>Update Password</Button>
+        </form>
+      </Tabs.Content>
+      
+      <Tabs.Content value="notifications">
+        <form>
+          {/* Notification preferences */}
+          <Button>Save Preferences</Button>
+        </form>
+      </Tabs.Content>
+    </Tabs>
+  );
+}
+```
+
+## Accessibility
+
+- Built on Base UI Tabs primitive with full ARIA support
+- Keyboard navigation:
+  - Arrow keys to navigate between tabs
+  - Home/End keys to jump to first/last tab
+  - Tab key to move focus into content panel
+- Automatic `role="tablist"`, `role="tab"`, and `role="tabpanel"` attributes
+- Proper `aria-selected` state on active tabs
+- `aria-controls` links tabs to their content panels
+- `aria-labelledby` links content panels to their tabs
+- Disabled tabs are marked with `aria-disabled`
+- Focus management follows WAI-ARIA Tabs pattern
+
+## Styling customization
+
+Customize tabs using className props:
+
+```jsx
+<Tabs className="custom-tabs" defaultValue="tab1">
+  <Tabs.List className="custom-tab-list">
+    <Tabs.Tab className="custom-tab" value="tab1">
+      Tab 1
+    </Tabs.Tab>
+    <Tabs.Tab className="custom-tab" value="tab2">
+      Tab 2
+    </Tabs.Tab>
+  </Tabs.List>
+  
+  <Tabs.Content className="custom-content" value="tab1">
+    Content 1
+  </Tabs.Content>
+  <Tabs.Content className="custom-content" value="tab2">
+    Content 2
+  </Tabs.Content>
+</Tabs>
+```
+
+The component includes an animated indicator that automatically moves to highlight the active tab. This is handled internally through CSS modules and does not require additional configuration.

@@ -1,0 +1,112 @@
+---
+title: Accordion
+description: A vertically stacked set of interactive headings that each reveal a section of content.
+---
+
+The Accordion component allows users to show and hide sections of related content on a page. It uses a composable API with separate components for root, item, trigger, and content.
+
+## Usage
+
+```jsx
+import { Accordion } from '@raystack/apsara';
+
+export default function Example() {
+  return (
+    <Accordion defaultValue="item-1">
+      <Accordion.Item value="item-1">
+        <Accordion.Trigger>Is it accessible?</Accordion.Trigger>
+        <Accordion.Content>
+          Yes. It adheres to the WAI-ARIA design pattern.
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="item-2">
+        <Accordion.Trigger>Is it styled?</Accordion.Trigger>
+        <Accordion.Content>
+          Yes. It comes with default styles that can be customized.
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
+  );
+}
+```
+
+## Multiple items open
+
+```jsx
+<Accordion multiple defaultValue={["item-1", "item-2"]}>
+  <Accordion.Item value="item-1">
+    <Accordion.Trigger>First section</Accordion.Trigger>
+    <Accordion.Content>First content</Accordion.Content>
+  </Accordion.Item>
+  <Accordion.Item value="item-2">
+    <Accordion.Trigger>Second section</Accordion.Trigger>
+    <Accordion.Content>Second content</Accordion.Content>
+  </Accordion.Item>
+</Accordion>
+```
+
+## API reference
+
+### Accordion (Root)
+
+The root container component for the accordion.
+
+<ParamField path="multiple" type="boolean" default="false">
+  Whether multiple items can be open at the same time.
+</ParamField>
+
+<ParamField path="value" type="string | string[]">
+  The controlled value of the accordion. Use string for single mode, string array for multiple mode.
+</ParamField>
+
+<ParamField path="defaultValue" type="string | string[]">
+  The default value when uncontrolled. Use string for single mode, string array for multiple mode.
+</ParamField>
+
+<ParamField path="onValueChange" type="(value?: string | string[]) => void">
+  Callback fired when the accordion value changes. Receives string for single mode, string array for multiple mode.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class for the accordion root.
+</ParamField>
+
+### Accordion.Item
+
+An individual accordion item.
+
+<ParamField path="value" type="string" required>
+  A unique value for the item.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class for the accordion item.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the accordion item is disabled.
+</ParamField>
+
+### Accordion.Trigger
+
+The button that toggles the accordion item.
+
+<ParamField path="className" type="string">
+  Additional CSS class for the trigger.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The content of the trigger button.
+</ParamField>
+
+### Accordion.Content
+
+The collapsible content area.
+
+<ParamField path="className" type="string">
+  Additional CSS class for the content wrapper.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The content to display when expanded.
+</ParamField>

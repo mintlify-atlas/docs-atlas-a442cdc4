@@ -1,0 +1,171 @@
+---
+title: Text area
+description: A multi-line text input component for longer form content.
+---
+
+The TextArea component provides a multi-line text input field with support for labels, helper text, and validation states.
+
+## Basic usage
+
+```jsx
+import { TextArea } from '@raystack/apsara';
+
+function App() {
+  return <TextArea label="Description" placeholder="Enter description" />;
+}
+```
+
+## Props
+
+<ParamField path="label" type="string">
+  The label text displayed above the textarea.
+</ParamField>
+
+<ParamField path="required" type="boolean">
+  Whether the textarea is required. When false, displays "(optional)" next to the label.
+</ParamField>
+
+<ParamField path="infoTooltip" type="string">
+  Tooltip text to display next to the label.
+</ParamField>
+
+<ParamField path="helperText" type="string">
+  Helper text displayed below the textarea.
+</ParamField>
+
+<ParamField path="error" type="boolean">
+  Whether the textarea is in an error state.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the textarea is disabled.
+</ParamField>
+
+<ParamField path="width" type="string | number" default="'100%'">
+  Width of the textarea container.
+</ParamField>
+
+<ParamField path="value" type="string">
+  The controlled value of the textarea.
+</ParamField>
+
+<ParamField path="onChange" type="(event: React.ChangeEvent<HTMLTextAreaElement>) => void">
+  Callback fired when the textarea value changes.
+</ParamField>
+
+<ParamField path="placeholder" type="string">
+  Placeholder text to display when the textarea is empty.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the textarea element.
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties">
+  Additional inline styles to apply to the textarea element.
+</ParamField>
+
+## With label and helper text
+
+```jsx
+<TextArea
+  label="Comments"
+  helperText="Please provide detailed feedback"
+  placeholder="Type your comments here..."
+/>
+```
+
+## Required field
+
+```jsx
+<TextArea
+  label="Description"
+  required
+  placeholder="This field is required"
+/>
+```
+
+## Optional field
+
+```jsx
+<TextArea
+  label="Additional notes"
+  required={false}
+  placeholder="Optional field"
+/>
+```
+
+## With info tooltip
+
+```jsx
+<TextArea
+  label="Bio"
+  infoTooltip="Tell us about yourself in a few sentences"
+  placeholder="Write your bio..."
+/>
+```
+
+## Error state
+
+```jsx
+<TextArea
+  label="Message"
+  error
+  helperText="Message is required"
+  value=""
+/>
+```
+
+## Disabled state
+
+```jsx
+<TextArea
+  label="Feedback"
+  value="This field is disabled"
+  disabled
+/>
+```
+
+## Controlled component
+
+```jsx
+function ControlledTextArea() {
+  const [value, setValue] = useState('');
+
+  return (
+    <TextArea
+      label="Message"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      helperText={`${value.length} characters`}
+    />
+  );
+}
+```
+
+## Custom width
+
+```jsx
+<TextArea
+  label="Short note"
+  width="400px"
+  placeholder="Enter a short note"
+/>
+```
+
+## Custom rows
+
+```jsx
+<TextArea
+  label="Description"
+  rows={10}
+  placeholder="Longer text area with more rows"
+/>
+```
+
+## Accessibility
+
+- The TextArea component properly associates labels with the textarea element.
+- Helper text and error messages are accessible to screen readers.
+- The info tooltip icon supports keyboard navigation.
+- The `required` attribute is properly set for form validation.

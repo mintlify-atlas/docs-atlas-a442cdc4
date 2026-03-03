@@ -1,0 +1,293 @@
+---
+title: Side panel
+description: A fixed sidebar component for displaying supplementary content alongside the main content area.
+---
+
+## Overview
+
+Side panel is a fixed sidebar component for displaying supplementary information, navigation, or related content. Unlike Drawer, it's not an overlay but a persistent layout element.
+
+## Basic usage
+
+```jsx
+import { SidePanel } from '@raystack/apsara';
+
+<SidePanel>
+  <SidePanel.Header
+    title="Panel title"
+    description="Optional description"
+  />
+  
+  <SidePanel.Section>
+    Panel content goes here.
+  </SidePanel.Section>
+</SidePanel>
+```
+
+## Components
+
+### SidePanel (Root)
+
+The root container component that creates a fixed sidebar.
+
+<ParamField path="side" type="'left' | 'right'" default="'right'">
+  The side of the screen where the panel is positioned.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes for the panel container.
+</ParamField>
+
+### SidePanel.Header
+
+A header component for displaying the panel title, icon, and action buttons.
+
+<ParamField path="title" type="string" required>
+  The main title text displayed in the header.
+</ParamField>
+
+<ParamField path="description" type="string">
+  Optional description text displayed below the title.
+</ParamField>
+
+<ParamField path="icon" type="React.ReactNode">
+  An icon element displayed before the title.
+</ParamField>
+
+<ParamField path="actions" type="Array<React.ReactNode>">
+  An array of action buttons or elements displayed on the right side of the header.
+</ParamField>
+
+### SidePanel.Section
+
+A content section container within the panel.
+
+<ParamField path="children" type="React.ReactNode" required>
+  The content to display within the section.
+</ParamField>
+
+## Usage examples
+
+### Basic side panel
+
+```jsx
+<SidePanel>
+  <SidePanel.Header title="Details" />
+  
+  <SidePanel.Section>
+    <p>This is the panel content.</p>
+  </SidePanel.Section>
+</SidePanel>
+```
+
+### Panel on left side
+
+```jsx
+<SidePanel side="left">
+  <SidePanel.Header title="Navigation" />
+  
+  <SidePanel.Section>
+    <nav>
+      <a href="/home">Home</a>
+      <a href="/about">About</a>
+    </nav>
+  </SidePanel.Section>
+</SidePanel>
+```
+
+### With icon and description
+
+```jsx
+import { InfoCircledIcon } from '@radix-ui/react-icons';
+
+<SidePanel>
+  <SidePanel.Header
+    title="Information"
+    description="Additional details about this item"
+    icon={<InfoCircledIcon />}
+  />
+  
+  <SidePanel.Section>
+    Content goes here.
+  </SidePanel.Section>
+</SidePanel>
+```
+
+### With action buttons
+
+```jsx
+import { Cross2Icon, Pencil1Icon } from '@radix-ui/react-icons';
+import { IconButton } from '@raystack/apsara';
+
+<SidePanel>
+  <SidePanel.Header
+    title="Edit mode"
+    actions={[
+      <IconButton key="edit" aria-label="Edit">
+        <Pencil1Icon />
+      </IconButton>,
+      <IconButton key="close" aria-label="Close">
+        <Cross2Icon />
+      </IconButton>
+    ]}
+  />
+  
+  <SidePanel.Section>
+    Panel content with header actions.
+  </SidePanel.Section>
+</SidePanel>
+```
+
+### Multiple sections
+
+```jsx
+<SidePanel>
+  <SidePanel.Header title="Multi-section panel" />
+  
+  <SidePanel.Section>
+    <h3>Section 1</h3>
+    <p>First section content.</p>
+  </SidePanel.Section>
+  
+  <SidePanel.Section>
+    <h3>Section 2</h3>
+    <p>Second section content.</p>
+  </SidePanel.Section>
+  
+  <SidePanel.Section>
+    <h3>Section 3</h3>
+    <p>Third section content.</p>
+  </SidePanel.Section>
+</SidePanel>
+```
+
+### Full layout example
+
+```jsx
+function PageWithSidePanel() {
+  return (
+    <div style={{ display: 'flex' }}>
+      <main style={{ flex: 1 }}>
+        <h1>Main content</h1>
+        <p>Your main page content goes here.</p>
+      </main>
+      
+      <SidePanel side="right">
+        <SidePanel.Header
+          title="Related info"
+          description="Supplementary information"
+        />
+        
+        <SidePanel.Section>
+          <h3>Quick links</h3>
+          <ul>
+            <li><a href="/link1">Link 1</a></li>
+            <li><a href="/link2">Link 2</a></li>
+          </ul>
+        </SidePanel.Section>
+        
+        <SidePanel.Section>
+          <h3>Statistics</h3>
+          <p>Some statistics here.</p>
+        </SidePanel.Section>
+      </SidePanel>
+    </div>
+  );
+}
+```
+
+### Custom styling
+
+```jsx
+<SidePanel className="custom-panel-styles">
+  <SidePanel.Header title="Custom styled panel" />
+  
+  <SidePanel.Section>
+    Content with custom styles.
+  </SidePanel.Section>
+</SidePanel>
+```
+
+## Layout considerations
+
+Side panel is designed as a persistent layout element:
+
+- **Not an overlay**: Unlike Drawer, it doesn't float over content
+- **Fixed position**: Stays in place as a part of the page layout
+- **Flex layout**: Works well in flexbox or grid layouts
+- **Scrollable**: The panel content can scroll independently
+
+Typical layout pattern:
+
+```jsx
+<div style={{ display: 'flex', height: '100vh' }}>
+  <main style={{ flex: 1, overflow: 'auto' }}>
+    {/* Main content */}
+  </main>
+  
+  <SidePanel side="right">
+    {/* Panel content */}
+  </SidePanel>
+</div>
+```
+
+## Comparison with Drawer
+
+| Feature | SidePanel | Drawer |
+|---------|-----------|--------|
+| Type | Fixed layout element | Overlay modal |
+| Dismissible | No | Yes |
+| Backdrop | No | Yes |
+| Swipe gesture | No | Yes |
+| Use case | Persistent sidebar | Temporary panel |
+
+Use SidePanel when:
+- Content should always be visible
+- You need a persistent sidebar layout
+- Information supplements the main content
+
+Use Drawer when:
+- Content should be temporarily displayed
+- User needs to focus on main content
+- Space is limited on smaller screens
+
+## Accessibility features
+
+- **Semantic HTML**: Uses `<aside>` element for proper semantics
+- **Keyboard navigation**: Works with standard keyboard navigation patterns
+- **Action buttons**: Properly labeled with `aria-label` attributes
+- **Header structure**: Clear hierarchy with title and description
+
+## Responsive considerations
+
+For responsive layouts, consider conditionally rendering SidePanel on larger screens and Drawer on smaller screens:
+
+```jsx
+function ResponsivePanel() {
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  
+  const content = (
+    <>
+      <Header title="Content" />
+      <Section>Panel content</Section>
+    </>
+  );
+  
+  if (isDesktop) {
+    return (
+      <SidePanel>
+        {content}
+      </SidePanel>
+    );
+  }
+  
+  return (
+    <Drawer>
+      <Drawer.Trigger>Open panel</Drawer.Trigger>
+      <Drawer.Content>
+        {content}
+      </Drawer.Content>
+    </Drawer>
+  );
+}
+```

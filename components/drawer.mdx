@@ -1,0 +1,254 @@
+---
+title: Drawer
+description: A slide-in panel component that appears from the edge of the screen, with swipe-to-dismiss functionality.
+---
+
+## Overview
+
+Drawer is a slide-in panel component that appears from any edge of the screen. It includes swipe-to-dismiss functionality, backdrop overlay, and follows the same composable pattern as Dialog.
+
+## Basic usage
+
+```jsx
+import { Drawer } from '@raystack/apsara';
+
+<Drawer>
+  <Drawer.Trigger asChild>
+    <button>Open drawer</button>
+  </Drawer.Trigger>
+  
+  <Drawer.Content>
+    <Drawer.Header>
+      <Drawer.Title>Drawer title</Drawer.Title>
+      <Drawer.Description>Optional description</Drawer.Description>
+    </Drawer.Header>
+    
+    <Drawer.Body>
+      Drawer content goes here.
+    </Drawer.Body>
+    
+    <Drawer.Footer>
+      <Drawer.Close asChild>
+        <button>Close</button>
+      </Drawer.Close>
+    </Drawer.Footer>
+  </Drawer.Content>
+</Drawer>
+```
+
+## Components
+
+### Drawer (Root)
+
+The root component that manages drawer state and swipe behavior.
+
+<ParamField path="side" type="'top' | 'right' | 'bottom' | 'left'" default="'right'">
+  The direction from which the drawer appears and can be swiped to dismiss.
+</ParamField>
+
+<ParamField path="open" type="boolean">
+  Controls the open state of the drawer (controlled mode).
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean">
+  The initial open state in uncontrolled mode.
+</ParamField>
+
+<ParamField path="onOpenChange" type="(open: boolean) => void">
+  Callback fired when the open state changes.
+</ParamField>
+
+<ParamField path="swipeDirection" type="'top' | 'right' | 'bottom' | 'left'">
+  Override the swipe direction. By default, matches the `side` prop.
+</ParamField>
+
+### Drawer.Trigger
+
+A button that opens the drawer when clicked.
+
+<ParamField path="asChild" type="boolean">
+  When true, merges props with the immediate child element instead of rendering a button.
+</ParamField>
+
+### Drawer.Content
+
+The drawer panel rendered in a portal with backdrop and viewport.
+
+<ParamField path="side" type="'top' | 'right' | 'bottom' | 'left'" default="'right'">
+  The edge from which the drawer slides in.
+</ParamField>
+
+<ParamField path="showCloseButton" type="boolean" default="true">
+  Whether to show the close button in the top-right corner.
+</ParamField>
+
+<ParamField path="overlayProps" type="object">
+  Props to pass to the backdrop overlay component.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes for the drawer popup.
+</ParamField>
+
+### Drawer.Header
+
+A container for the drawer header content.
+
+### Drawer.Title
+
+The accessible title element for the drawer. Required for accessibility.
+
+### Drawer.Description
+
+An optional description element that provides additional context.
+
+### Drawer.Body
+
+A container for the main drawer content.
+
+### Drawer.Footer
+
+A container for action buttons at the bottom of the drawer.
+
+### Drawer.Close
+
+A button that closes the drawer when clicked.
+
+<ParamField path="asChild" type="boolean">
+  When true, merges props with the immediate child element instead of rendering a button.
+</ParamField>
+
+## Usage examples
+
+### Drawer from left
+
+```jsx
+<Drawer side="left">
+  <Drawer.Trigger asChild>
+    <button>Open left drawer</button>
+  </Drawer.Trigger>
+  
+  <Drawer.Content side="left">
+    <Drawer.Header>
+      <Drawer.Title>Left drawer</Drawer.Title>
+    </Drawer.Header>
+    <Drawer.Body>
+      This drawer slides in from the left.
+    </Drawer.Body>
+  </Drawer.Content>
+</Drawer>
+```
+
+### Bottom drawer
+
+```jsx
+<Drawer side="bottom">
+  <Drawer.Trigger asChild>
+    <button>Open bottom drawer</button>
+  </Drawer.Trigger>
+  
+  <Drawer.Content side="bottom">
+    <Drawer.Header>
+      <Drawer.Title>Bottom drawer</Drawer.Title>
+    </Drawer.Header>
+    <Drawer.Body>
+      This drawer slides up from the bottom. Swipe down to dismiss.
+    </Drawer.Body>
+  </Drawer.Content>
+</Drawer>
+```
+
+### Without close button
+
+```jsx
+<Drawer>
+  <Drawer.Trigger asChild>
+    <button>Open drawer</button>
+  </Drawer.Trigger>
+  
+  <Drawer.Content showCloseButton={false}>
+    <Drawer.Header>
+      <Drawer.Title>No close button</Drawer.Title>
+    </Drawer.Header>
+    <Drawer.Body>
+      Use swipe gesture or footer button to close.
+    </Drawer.Body>
+    <Drawer.Footer>
+      <Drawer.Close asChild>
+        <button>Close</button>
+      </Drawer.Close>
+    </Drawer.Footer>
+  </Drawer.Content>
+</Drawer>
+```
+
+### Controlled drawer
+
+```jsx
+function ControlledDrawer() {
+  const [open, setOpen] = useState(false);
+  
+  return (
+    <Drawer open={open} onOpenChange={setOpen}>
+      <Drawer.Trigger asChild>
+        <button>Open drawer</button>
+      </Drawer.Trigger>
+      
+      <Drawer.Content>
+        <Drawer.Header>
+          <Drawer.Title>Controlled drawer</Drawer.Title>
+        </Drawer.Header>
+        <Drawer.Body>
+          This drawer's state is controlled externally.
+        </Drawer.Body>
+        <Drawer.Footer>
+          <button onClick={() => setOpen(false)}>Close</button>
+        </Drawer.Footer>
+      </Drawer.Content>
+    </Drawer>
+  );
+}
+```
+
+## Swipe-to-dismiss
+
+The drawer automatically enables swipe-to-dismiss functionality based on the `side` prop:
+
+- **Right drawer**: Swipe right to dismiss
+- **Left drawer**: Swipe left to dismiss
+- **Top drawer**: Swipe up to dismiss
+- **Bottom drawer**: Swipe down to dismiss
+
+You can override the swipe direction using the `swipeDirection` prop on the root component:
+
+```jsx
+<Drawer side="right" swipeDirection="left">
+  {/* Drawer content */}
+</Drawer>
+```
+
+## Accessibility features
+
+- **Focus trap**: Focus is trapped within the drawer when open
+- **ESC to close**: Press Escape to close the drawer
+- **Focus return**: Focus returns to the trigger element when closed
+- **ARIA labels**: Proper ARIA attributes including `aria-label="Drawer"`
+- **Close button**: Includes accessible `aria-label="Close Drawer"`
+- **Swipe gestures**: Native swipe-to-dismiss for touch devices
+
+## Trigger patterns
+
+The `Drawer.Trigger` component can be used in two ways:
+
+1. **Default button**: Renders a button element when no children are provided or `asChild` is false
+2. **Custom trigger**: Use `asChild` prop to merge drawer trigger functionality with your own button component
+
+```jsx
+{/* Default button */}
+<Drawer.Trigger>Open</Drawer.Trigger>
+
+{/* Custom trigger */}
+<Drawer.Trigger asChild>
+  <button className="custom-button">Open</button>
+</Drawer.Trigger>
+```

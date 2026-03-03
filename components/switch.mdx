@@ -1,0 +1,222 @@
+---
+title: Switch
+description: A toggle switch component for binary on/off states.
+---
+
+The Switch component provides a toggle control for turning options on or off, similar to a physical light switch.
+
+## Basic usage
+
+```jsx
+import { Switch } from '@raystack/apsara';
+
+function App() {
+  return <Switch />;
+}
+```
+
+## Props
+
+<ParamField path="checked" type="boolean">
+  The controlled checked state of the switch.
+</ParamField>
+
+<ParamField path="defaultChecked" type="boolean">
+  The default checked state for uncontrolled usage.
+</ParamField>
+
+<ParamField path="onCheckedChange" type="(checked: boolean) => void">
+  Callback fired when the checked state changes.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the switch is disabled.
+</ParamField>
+
+<ParamField path="required" type="boolean">
+  Whether the switch is required.
+</ParamField>
+
+<ParamField path="name" type="string">
+  The name of the switch input for form submission.
+</ParamField>
+
+<ParamField path="value" type="string">
+  The value of the switch input when checked.
+</ParamField>
+
+<ParamField path="size" type="'small' | 'large'" default="'large'">
+  The size of the switch.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the switch.
+</ParamField>
+
+## Controlled switch
+
+```jsx
+function ControlledSwitch() {
+  const [enabled, setEnabled] = useState(false);
+
+  return (
+    <label>
+      <Switch checked={enabled} onCheckedChange={setEnabled} />
+      <span>Enable notifications</span>
+    </label>
+  );
+}
+```
+
+## Uncontrolled switch
+
+```jsx
+<Switch defaultChecked />
+```
+
+## Size variants
+
+```jsx
+<Switch size="small" />
+<Switch size="large" />
+```
+
+## Disabled state
+
+```jsx
+<Switch disabled />
+<Switch disabled checked />
+```
+
+## With labels
+
+```jsx
+<div>
+  <label>
+    <span>Dark mode</span>
+    <Switch />
+  </label>
+  
+  <label>
+    <span>Auto-save</span>
+    <Switch defaultChecked />
+  </label>
+  
+  <label>
+    <span>Email notifications</span>
+    <Switch />
+  </label>
+</div>
+```
+
+## With descriptions
+
+```jsx
+<div>
+  <div>
+    <label>
+      <div>
+        <strong>Marketing emails</strong>
+        <p>Receive emails about new products and features</p>
+      </div>
+      <Switch />
+    </label>
+  </div>
+  
+  <div>
+    <label>
+      <div>
+        <strong>Security alerts</strong>
+        <p>Get notified about important security updates</p>
+      </div>
+      <Switch defaultChecked />
+    </label>
+  </div>
+</div>
+```
+
+## With form integration
+
+```jsx
+<form>
+  <label>
+    <Switch name="notifications" value="enabled" />
+    <span>Enable notifications</span>
+  </label>
+  <button type="submit">Save settings</button>
+</form>
+```
+
+## Required switch
+
+```jsx
+<label>
+  <Switch required />
+  <span>I agree to the terms and conditions *</span>
+</label>
+```
+
+## Settings panel example
+
+```jsx
+function SettingsPanel() {
+  const [settings, setSettings] = useState({
+    darkMode: false,
+    notifications: true,
+    autoSave: true,
+    analytics: false
+  });
+
+  const updateSetting = (key, value) => {
+    setSettings(prev => ({ ...prev, [key]: value }));
+  };
+
+  return (
+    <div>
+      <h3>Settings</h3>
+      
+      <label>
+        <span>Dark mode</span>
+        <Switch
+          checked={settings.darkMode}
+          onCheckedChange={(checked) => updateSetting('darkMode', checked)}
+        />
+      </label>
+      
+      <label>
+        <span>Notifications</span>
+        <Switch
+          size="small"
+          checked={settings.notifications}
+          onCheckedChange={(checked) => updateSetting('notifications', checked)}
+        />
+      </label>
+      
+      <label>
+        <span>Auto-save</span>
+        <Switch
+          checked={settings.autoSave}
+          onCheckedChange={(checked) => updateSetting('autoSave', checked)}
+        />
+      </label>
+      
+      <label>
+        <span>Analytics</span>
+        <Switch
+          checked={settings.analytics}
+          onCheckedChange={(checked) => updateSetting('analytics', checked)}
+        />
+      </label>
+    </div>
+  );
+}
+```
+
+## Accessibility
+
+- Built on Base UI Switch primitive with full accessibility support.
+- Proper ARIA attributes including role="switch" are automatically applied.
+- Supports keyboard navigation with Space to toggle.
+- Checked state is properly communicated to screen readers.
+- Works seamlessly within forms with proper name/value attributes.
+- Label association ensures the entire label area is clickable.

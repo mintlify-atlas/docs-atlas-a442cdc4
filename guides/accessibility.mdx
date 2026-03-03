@@ -1,0 +1,552 @@
+---
+title: Accessibility
+description: Learn about accessibility features in Apsara components and how to build inclusive applications
+---
+
+Apsara is built with accessibility as a core principle. All components are designed to be keyboard navigable, screen reader friendly, and WCAG compliant.
+
+## Foundation: Radix UI primitives
+
+Apsara components are built on top of [Radix UI](https://radix-ui.com) primitives, which provide:
+
+- **ARIA compliance** - Proper ARIA attributes and roles
+- **Keyboard navigation** - Full keyboard support out of the box
+- **Focus management** - Smart focus handling for complex components
+- **Screen reader support** - Semantic HTML and announcements
+
+<Note>
+Radix UI handles the complex accessibility patterns so you can focus on building your application.
+</Note>
+
+## ARIA attributes
+
+All interactive components include appropriate ARIA attributes:
+
+### Example: Button states
+
+```jsx
+import { Button } from "@raystack/apsara";
+
+function DeleteButton() {
+  const [isDeleting, setIsDeleting] = useState(false);
+  
+  return (
+    <Button
+      onClick={handleDelete}
+      disabled={isDeleting}
+      aria-label="Delete item"
+      aria-busy={isDeleting}
+    >
+      Delete
+    </Button>
+  );
+}
+```
+
+### Example: Accessible icons
+
+Provide text alternatives for icon-only buttons:
+
+```jsx
+import { IconButton } from "@raystack/apsara";
+import { TrashIcon } from "@radix-ui/react-icons";
+
+function Actions() {
+  return (
+    <IconButton aria-label="Delete item">
+      <TrashIcon />
+    </IconButton>
+  );
+}
+```
+
+### Example: Form controls
+
+Properly associate labels with form inputs:
+
+```jsx
+import { Checkbox, Label } from "@raystack/apsara";
+
+function Settings() {
+  return (
+    <div>
+      <Checkbox id="notifications" />
+      <Label htmlFor="notifications">
+        Enable email notifications
+      </Label>
+    </div>
+  );
+}
+```
+
+## Keyboard navigation
+
+Apsara components support standard keyboard interactions:
+
+### Interactive elements
+
+<ResponseField name="Tab" type="Key">
+  Move focus to the next interactive element
+</ResponseField>
+
+<ResponseField name="Shift + Tab" type="Key">
+  Move focus to the previous interactive element
+</ResponseField>
+
+<ResponseField name="Enter" type="Key">
+  Activate buttons, links, and submit forms
+</ResponseField>
+
+<ResponseField name="Space" type="Key">
+  Activate buttons and toggle checkboxes
+</ResponseField>
+
+<ResponseField name="Escape" type="Key">
+  Close dialogs, popovers, and dropdowns
+</ResponseField>
+
+### Component-specific shortcuts
+
+<AccordionGroup>
+  <Accordion title="Dropdown menus">
+    - `↓` / `↑` - Navigate menu items
+    - `Enter` / `Space` - Select item
+    - `Esc` - Close menu
+    - `Tab` - Close menu and move to next element
+  </Accordion>
+
+  <Accordion title="Dialogs">
+    - `Esc` - Close dialog
+    - Focus is trapped within the dialog
+    - Focus returns to trigger element on close
+  </Accordion>
+
+  <Accordion title="Tabs">
+    - `←` / `→` - Navigate between tabs
+    - `Home` / `End` - Jump to first/last tab
+    - `Tab` - Move focus into tab panel
+  </Accordion>
+
+  <Accordion title="Radio groups">
+    - `↓` / `↑` - Select next/previous option
+    - `Space` - Select focused option
+  </Accordion>
+
+  <Accordion title="Accordion">
+    - `Space` / `Enter` - Toggle panel
+    - `↓` / `↑` - Navigate between headers
+    - `Home` / `End` - Jump to first/last header
+  </Accordion>
+</AccordionGroup>
+
+## Focus management
+
+Components handle focus states properly with visible indicators:
+
+```css button.module.css
+.button:focus-visible {
+  outline: 1px solid var(--rs-color-border-accent-emphasis);
+}
+
+.button:focus {
+  outline: none;
+}
+```
+
+This pattern:
+- Shows focus indicator for keyboard navigation (`:focus-visible`)
+- Hides focus indicator for mouse clicks (`:focus`)
+- Uses theme-aware colors for the outline
+
+<Warning>
+Never remove focus indicators without providing an alternative visual cue. Focus indicators are essential for keyboard navigation.
+</Warning>
+
+### Focus trap
+
+Modal components like Dialog automatically trap focus:
+
+```jsx
+import { Dialog } from "@raystack/apsara";
+
+function ConfirmDialog() {
+  return (
+    <Dialog>
+      <Dialog.Trigger>Delete Account</Dialog.Trigger>
+      <Dialog.Content>
+        {/* Focus is trapped here - Tab only cycles through these elements */}
+        <Dialog.Title>Are you sure?</Dialog.Title>
+        <Dialog.Description>
+          This action cannot be undone.
+        </Dialog.Description>
+        <Dialog.Close>Cancel</Dialog.Close>
+        <Button variant="danger">Delete</Button>
+      </Dialog.Content>
+    </Dialog>
+  );
+}
+```
+
+## Screen reader support
+
+### Visually hidden text
+
+Use the `.sr-only` class for screen reader-only content:
+
+```jsx
+import { Button } from "@raystack/apsara";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+
+function SearchButton() {
+  return (
+    <Button>
+      <MagnifyingGlassIcon aria-hidden="true" />
+      <span className="sr-only">Search</span>
+    </Button>
+  );
+}
+```
+
+The `.sr-only` utility class (from `badge.module.css`):
+
+```css
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+```
+
+### Live regions
+
+Announce dynamic content changes:
+
+```jsx
+function NotificationList() {
+  const [notifications, setNotifications] = useState([]);
+  
+  return (
+    <div>
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {notifications.length} new notifications
+      </div>
+      <ul>
+        {notifications.map(n => (
+          <li key={n.id}>{n.message}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+### Semantic HTML
+
+Apsara components use semantic HTML elements:
+
+```jsx
+// Button component renders <button>
+<Button>Click me</Button>
+// → <button class="button">Click me</button>
+
+// Navigation uses proper list structure
+<Breadcrumb>
+  <Breadcrumb.Item>Home</Breadcrumb.Item>
+  <Breadcrumb.Item>Docs</Breadcrumb.Item>
+</Breadcrumb>
+// → <nav aria-label="Breadcrumb"><ol>...</ol></nav>
+```
+
+## Color contrast
+
+Apsara's default themes meet WCAG AA standards (4.5:1 contrast ratio for normal text):
+
+```css
+/* Light theme - high contrast */
+:root {
+  --foreground-base: #3c4347;      /* Text */
+  --background-base: #fbfcfd;       /* Background */
+  /* Contrast ratio: ~12:1 */
+}
+
+/* Dark theme - high contrast */
+html[data-theme="dark"] {
+  --foreground-base: #ecedee;      /* Text */
+  --background-base: #151718;       /* Background */
+  /* Contrast ratio: ~14:1 */
+}
+```
+
+<Tip>
+When customizing colors, use a [contrast checker](https://webaim.org/resources/contrastchecker/) to ensure WCAG compliance:
+- **AA standard**: 4.5:1 for normal text, 3:1 for large text
+- **AAA standard**: 7:1 for normal text, 4.5:1 for large text
+</Tip>
+
+### Color variants
+
+Semantic color variants maintain accessibility:
+
+```jsx
+import { Badge } from "@raystack/apsara";
+
+function StatusBadge({ status }) {
+  return (
+    <>
+      <Badge variant="success">Active</Badge>
+      {/* Green background with sufficient contrast */}
+      
+      <Badge variant="danger">Error</Badge>
+      {/* Red background with sufficient contrast */}
+      
+      <Badge variant="neutral">Pending</Badge>
+      {/* Gray background with sufficient contrast */}
+    </>
+  );
+}
+```
+
+## Motion and animations
+
+Respect user's motion preferences:
+
+```css
+.button {
+  transition: all 0.2s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}
+```
+
+The ThemeProvider supports disabling transitions:
+
+```jsx
+import { ThemeProvider } from "@raystack/apsara";
+
+function App() {
+  return (
+    <ThemeProvider disableTransitionOnChange>
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
+
+## Form accessibility
+
+### Validation and errors
+
+Associate error messages with form fields:
+
+```jsx
+import { Input, Text } from "@raystack/apsara";
+
+function EmailInput() {
+  const [error, setError] = useState("");
+  
+  return (
+    <div>
+      <Label htmlFor="email">Email</Label>
+      <Input
+        id="email"
+        type="email"
+        aria-invalid={!!error}
+        aria-describedby={error ? "email-error" : undefined}
+      />
+      {error && (
+        <Text id="email-error" role="alert">
+          {error}
+        </Text>
+      )}
+    </div>
+  );
+}
+```
+
+### Required fields
+
+Indicate required fields clearly:
+
+```jsx
+function SignupForm() {
+  return (
+    <form>
+      <Label htmlFor="username">
+        Username <span aria-label="required">*</span>
+      </Label>
+      <Input id="username" required aria-required="true" />
+    </form>
+  );
+}
+```
+
+## Testing accessibility
+
+### Automated testing
+
+Use tools like [axe](https://www.deque.com/axe/) or [jest-axe](https://github.com/nickcolley/jest-axe):
+
+```jsx
+import { render } from "@testing-library/react";
+import { axe, toHaveNoViolations } from "jest-axe";
+import { Button } from "@raystack/apsara";
+
+expect.extend(toHaveNoViolations);
+
+test("Button has no accessibility violations", async () => {
+  const { container } = render(<Button>Click me</Button>);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
+```
+
+### Manual testing
+
+Test with real assistive technologies:
+
+1. **Keyboard navigation** - Navigate your app using only Tab, Enter, Space, and Arrow keys
+2. **Screen readers** - Test with NVDA (Windows), JAWS (Windows), or VoiceOver (macOS/iOS)
+3. **Zoom** - Test at 200% zoom to ensure content remains readable
+4. **High contrast mode** - Test with Windows High Contrast or browser extensions
+
+## Best practices
+
+<CardGroup cols={2}>
+  <Card title="Use semantic HTML" icon="code">
+    Choose the right HTML element for the job (button vs div, nav vs div, etc.)
+  </Card>
+  <Card title="Provide text alternatives" icon="file-alt">
+    Add alt text for images and aria-label for icon buttons
+  </Card>
+  <Card title="Maintain focus order" icon="list-ol">
+    Ensure tab order follows visual layout
+  </Card>
+  <Card title="Test with users" icon="users">
+    Include people with disabilities in user testing
+  </Card>
+  <Card title="Document shortcuts" icon="keyboard">
+    List keyboard shortcuts in your app's help section
+  </Card>
+  <Card title="Avoid ARIA overuse" icon="exclamation-triangle">
+    Use native HTML features first, ARIA as enhancement
+  </Card>
+</CardGroup>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Radix UI" icon="link" href="https://www.radix-ui.com">
+    Learn about the accessible primitives Apsara is built on
+  </Card>
+  <Card title="WCAG Guidelines" icon="book" href="https://www.w3.org/WAI/WCAG21/quickref/">
+    Web Content Accessibility Guidelines reference
+  </Card>
+  <Card title="ARIA Authoring Practices" icon="book" href="https://www.w3.org/WAI/ARIA/apg/">
+    Design patterns and widgets using ARIA
+  </Card>
+  <Card title="WebAIM" icon="graduation-cap" href="https://webaim.org">
+    Accessibility training and resources
+  </Card>
+</CardGroup>
+
+## Common patterns
+
+### Skip links
+
+Add skip links for keyboard users:
+
+```jsx
+function Layout() {
+  return (
+    <>
+      <a href="#main-content" className="sr-only sr-only-focusable">
+        Skip to main content
+      </a>
+      <nav>{/* Navigation */}</nav>
+      <main id="main-content">
+        {/* Main content */}
+      </main>
+    </>
+  );
+}
+```
+
+```css
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+}
+```
+
+### Loading states
+
+Announce loading states to screen readers:
+
+```jsx
+import { Button } from "@raystack/apsara";
+
+function SubmitButton() {
+  const [isLoading, setIsLoading] = useState(false);
+  
+  return (
+    <Button
+      loading={isLoading}
+      aria-live="polite"
+      aria-busy={isLoading}
+    >
+      {isLoading ? "Saving..." : "Save"}
+    </Button>
+  );
+}
+```
+
+### Data tables
+
+Use proper table markup:
+
+```jsx
+import { Table } from "@raystack/apsara";
+
+function UserTable() {
+  return (
+    <Table>
+      <caption className="sr-only">List of users</caption>
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        {/* Table rows */}
+      </tbody>
+    </Table>
+  );
+}
+```
+
+## Related resources
+
+<CardGroup cols={2}>
+  <Card title="Styling" icon="paintbrush" href="/guides/styling">
+    Learn about focus states and visual indicators
+  </Card>
+  <Card title="Dark mode" icon="moon" href="/guides/dark-mode">
+    Ensure accessibility in both light and dark themes
+  </Card>
+</CardGroup>

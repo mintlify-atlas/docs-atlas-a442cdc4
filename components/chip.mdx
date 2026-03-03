@@ -1,0 +1,273 @@
+---
+title: Chip
+description: Compact elements for displaying tags, filters, or selections with dismissible options.
+---
+
+The Chip component displays compact, interactive elements commonly used for tags, filters, or selections. Chips can include icons and be dismissible.
+
+## Basic usage
+
+```tsx
+import { Chip } from '@raystack/apsara';
+
+function Tags() {
+  return <Chip>React</Chip>;
+}
+```
+
+## Variants
+
+Chip supports two visual variants: outline and filled.
+
+```tsx
+import { Chip } from '@raystack/apsara';
+
+function ChipVariants() {
+  return (
+    <div style={{ display: 'flex', gap: '8px' }}>
+      <Chip variant="outline">Outline</Chip>
+      <Chip variant="filled">Filled</Chip>
+    </div>
+  );
+}
+```
+
+## Sizes
+
+Two size options are available: small and large.
+
+```tsx
+import { Chip } from '@raystack/apsara';
+
+function ChipSizes() {
+  return (
+    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+      <Chip size="small">Small</Chip>
+      <Chip size="large">Large</Chip>
+    </div>
+  );
+}
+```
+
+## Colors
+
+Choose between neutral and accent color schemes.
+
+```tsx
+import { Chip } from '@raystack/apsara';
+
+function ChipColors() {
+  return (
+    <div style={{ display: 'flex', gap: '8px' }}>
+      <Chip color="neutral">Neutral</Chip>
+      <Chip color="accent">Accent</Chip>
+    </div>
+  );
+}
+```
+
+## With icons
+
+Add leading or trailing icons to provide visual context.
+
+```tsx
+import { Chip } from '@raystack/apsara';
+import { TagIcon, CheckIcon } from '@heroicons/react/24/outline';
+
+function IconChips() {
+  return (
+    <div style={{ display: 'flex', gap: '8px' }}>
+      <Chip 
+        leadingIcon={<TagIcon style={{ width: 14, height: 14 }} />}
+      >
+        Leading Icon
+      </Chip>
+      <Chip 
+        trailingIcon={<CheckIcon style={{ width: 14, height: 14 }} />}
+      >
+        Trailing Icon
+      </Chip>
+    </div>
+  );
+}
+```
+
+## Dismissible chips
+
+Make chips removable with the `isDismissible` prop.
+
+```tsx
+import { Chip } from '@raystack/apsara';
+import { useState } from 'react';
+
+function DismissibleChips() {
+  const [tags, setTags] = useState(['React', 'TypeScript', 'Next.js']);
+
+  const removeTag = (tag: string) => {
+    setTags(tags.filter(t => t !== tag));
+  };
+
+  return (
+    <div style={{ display: 'flex', gap: '8px' }}>
+      {tags.map(tag => (
+        <Chip
+          key={tag}
+          isDismissible
+          onDismiss={() => removeTag(tag)}
+        >
+          {tag}
+        </Chip>
+      ))}
+    </div>
+  );
+}
+```
+
+## Interactive chips
+
+Chips can be clickable for filtering or selection.
+
+```tsx
+import { Chip } from '@raystack/apsara';
+import { useState } from 'react';
+
+function FilterChips() {
+  const [selected, setSelected] = useState<string | null>(null);
+
+  return (
+    <div style={{ display: 'flex', gap: '8px' }}>
+      {['All', 'Active', 'Pending', 'Completed'].map(status => (
+        <Chip
+          key={status}
+          onClick={() => setSelected(status)}
+          color={selected === status ? 'accent' : 'neutral'}
+          variant={selected === status ? 'filled' : 'outline'}
+          data-state={selected === status ? 'selected' : 'unselected'}
+        >
+          {status}
+        </Chip>
+      ))}
+    </div>
+  );
+}
+```
+
+## Tag input
+
+Combine with an input field for tag management.
+
+```tsx
+import { Chip } from '@raystack/apsara';
+import { useState } from 'react';
+
+function TagInput() {
+  const [tags, setTags] = useState(['JavaScript', 'CSS']);
+  const [input, setInput] = useState('');
+
+  const addTag = () => {
+    if (input.trim() && !tags.includes(input.trim())) {
+      setTags([...tags, input.trim()]);
+      setInput('');
+    }
+  };
+
+  return (
+    <div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
+        {tags.map(tag => (
+          <Chip
+            key={tag}
+            isDismissible
+            onDismiss={() => setTags(tags.filter(t => t !== tag))}
+          >
+            {tag}
+          </Chip>
+        ))}
+      </div>
+      <input
+        value={input}
+        onChange={e => setInput(e.target.value)}
+        onKeyDown={e => e.key === 'Enter' && addTag()}
+        placeholder="Add a tag..."
+      />
+    </div>
+  );
+}
+```
+
+## Accessibility
+
+Chips include proper ARIA attributes for accessibility.
+
+```tsx
+import { Chip } from '@raystack/apsara';
+
+function AccessibleChip() {
+  return (
+    <Chip
+      role="status"
+      ariaLabel="Selected filter: React"
+      isDismissible
+      onDismiss={() => console.log('Dismissed')}
+    >
+      React
+    </Chip>
+  );
+}
+```
+
+## API reference
+
+### Chip
+
+<ParamField path="variant" type="'outline' | 'filled'" default="'outline'">
+  Visual style variant.
+</ParamField>
+
+<ParamField path="size" type="'small' | 'large'" default="'small'">
+  Size of the chip.
+</ParamField>
+
+<ParamField path="color" type="'neutral' | 'accent'" default="'neutral'">
+  Color scheme for the chip.
+</ParamField>
+
+<ParamField path="leadingIcon" type="ReactNode">
+  Icon element to display before the chip content.
+</ParamField>
+
+<ParamField path="trailingIcon" type="ReactNode">
+  Icon element to display after the chip content. Hidden when `isDismissible` is true.
+</ParamField>
+
+<ParamField path="isDismissible" type="boolean">
+  Whether the chip can be dismissed. Shows a close button when true.
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  Chip content.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+<ParamField path="onDismiss" type="() => void">
+  Callback fired when the dismiss button is clicked.
+</ParamField>
+
+<ParamField path="onClick" type="() => void">
+  Callback fired when the chip is clicked.
+</ParamField>
+
+<ParamField path="role" type="string" default="'status'">
+  ARIA role for the chip element.
+</ParamField>
+
+<ParamField path="ariaLabel" type="string">
+  ARIA label for accessibility. Defaults to the string content of children.
+</ParamField>
+
+<ParamField path="data-state" type="string">
+  Custom data attribute for tracking state (e.g., 'selected', 'active').
+</ParamField>

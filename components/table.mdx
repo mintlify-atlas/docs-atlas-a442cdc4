@@ -1,0 +1,214 @@
+---
+title: Table
+description: A flexible table component for displaying tabular data with semantic HTML structure.
+---
+
+The Table component provides a set of composable sub-components for building accessible, semantic tables with consistent styling.
+
+## Basic usage
+
+```tsx
+import { Table } from '@raystack/apsara';
+
+function DataTable() {
+  return (
+    <Table>
+      <Table.Header>
+        <Table.Row>
+          <Table.Head>Name</Table.Head>
+          <Table.Head>Email</Table.Head>
+          <Table.Head>Status</Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>John Doe</Table.Cell>
+          <Table.Cell>john@example.com</Table.Cell>
+          <Table.Cell>Active</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Jane Smith</Table.Cell>
+          <Table.Cell>jane@example.com</Table.Cell>
+          <Table.Cell>Active</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+}
+```
+
+## With section headers
+
+Use `Table.SectionHeader` to group rows with labeled sections.
+
+```tsx
+import { Table } from '@raystack/apsara';
+
+function GroupedTable() {
+  return (
+    <Table>
+      <Table.Header>
+        <Table.Row>
+          <Table.Head>Name</Table.Head>
+          <Table.Head>Email</Table.Head>
+          <Table.Head>Status</Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        <Table.SectionHeader colSpan={3}>Active Users</Table.SectionHeader>
+        <Table.Row>
+          <Table.Cell>John Doe</Table.Cell>
+          <Table.Cell>john@example.com</Table.Cell>
+          <Table.Cell>Active</Table.Cell>
+        </Table.Row>
+        <Table.SectionHeader colSpan={3}>Inactive Users</Table.SectionHeader>
+        <Table.Row>
+          <Table.Cell>Bob Wilson</Table.Cell>
+          <Table.Cell>bob@example.com</Table.Cell>
+          <Table.Cell>Inactive</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+}
+```
+
+## With custom styling
+
+Apply custom classes to any table component.
+
+```tsx
+import { Table } from '@raystack/apsara';
+
+function StyledTable() {
+  return (
+    <Table className="custom-table">
+      <Table.Header>
+        <Table.Row>
+          <Table.Head className="text-left">Product</Table.Head>
+          <Table.Head className="text-right">Price</Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row onClick={() => console.log('Row clicked')}>
+          <Table.Cell className="font-bold">Widget</Table.Cell>
+          <Table.Cell className="text-right">$29.99</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+}
+```
+
+## With spanning cells
+
+Use `colSpan` and `rowSpan` attributes for merged cells.
+
+```tsx
+import { Table } from '@raystack/apsara';
+
+function SpanningTable() {
+  return (
+    <Table>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell rowSpan={2}>Merged Vertically</Table.Cell>
+          <Table.Cell>Cell 1</Table.Cell>
+          <Table.Cell>Cell 2</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell colSpan={2}>Merged Horizontally</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+}
+```
+
+## API reference
+
+### Table (root)
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the table element.
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  Table content, typically `Table.Header` and `Table.Body`.
+</ParamField>
+
+### Table.Header
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the thead element.
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  Header content, typically `Table.Row` containing `Table.Head` cells.
+</ParamField>
+
+### Table.Body
+
+<ParamField path="children" type="ReactNode" required>
+  Body content, typically multiple `Table.Row` elements.
+</ParamField>
+
+### Table.Row
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the tr element.
+</ParamField>
+
+<ParamField path="onClick" type="() => void">
+  Click handler for the row.
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  Row content, typically `Table.Head` or `Table.Cell` elements.
+</ParamField>
+
+### Table.Head
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the th element.
+</ParamField>
+
+<ParamField path="colSpan" type="number">
+  Number of columns the header cell should span.
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  Header cell content.
+</ParamField>
+
+### Table.Cell
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the td element.
+</ParamField>
+
+<ParamField path="colSpan" type="number">
+  Number of columns the cell should span.
+</ParamField>
+
+<ParamField path="rowSpan" type="number">
+  Number of rows the cell should span.
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  Cell content.
+</ParamField>
+
+### Table.SectionHeader
+
+<ParamField path="colSpan" type="number" required>
+  Number of columns the section header should span.
+</ParamField>
+
+<ParamField path="classNames" type="{ row?: string; cell?: string }">
+  Custom classes for the row and cell elements.
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  Section header content.
+</ParamField>

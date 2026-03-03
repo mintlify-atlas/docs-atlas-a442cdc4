@@ -1,0 +1,157 @@
+---
+title: Filter chip
+description: An interactive chip component for building dynamic filters with operations and values.
+---
+
+The FilterChip component provides a complete filtering interface in a compact chip format. It supports multiple filter types including text, select, multiselect, and date filters with customizable operations.
+
+## Usage
+
+```jsx
+import { FilterChip } from '@raystack/apsara';
+
+export default function Example() {
+  return (
+    <FilterChip
+      label="Status"
+      value="active"
+      onRemove={() => console.log('Filter removed')}
+    />
+  );
+}
+```
+
+## Filter types
+
+```jsx
+import { FilterChip } from '@raystack/apsara';
+import { FilterType } from '@raystack/apsara/types';
+
+{/* Text filter */}
+<FilterChip
+  label="Name"
+  columnType={FilterType.string}
+  onValueChange={(value, operation) => console.log(value, operation)}
+/>
+
+{/* Select filter */}
+<FilterChip
+  label="Priority"
+  columnType={FilterType.select}
+  options={[
+    { label: 'Low', value: 'low' },
+    { label: 'Medium', value: 'medium' },
+    { label: 'High', value: 'high' }
+  ]}
+  onValueChange={(value) => console.log(value)}
+/>
+
+{/* Multiselect filter */}
+<FilterChip
+  label="Tags"
+  columnType={FilterType.multiselect}
+  options={[
+    { label: 'Bug', value: 'bug' },
+    { label: 'Feature', value: 'feature' },
+    { label: 'Enhancement', value: 'enhancement' }
+  ]}
+  onValueChange={(value) => console.log(value)}
+/>
+
+{/* Date filter */}
+<FilterChip
+  label="Created"
+  columnType={FilterType.date}
+  onValueChange={(date) => console.log(date)}
+/>
+```
+
+## Custom operations
+
+```jsx
+<FilterChip
+  label="Amount"
+  operations={[
+    { label: 'equals', value: 'eq' },
+    { label: 'greater than', value: 'gt' },
+    { label: 'less than', value: 'lt' }
+  ]}
+  onOperationChange={(operation) => console.log(operation)}
+  onValueChange={(value) => console.log(value)}
+/>
+```
+
+## With leading icon
+
+```jsx
+import { FilterChip } from '@raystack/apsara';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+
+<FilterChip
+  label="Search"
+  leadingIcon={<MagnifyingGlassIcon />}
+  onValueChange={(value) => console.log(value)}
+/>
+```
+
+## Text variant
+
+```jsx
+<FilterChip
+  variant="text"
+  label="Filter"
+  onValueChange={(value) => console.log(value)}
+/>
+```
+
+## API reference
+
+### FilterChip
+
+<ParamField path="label" type="string" required>
+  The label text for the filter.
+</ParamField>
+
+<ParamField path="value" type="string">
+  The initial value of the filter.
+</ParamField>
+
+<ParamField path="columnType" type="FilterTypes" default="FilterType.string">
+  The type of filter. Options: `FilterType.string`, `FilterType.select`, `FilterType.multiselect`, `FilterType.date`.
+</ParamField>
+
+<ParamField path="options" type="FilterSelectOption[]">
+  Array of options for select and multiselect filters. Each option has `label` and `value` properties.
+</ParamField>
+
+<ParamField path="operations" type="FilterOperator<string>[]">
+  Custom array of filter operations. If not provided, defaults based on columnType.
+</ParamField>
+
+<ParamField path="onValueChange" type="(value: any, operation: string) => void">
+  Callback fired when the filter value changes. Receives the new value and current operation.
+</ParamField>
+
+<ParamField path="onOperationChange" type="(operation: string) => void">
+  Callback fired when the filter operation changes.
+</ParamField>
+
+<ParamField path="onRemove" type="() => void">
+  Callback fired when the remove button is clicked. If provided, shows the remove button.
+</ParamField>
+
+<ParamField path="leadingIcon" type="ReactElement">
+  An icon to display before the label.
+</ParamField>
+
+<ParamField path="variant" type="'default' | 'text'" default="default">
+  The visual style variant of the chip.
+</ParamField>
+
+<ParamField path="selectProps" type="BaseSelectProps">
+  Additional props to pass to the Select component for select/multiselect filters.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class for the chip.
+</ParamField>

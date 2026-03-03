@@ -1,0 +1,258 @@
+---
+title: Theming
+description: Learn how to customize the visual appearance of Apsara components using CSS variables
+---
+
+Apsara uses a comprehensive CSS variable system that allows you to customize colors, spacing, typography, and more throughout your application.
+
+## CSS variable system
+
+The theming system is built on CSS custom properties (variables) defined in the `:root` selector. All variables use the `--` prefix and are organized into semantic categories.
+
+### Color tokens
+
+Apsara provides semantic color tokens that automatically adapt to light and dark themes:
+
+<CodeGroup>
+```css Light theme colors
+:root {
+  /* Foreground colors */
+  --foreground-base: #3c4347;
+  --foreground-muted: #687076;
+  --foreground-subtle: #7e868c;
+  --foreground-inverted: #fbfcfd;
+  --foreground-accent: #3e63dd;
+  --foreground-danger: #e5484d;
+  --foreground-success: #30a46c;
+
+  /* Background colors */
+  --background-base: #fbfcfd;
+  --background-base-hover: #f1f3f5;
+  --background-inset: #f1f3f5;
+  --background-accent: #e6edfe;
+  --background-danger: #ffe5e5;
+  --background-success: #ddf3e4;
+
+  /* Border colors */
+  --border-base: #d7dbdf;
+  --border-base-hover: #c1c8cd;
+  --border-accent: #aec0f5;
+  --border-danger: #f3aeaf;
+  --border-success: #92ceac;
+}
+```
+
+```css Dark theme colors
+html[data-theme="dark"] {
+  /* Foreground colors */
+  --foreground-base: #ecedee;
+  --foreground-muted: #9ba1a6;
+  --foreground-subtle: #787f85;
+  --foreground-inverted: #151718;
+  --foreground-accent: #3e63dd;
+  --foreground-danger: #e5484d;
+  --foreground-success: #46a758;
+
+  /* Background colors */
+  --background-base: #151718;
+  --background-base-hover: #202425;
+  --background-inset: #202425;
+  --background-accent: #1c274f;
+  --background-danger: #481a1d;
+  --background-success: #16301d;
+
+  /* Border colors */
+  --border-base: #3a3f42;
+  --border-base-hover: #4c5155;
+  --border-accent: #273e89;
+  --border-danger: #822025;
+  --border-success: #245530;
+}
+```
+</CodeGroup>
+
+### Typography tokens
+
+Customize fonts and font sizes across your application:
+
+```css
+:root {
+  /* Font families */
+  --ff-inter: "Inter", -apple-system, system-ui, sans-serif;
+  --ff-mono: Söhne Mono, menlo, monospace;
+
+  /* Font sizes */
+  --fs-100: 0.688rem;  /* ~11px */
+  --fs-200: 0.75rem;   /* 12px */
+  --fs-300: 0.813rem;  /* ~13px */
+  --fs-400: 0.875rem;  /* 14px */
+  --fs-500: 0.938rem;  /* ~15px */
+  --fs-600: 1rem;      /* 16px */
+}
+```
+
+### Spacing tokens
+
+A consistent spacing scale from 2px to 120px:
+
+```css
+:root {
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 8px;
+  --space-4: 12px;
+  --space-5: 16px;
+  --space-6: 20px;
+  --space-7: 24px;
+  --space-8: 28px;
+  --space-9: 32px;
+  --space-10: 40px;
+  --space-11: 48px;
+  --space-12: 56px;
+  --space-13: 64px;
+  --space-14: 72px;
+  --space-15: 80px;
+  --space-16: 96px;
+  --space-17: 120px;
+}
+```
+
+### Border radius tokens
+
+Control the roundness of component corners:
+
+```css
+:root {
+  --radius-1: 2px;
+  --radius-2: 4px;
+  --radius-3: 6px;
+  --radius-4: 8px;
+  --radius-5: 12px;
+  --radius-6: 16px;
+  --radius-full: 800px;
+}
+```
+
+### Shadow tokens
+
+Elevation shadows for depth and hierarchy:
+
+```css
+:root {
+  --shadow-xs: 0px 1px 2px 0px rgba(16, 24, 40, 0.06);
+  --shadow-sm: 0px 1px 4px 0px rgba(0, 0, 0, 0.09);
+  --shadow-md: 0px 12px 16px -4px rgba(16, 24, 40, 0.08),
+    0px 4px 6px -2px rgba(16, 24, 40, 0.03);
+  --shadow-lg: 0px 20px 24px -4px rgba(16, 24, 40, 0.08),
+    0px 8px 8px -4px rgba(16, 24, 40, 0.03);
+}
+```
+
+## Customizing your theme
+
+You can override any CSS variable to customize your theme. Create a custom CSS file and import it after the Apsara stylesheet:
+
+```css custom-theme.css
+:root {
+  /* Override accent color */
+  --foreground-accent: #7c3aed;
+  --background-accent: #ede9fe;
+  --border-accent: #c4b5fd;
+
+  /* Customize spacing */
+  --space-4: 16px;
+  --space-5: 20px;
+
+  /* Change border radius */
+  --radius-2: 8px;
+  --radius-3: 12px;
+}
+
+html[data-theme="dark"] {
+  /* Override dark theme accent */
+  --foreground-accent: #a78bfa;
+  --background-accent: #2e1065;
+  --border-accent: #5b21b6;
+}
+```
+
+```jsx App.jsx
+import "@raystack/apsara/style.css";
+import "./custom-theme.css";
+
+function App() {
+  return <YourApp />;
+}
+```
+
+<Warning>
+Make sure to import your custom theme CSS **after** the Apsara stylesheet to ensure your overrides take precedence.
+</Warning>
+
+## Using CSS variables in components
+
+You can reference CSS variables directly in your custom component styles:
+
+```css
+.my-component {
+  color: var(--foreground-base);
+  background-color: var(--background-base);
+  border: 1px solid var(--border-base);
+  padding: var(--space-4);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-sm);
+}
+
+.my-component:hover {
+  background-color: var(--background-base-hover);
+  border-color: var(--border-base-hover);
+}
+```
+
+## Component-specific tokens
+
+Many components use their own namespaced tokens. For example, buttons use:
+
+```css
+.button {
+  padding: var(--rs-space-3) var(--rs-space-4);
+  border-radius: var(--rs-radius-2);
+  font-size: var(--rs-font-size-small);
+  font-weight: var(--rs-font-weight-medium);
+}
+```
+
+<Note>
+Component-specific tokens like `--rs-*` variables are automatically mapped to the global tokens, but you can override them for fine-grained control.
+</Note>
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Use semantic tokens">
+    Prefer semantic tokens like `--foreground-accent` over direct color values. This ensures your customizations work correctly in both light and dark themes.
+  </Accordion>
+
+  <Accordion title="Maintain consistent spacing">
+    Stick to the spacing scale (`--space-*`) for margins, padding, and gaps to maintain visual consistency.
+  </Accordion>
+
+  <Accordion title="Test in both themes">
+    Always test your customizations in both light and dark modes to ensure good contrast and readability.
+  </Accordion>
+
+  <Accordion title="Override at the right level">
+    Override global tokens in `:root` for app-wide changes, or target specific components for localized customization.
+  </Accordion>
+</AccordionGroup>
+
+## Related resources
+
+<CardGroup cols={2}>
+  <Card title="Dark mode" icon="moon" href="/guides/dark-mode">
+    Learn how to implement dark mode in your application
+  </Card>
+  <Card title="Styling" icon="paintbrush" href="/guides/styling">
+    Explore different styling approaches for components
+  </Card>
+</CardGroup>

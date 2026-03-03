@@ -1,0 +1,228 @@
+---
+title: Radio
+description: A radio button component for selecting a single option from a group.
+---
+
+The Radio component allows users to select exactly one option from a set of mutually exclusive choices.
+
+## Basic usage
+
+```jsx
+import { Radio } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Radio.Group>
+      <label>
+        <Radio value="option1" />
+        <span>Option 1</span>
+      </label>
+      <label>
+        <Radio value="option2" />
+        <span>Option 2</span>
+      </label>
+    </Radio.Group>
+  );
+}
+```
+
+## Props
+
+### Radio
+
+<ParamField path="value" type="string" required>
+  The value of the radio button.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the radio button is disabled.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the radio button.
+</ParamField>
+
+### Radio.Group
+
+<ParamField path="value" type="string">
+  The controlled value of the selected radio button.
+</ParamField>
+
+<ParamField path="defaultValue" type="string">
+  The default selected value for uncontrolled usage.
+</ParamField>
+
+<ParamField path="onValueChange" type="(value: string) => void">
+  Callback fired when the selected value changes.
+</ParamField>
+
+<ParamField path="name" type="string">
+  The name attribute for all radio buttons in the group.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether all radio buttons in the group are disabled.
+</ParamField>
+
+<ParamField path="required" type="boolean">
+  Whether the radio group is required.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the group container.
+</ParamField>
+
+## Controlled radio group
+
+```jsx
+function ControlledRadio() {
+  const [value, setValue] = useState('option1');
+
+  return (
+    <Radio.Group value={value} onValueChange={setValue}>
+      <label>
+        <Radio value="option1" />
+        <span>Option 1</span>
+      </label>
+      <label>
+        <Radio value="option2" />
+        <span>Option 2</span>
+      </label>
+      <label>
+        <Radio value="option3" />
+        <span>Option 3</span>
+      </label>
+    </Radio.Group>
+  );
+}
+```
+
+## Uncontrolled radio group
+
+```jsx
+<Radio.Group defaultValue="option2">
+  <label>
+    <Radio value="option1" />
+    <span>Option 1</span>
+  </label>
+  <label>
+    <Radio value="option2" />
+    <span>Option 2</span>
+  </label>
+  <label>
+    <Radio value="option3" />
+    <span>Option 3</span>
+  </label>
+</Radio.Group>
+```
+
+## With descriptions
+
+```jsx
+<Radio.Group>
+  <div>
+    <label>
+      <Radio value="basic" />
+      <div>
+        <strong>Basic Plan</strong>
+        <p>Perfect for individuals</p>
+      </div>
+    </label>
+  </div>
+  <div>
+    <label>
+      <Radio value="pro" />
+      <div>
+        <strong>Pro Plan</strong>
+        <p>For professional teams</p>
+      </div>
+    </label>
+  </div>
+  <div>
+    <label>
+      <Radio value="enterprise" />
+      <div>
+        <strong>Enterprise Plan</strong>
+        <p>For large organizations</p>
+      </div>
+    </label>
+  </div>
+</Radio.Group>
+```
+
+## Disabled state
+
+```jsx
+<Radio.Group defaultValue="option1">
+  <label>
+    <Radio value="option1" />
+    <span>Enabled option</span>
+  </label>
+  <label>
+    <Radio value="option2" disabled />
+    <span>Disabled option</span>
+  </label>
+</Radio.Group>
+```
+
+## Disabled group
+
+```jsx
+<Radio.Group disabled>
+  <label>
+    <Radio value="option1" />
+    <span>All options disabled</span>
+  </label>
+  <label>
+    <Radio value="option2" />
+    <span>All options disabled</span>
+  </label>
+</Radio.Group>
+```
+
+## With form integration
+
+```jsx
+<form>
+  <Radio.Group name="plan" required>
+    <label>
+      <Radio value="basic" />
+      <span>Basic</span>
+    </label>
+    <label>
+      <Radio value="pro" />
+      <span>Pro</span>
+    </label>
+    <label>
+      <Radio value="enterprise" />
+      <span>Enterprise</span>
+    </label>
+  </Radio.Group>
+  <button type="submit">Submit</button>
+</form>
+```
+
+## Required radio group
+
+```jsx
+<Radio.Group name="preference" required>
+  <label>
+    <Radio value="yes" />
+    <span>Yes</span>
+  </label>
+  <label>
+    <Radio value="no" />
+    <span>No</span>
+  </label>
+</Radio.Group>
+```
+
+## Accessibility
+
+- Built on Base UI Radio primitive with full accessibility support.
+- Proper ARIA attributes are automatically applied.
+- Supports keyboard navigation with arrow keys to move between options and Space to select.
+- Radio buttons within a group are properly associated.
+- Works seamlessly within forms with proper name attribute.
+- Label association ensures the entire label is clickable.
+- Required state is properly communicated to screen readers.

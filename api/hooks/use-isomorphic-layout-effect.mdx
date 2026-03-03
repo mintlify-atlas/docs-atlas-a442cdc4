@@ -1,0 +1,203 @@
+---
+title: useIsomorphicLayoutEffect
+description: A React hook that uses useLayoutEffect on the client and useEffect on the server for SSR compatibility.
+---
+
+## Usage
+
+The `useIsomorphicLayoutEffect` hook provides a safe way to use layout effects that works in both server-side rendering (SSR) and client-side environments.
+
+```tsx
+import { useIsomorphicLayoutEffect } from '@raystack/apsara';
+
+function Component() {
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  useIsomorphicLayoutEffect(() => {
+    // This code safely runs in both SSR and client environments
+    if (ref.current) {
+      console.log('Element dimensions:', ref.current.getBoundingClientRect());
+    }
+  }, []);
+
+  return <div ref={ref}>Content</div>;
+}
+```
+
+## Type signature
+
+```typescript
+const useIsomorphicLayoutEffect: typeof useLayoutEffect | typeof useEffect;
+```
+
+## Description
+
+This hook is a conditional export that:
+- Uses `useLayoutEffect` when running in a browser environment (when `window` is defined)
+- Uses `useEffect` when running on the server (when `window` is undefined)
+
+This prevents the "useLayoutEffect does nothing on the server" warning that React shows during server-side rendering, while still providing the benefits of `useLayoutEffect` on the client.
+
+## When to use
+
+Use `useIsomorphicLayoutEffect` when you need to:
+
+1. **Measure DOM elements**: Reading layout information like size, position, or scroll values
+2. **Synchronous DOM mutations**: Making DOM changes that must happen before the browser paints
+3. **Prevent visual flicker**: Ensuring updates happen before the user sees the page
+4. **SSR compatibility**: Your component renders on the server and you need layout effects
+
+## Examples
+
+### Measuring element size
+
+```tsx
+import { useIsomorphicLayoutEffect } from '@raystack/apsara';
+
+function ResponsiveComponent() {
+  const [width, setWidth] = React.useState(0);
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  useIsomorphicLayoutEffect(() => {
+    if (ref.current) {
+      setWidth(ref.current.offsetWidth);
+    }
+
+    const handleResize = () => {
+      if (ref.current) {
+        setWidth(ref.current.offsetWidth);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return (
+    <div ref={ref}>
+      <p>Container width: {width}px</p>
+    </div>
+  );
+}
+```
+
+### Syncing with third-party DOM libraries
+
+```tsx
+import { useIsomorphicLayoutEffect } from '@raystack/apsara';
+
+function ChartComponent({ data }) {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const chartInstanceRef = React.useRef<any>(null);
+
+  useIsomorphicLayoutEffect(() => {
+    if (!containerRef.current) return;
+
+    // Initialize chart library (e.g., D3, Chart.js)
+    chartInstanceRef.current = createChart(containerRef.current, data);
+
+    return () => {
+      // Cleanup
+      chartInstanceRef.current?.destroy();
+    };
+  }, [data]);
+
+  return <div ref={containerRef} />;
+}
+```
+
+### Preventing layout shift
+
+```tsx
+import { useIsomorphicLayoutEffect } from '@raystack/apsara';
+
+function DynamicHeightComponent() {
+  const [isExpanded, setIsExpanded] = React.useState(false);
+  const contentRef = React.useRef<HTMLDivElement>(null);
+
+  useIsomorphicLayoutEffect(() => {
+    if (contentRef.current) {
+      // Measure and set height before paint to prevent flicker
+      const height = contentRef.current.scrollHeight;
+      contentRef.current.style.height = isExpanded ? `${height}px` : '0px';
+    }
+  }, [isExpanded]);
+
+  return (
+    <div>
+      <button onClick={() => setIsExpanded(!isExpanded)}>
+        {isExpanded ? 'Collapse' : 'Expand'}
+      </button>
+      <div
+        ref={contentRef}
+        style={{
+          overflow: 'hidden',
+          transition: 'height 0.3s ease'
+        }}
+      >
+        <p>This content expands smoothly without layout shift</p>
+      </div>
+    </div>
+  );
+}
+```
+
+### Scroll position restoration
+
+```tsx
+import { useIsomorphicLayoutEffect } from '@raystack/apsara';
+
+function ScrollableList({ items }) {
+  const listRef = React.useRef<HTMLDivElement>(null);
+  const scrollPosRef = React.useRef(0);
+
+  useIsomorphicLayoutEffect(() => {
+    // Restore scroll position before paint
+    if (listRef.current) {
+      listRef.current.scrollTop = scrollPosRef.current;
+    }
+  });
+
+  const handleScroll = () => {
+    if (listRef.current) {
+      scrollPosRef.current = listRef.current.scrollTop;
+    }
+  };
+
+  return (
+    <div
+      ref={listRef}
+      onScroll={handleScroll}
+      style={{ height: '400px', overflow: 'auto' }}
+    >
+      {items.map(item => (
+        <div key={item.id}>{item.name}</div>
+      ))}
+    </div>
+  );
+}
+```
+
+## Comparison with useEffect
+
+| Feature | useEffect | useLayoutEffect | useIsomorphicLayoutEffect |
+|---------|-----------|-----------------|---------------------------|
+| **Execution timing** | After paint | Before paint | Before paint (client) / After paint (server) |
+| **SSR safe** | Yes | No (warning) | Yes |
+| **Blocks painting** | No | Yes | Yes (client only) |
+| **Use for layout measurements** | No | Yes | Yes |
+| **Use for async operations** | Yes | No | No |
+
+## Notes
+
+- Use this hook sparingly, as `useLayoutEffect` can block the browser from painting
+- For most effects, prefer regular `useEffect` unless you specifically need synchronous DOM mutations
+- The hook signature is identical to `useLayoutEffect` and `useEffect`
+- During SSR, this hook behaves exactly like `useEffect`
+- In the browser, this hook behaves exactly like `useLayoutEffect`
+- This pattern is commonly used in popular React libraries like `react-use` and `usehooks-ts`
+
+## Related
+
+- [useMouse](/api/hooks/use-mouse)
+- [useDebouncedState](/api/hooks/use-debounced-state)

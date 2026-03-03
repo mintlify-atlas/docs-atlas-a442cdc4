@@ -1,0 +1,182 @@
+---
+title: Badge
+description: Display small status indicators, labels, and counts with various visual styles.
+---
+
+The Badge component is used to highlight key information, display status, or show notification counts with consistent styling.
+
+## Basic usage
+
+```tsx
+import { Badge } from '@raystack/apsara';
+
+function StatusIndicator() {
+  return <Badge>New</Badge>;
+}
+```
+
+## Variants
+
+Badge supports six visual variants for different semantic meanings.
+
+```tsx
+import { Badge } from '@raystack/apsara';
+
+function BadgeVariants() {
+  return (
+    <div style={{ display: 'flex', gap: '8px' }}>
+      <Badge variant="accent">Accent</Badge>
+      <Badge variant="success">Success</Badge>
+      <Badge variant="warning">Warning</Badge>
+      <Badge variant="danger">Danger</Badge>
+      <Badge variant="neutral">Neutral</Badge>
+      <Badge variant="gradient">Gradient</Badge>
+    </div>
+  );
+}
+```
+
+## Sizes
+
+Three size options are available: micro, small, and regular.
+
+```tsx
+import { Badge } from '@raystack/apsara';
+
+function BadgeSizes() {
+  return (
+    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+      <Badge size="micro">Micro</Badge>
+      <Badge size="small">Small</Badge>
+      <Badge size="regular">Regular</Badge>
+    </div>
+  );
+}
+```
+
+## With icons
+
+Add visual context with leading icons.
+
+```tsx
+import { Badge } from '@raystack/apsara';
+import { CheckIcon } from '@heroicons/react/24/outline';
+
+function IconBadge() {
+  return (
+    <Badge 
+      variant="success" 
+      icon={<CheckIcon style={{ width: 14, height: 14 }} />}
+    >
+      Verified
+    </Badge>
+  );
+}
+```
+
+## Notification counts
+
+Perfect for displaying unread counts or notification numbers.
+
+```tsx
+import { Badge } from '@raystack/apsara';
+
+function NotificationBadge() {
+  return (
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <button>Messages</button>
+      <Badge 
+        size="micro" 
+        variant="danger"
+        style={{ position: 'absolute', top: -8, right: -8 }}
+      >
+        5
+      </Badge>
+    </div>
+  );
+}
+```
+
+## Status indicators
+
+Combine with icons for clear status communication.
+
+```tsx
+import { Badge } from '@raystack/apsara';
+
+function StatusBadges() {
+  return (
+    <div style={{ display: 'flex', gap: '8px' }}>
+      <Badge variant="success">Active</Badge>
+      <Badge variant="warning">Pending</Badge>
+      <Badge variant="danger">Failed</Badge>
+      <Badge variant="neutral">Inactive</Badge>
+    </div>
+  );
+}
+```
+
+## Accessibility
+
+Provide screen reader text for better accessibility.
+
+```tsx
+import { Badge } from '@raystack/apsara';
+
+function AccessibleBadge() {
+  return (
+    <Badge 
+      variant="danger" 
+      screenReaderText="5 unread messages"
+    >
+      5
+    </Badge>
+  );
+}
+```
+
+The visible text shows "5" while screen readers announce "5 unread messages".
+
+## Complex content
+
+Badges can contain multiple elements.
+
+```tsx
+import { Badge } from '@raystack/apsara';
+
+function ComplexBadge() {
+  return (
+    <Badge variant="accent">
+      <span>Count:</span> {42}
+    </Badge>
+  );
+}
+```
+
+## API reference
+
+### Badge
+
+<ParamField path="variant" type="'accent' | 'warning' | 'danger' | 'success' | 'neutral' | 'gradient'" default="'accent'">
+  Visual style variant that conveys semantic meaning.
+</ParamField>
+
+<ParamField path="size" type="'micro' | 'small' | 'regular'" default="'small'">
+  Size of the badge.
+</ParamField>
+
+<ParamField path="icon" type="ReactNode">
+  Icon element to display before the badge content.
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  Badge content, typically text or numbers.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+<ParamField path="screenReaderText" type="string">
+  Hidden text for screen readers that provides additional context.
+</ParamField>

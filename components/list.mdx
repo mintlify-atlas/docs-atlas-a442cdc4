@@ -1,0 +1,356 @@
+---
+title: List
+description: Display structured key-value pairs and data in a consistent list format.
+---
+
+The List component provides a composable structure for displaying key-value pairs, metadata, and structured information with consistent styling.
+
+## Basic usage
+
+```tsx
+import { List } from '@raystack/apsara';
+
+function UserInfo() {
+  return (
+    <List>
+      <List.Item>
+        <List.Label>Name</List.Label>
+        <List.Value>John Doe</List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label>Email</List.Label>
+        <List.Value>john@example.com</List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label>Status</List.Label>
+        <List.Value>Active</List.Value>
+      </List.Item>
+    </List>
+  );
+}
+```
+
+## With header
+
+Add a header to group related information.
+
+```tsx
+import { List } from '@raystack/apsara';
+
+function ProfileDetails() {
+  return (
+    <List>
+      <List.Header>Personal Information</List.Header>
+      <List.Item>
+        <List.Label>Full Name</List.Label>
+        <List.Value>Jane Smith</List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label>Date of Birth</List.Label>
+        <List.Value>January 15, 1990</List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label>Location</List.Label>
+        <List.Value>San Francisco, CA</List.Value>
+      </List.Item>
+    </List>
+  );
+}
+```
+
+## Multiple sections
+
+Organize information into multiple sections with headers.
+
+```tsx
+import { List } from '@raystack/apsara';
+
+function AccountDetails() {
+  return (
+    <List>
+      <List.Header>Account Information</List.Header>
+      <List.Item>
+        <List.Label>Username</List.Label>
+        <List.Value>johndoe</List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label>Member Since</List.Label>
+        <List.Value>March 2023</List.Value>
+      </List.Item>
+
+      <List.Header>Billing Information</List.Header>
+      <List.Item>
+        <List.Label>Plan</List.Label>
+        <List.Value>Pro</List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label>Billing Cycle</List.Label>
+        <List.Value>Monthly</List.Value>
+      </List.Item>
+    </List>
+  );
+}
+```
+
+## With max width
+
+Control the maximum width of the list.
+
+```tsx
+import { List } from '@raystack/apsara';
+
+function CompactList() {
+  return (
+    <List maxWidth="400px">
+      <List.Item>
+        <List.Label>API Key</List.Label>
+        <List.Value>sk_test_1234567890</List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label>Environment</List.Label>
+        <List.Value>Production</List.Value>
+      </List.Item>
+    </List>
+  );
+}
+```
+
+## Label width
+
+Set minimum width for labels to align values.
+
+```tsx
+import { List } from '@raystack/apsara';
+
+function AlignedList() {
+  return (
+    <List>
+      <List.Item>
+        <List.Label minWidth="150px">Name</List.Label>
+        <List.Value>John Doe</List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label minWidth="150px">Email Address</List.Label>
+        <List.Value>john.doe@example.com</List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label minWidth="150px">Phone</List.Label>
+        <List.Value>+1 234 567 8900</List.Value>
+      </List.Item>
+    </List>
+  );
+}
+```
+
+## Complex values
+
+Values can contain any React elements.
+
+```tsx
+import { List } from '@raystack/apsara';
+import { Badge } from '@raystack/apsara';
+import { Button } from '@raystack/apsara';
+
+function ComplexList() {
+  return (
+    <List>
+      <List.Item>
+        <List.Label>Status</List.Label>
+        <List.Value>
+          <Badge variant="success">Active</Badge>
+        </List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label>Actions</List.Label>
+        <List.Value>
+          <Button size="small" variant="outline">Edit</Button>
+        </List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label>Tags</List.Label>
+        <List.Value>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <Badge>React</Badge>
+            <Badge>TypeScript</Badge>
+          </div>
+        </List.Value>
+      </List.Item>
+    </List>
+  );
+}
+```
+
+## Custom styling
+
+Apply custom classes and styles to list elements.
+
+```tsx
+import { List } from '@raystack/apsara';
+
+function StyledList() {
+  return (
+    <List className="custom-list">
+      <List.Header className="custom-header">
+        Configuration
+      </List.Header>
+      <List.Item className="custom-item">
+        <List.Label className="custom-label">Setting</List.Label>
+        <List.Value className="custom-value">Enabled</List.Value>
+      </List.Item>
+    </List>
+  );
+}
+```
+
+## Metadata display
+
+Perfect for displaying resource metadata.
+
+```tsx
+import { List } from '@raystack/apsara';
+
+function ResourceMetadata() {
+  return (
+    <List maxWidth="600px">
+      <List.Header>Resource Details</List.Header>
+      <List.Item>
+        <List.Label>Resource ID</List.Label>
+        <List.Value>res_1234567890</List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label>Created</List.Label>
+        <List.Value>March 3, 2024 at 10:30 AM</List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label>Last Modified</List.Label>
+        <List.Value>March 3, 2024 at 2:45 PM</List.Value>
+      </List.Item>
+      <List.Item>
+        <List.Label>Owner</List.Label>
+        <List.Value>john@example.com</List.Value>
+      </List.Item>
+    </List>
+  );
+}
+```
+
+## Inline editing
+
+Combine with form inputs for inline editing.
+
+```tsx
+import { List } from '@raystack/apsara';
+import { useState } from 'react';
+
+function EditableList() {
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState('John Doe');
+
+  return (
+    <List>
+      <List.Item>
+        <List.Label>Name</List.Label>
+        <List.Value>
+          {editing ? (
+            <input
+              value={value}
+              onChange={e => setValue(e.target.value)}
+              onBlur={() => setEditing(false)}
+              autoFocus
+            />
+          ) : (
+            <span onClick={() => setEditing(true)}>{value}</span>
+          )}
+        </List.Value>
+      </List.Item>
+    </List>
+  );
+}
+```
+
+## Accessibility
+
+The List component includes proper ARIA attributes.
+
+```tsx
+import { List } from '@raystack/apsara';
+
+function AccessibleList() {
+  return (
+    <List aria-label="User profile information">
+      <List.Item>
+        <List.Label>Name</List.Label>
+        <List.Value>John Doe</List.Value>
+      </List.Item>
+    </List>
+  );
+}
+```
+
+## API reference
+
+### List (root)
+
+<ParamField path="children" type="ReactNode" required>
+  List content, typically `List.Header` and `List.Item` elements.
+</ParamField>
+
+<ParamField path="maxWidth" type="string | number">
+  Maximum width of the list container.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+<ParamField path="aria-label" type="string">
+  Accessible label for the list.
+</ParamField>
+
+### List.Header
+
+<ParamField path="children" type="ReactNode" required>
+  Header content, typically text.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+### List.Item
+
+<ParamField path="children" type="ReactNode" required>
+  Item content, typically `List.Label` and `List.Value`.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+### List.Label
+
+<ParamField path="children" type="ReactNode" required>
+  Label content.
+</ParamField>
+
+<ParamField path="minWidth" type="string">
+  Minimum width for the label element.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties">
+  Inline styles to apply.
+</ParamField>
+
+### List.Value
+
+<ParamField path="children" type="ReactNode" required>
+  Value content.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>

@@ -1,0 +1,416 @@
+---
+title: Menu
+description: A dropdown menu component with support for submenus, keyboard navigation, and optional autocomplete filtering.
+---
+
+## Overview
+
+Menu provides a dropdown menu with extensive features including nested submenus, keyboard navigation, grouping, separators, and optional autocomplete filtering for large menus.
+
+## Basic usage
+
+```jsx
+import { Menu } from '@raystack/apsara';
+
+<Menu>
+  <Menu.Trigger asChild>
+    <button>Open menu</button>
+  </Menu.Trigger>
+  
+  <Menu.Content>
+    <Menu.Item onSelect={() => console.log('Item 1')}>Item 1</Menu.Item>
+    <Menu.Item onSelect={() => console.log('Item 2')}>Item 2</Menu.Item>
+    <Menu.Separator />
+    <Menu.Item onSelect={() => console.log('Item 3')}>Item 3</Menu.Item>
+  </Menu.Content>
+</Menu>
+```
+
+## Components
+
+### Menu (Root)
+
+The root component that manages menu state and keyboard navigation.
+
+<ParamField path="open" type="boolean">
+  Controls the open state of the menu (controlled mode).
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean">
+  The initial open state in uncontrolled mode.
+</ParamField>
+
+<ParamField path="onOpenChange" type="(open: boolean) => void">
+  Callback fired when the open state changes.
+</ParamField>
+
+<ParamField path="modal" type="boolean" default="true">
+  Whether the menu is modal. Always true, cannot be overridden.
+</ParamField>
+
+<ParamField path="loopFocus" type="boolean" default="false">
+  Whether to loop focus when navigating with arrow keys. Always false, cannot be overridden.
+</ParamField>
+
+<ParamField path="autocomplete" type="boolean">
+  Enable autocomplete mode with a search input at the top of the menu.
+</ParamField>
+
+<ParamField path="autocompleteMode" type="'auto' | 'manual'" default="'auto'">
+  **Auto mode**: Automatically filters menu items based on the input value. **Manual mode**: Provides input value but doesn't filter items automatically.
+</ParamField>
+
+<ParamField path="inputValue" type="string">
+  Controlled value for the autocomplete input (requires `autocomplete` to be true).
+</ParamField>
+
+<ParamField path="onInputValueChange" type="(value: string) => void">
+  Callback fired when the autocomplete input value changes.
+</ParamField>
+
+<ParamField path="defaultInputValue" type="string">
+  The initial input value in uncontrolled mode.
+</ParamField>
+
+### Menu.Trigger
+
+A button that opens the menu when clicked.
+
+<ParamField path="asChild" type="boolean">
+  When true, merges props with the immediate child element instead of rendering a button.
+</ParamField>
+
+<ParamField path="stopPropagation" type="boolean" default="true">
+  Whether to stop click event propagation.
+</ParamField>
+
+### Menu.Content
+
+The menu content container with positioning logic.
+
+<ParamField path="side" type="'top' | 'right' | 'bottom' | 'left'" default="'bottom'">
+  The preferred side of the trigger to render the menu.
+</ParamField>
+
+<ParamField path="align" type="'start' | 'center' | 'end'" default="'start'">
+  The preferred alignment against the trigger.
+</ParamField>
+
+<ParamField path="sideOffset" type="number" default="4">
+  The distance in pixels from the trigger.
+</ParamField>
+
+<ParamField path="searchPlaceholder" type="string" default="'Search...'">
+  Placeholder text for the autocomplete input (when `autocomplete` is enabled).
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes for the menu content.
+</ParamField>
+
+### Menu.Item
+
+An individual menu item that can be selected.
+
+<ParamField path="onSelect" type="() => void">
+  Callback fired when the item is selected.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the item is disabled.
+</ParamField>
+
+<ParamField path="value" type="string">
+  The value used for autocomplete filtering. If not provided, uses the text content.
+</ParamField>
+
+<ParamField path="leadingIcon" type="React.ReactNode">
+  Icon or element displayed before the item text.
+</ParamField>
+
+<ParamField path="trailingIcon" type="React.ReactNode">
+  Icon or element displayed after the item text.
+</ParamField>
+
+### Menu.Group
+
+A container for grouping related menu items.
+
+### Menu.Label
+
+A label for a group of menu items.
+
+### Menu.Separator
+
+A visual separator between menu items or groups.
+
+### Menu.EmptyState
+
+A component to display when no menu items match the search (useful with autocomplete).
+
+### Menu.Submenu
+
+A nested submenu component with its own state and autocomplete support.
+
+<ParamField path="autocomplete" type="boolean">
+  Enable autocomplete mode for the submenu.
+</ParamField>
+
+<ParamField path="autocompleteMode" type="'auto' | 'manual'" default="'auto'">
+  Autocomplete filtering mode for the submenu.
+</ParamField>
+
+### Menu.SubmenuTrigger
+
+A menu item that opens a submenu. Automatically shows a right arrow icon.
+
+<ParamField path="value" type="string">
+  The value used for autocomplete filtering.
+</ParamField>
+
+<ParamField path="leadingIcon" type="React.ReactNode">
+  Icon or element displayed before the item text.
+</ParamField>
+
+<ParamField path="trailingIcon" type="React.ReactNode">
+  Icon or element displayed after the item text. Defaults to a right arrow.
+</ParamField>
+
+### Menu.SubmenuContent
+
+The content container for a submenu. Has the same props as `Menu.Content` but with `sideOffset` defaulting to `2`.
+
+## Usage examples
+
+### Menu with groups
+
+```jsx
+<Menu>
+  <Menu.Trigger asChild>
+    <button>Open menu</button>
+  </Menu.Trigger>
+  
+  <Menu.Content>
+    <Menu.Group>
+      <Menu.Label>Group 1</Menu.Label>
+      <Menu.Item>Item 1</Menu.Item>
+      <Menu.Item>Item 2</Menu.Item>
+    </Menu.Group>
+    
+    <Menu.Separator />
+    
+    <Menu.Group>
+      <Menu.Label>Group 2</Menu.Label>
+      <Menu.Item>Item 3</Menu.Item>
+      <Menu.Item>Item 4</Menu.Item>
+    </Menu.Group>
+  </Menu.Content>
+</Menu>
+```
+
+### Menu with icons
+
+```jsx
+import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
+
+<Menu>
+  <Menu.Trigger asChild>
+    <button>Open menu</button>
+  </Menu.Trigger>
+  
+  <Menu.Content>
+    <Menu.Item leadingIcon={<PlusIcon />}>New item</Menu.Item>
+    <Menu.Item leadingIcon={<TrashIcon />}>Delete</Menu.Item>
+  </Menu.Content>
+</Menu>
+```
+
+### Nested submenu
+
+```jsx
+<Menu>
+  <Menu.Trigger asChild>
+    <button>Open menu</button>
+  </Menu.Trigger>
+  
+  <Menu.Content>
+    <Menu.Item>Regular item</Menu.Item>
+    
+    <Menu.Submenu>
+      <Menu.SubmenuTrigger>More options</Menu.SubmenuTrigger>
+      <Menu.SubmenuContent>
+        <Menu.Item>Submenu item 1</Menu.Item>
+        <Menu.Item>Submenu item 2</Menu.Item>
+      </Menu.SubmenuContent>
+    </Menu.Submenu>
+  </Menu.Content>
+</Menu>
+```
+
+### Menu with autocomplete
+
+```jsx
+<Menu autocomplete>
+  <Menu.Trigger asChild>
+    <button>Open searchable menu</button>
+  </Menu.Trigger>
+  
+  <Menu.Content searchPlaceholder="Search items...">
+    <Menu.Item value="apple">Apple</Menu.Item>
+    <Menu.Item value="banana">Banana</Menu.Item>
+    <Menu.Item value="cherry">Cherry</Menu.Item>
+    <Menu.Item value="date">Date</Menu.Item>
+    <Menu.EmptyState>No items found</Menu.EmptyState>
+  </Menu.Content>
+</Menu>
+```
+
+### Controlled autocomplete
+
+```jsx
+function ControlledMenu() {
+  const [search, setSearch] = useState('');
+  
+  return (
+    <Menu
+      autocomplete
+      inputValue={search}
+      onInputValueChange={setSearch}
+    >
+      <Menu.Trigger asChild>
+        <button>Open menu</button>
+      </Menu.Trigger>
+      
+      <Menu.Content>
+        <Menu.Item value="item1">Item 1</Menu.Item>
+        <Menu.Item value="item2">Item 2</Menu.Item>
+        <Menu.EmptyState>No results for "{search}"</Menu.EmptyState>
+      </Menu.Content>
+    </Menu>
+  );
+}
+```
+
+### Submenu with autocomplete
+
+```jsx
+<Menu>
+  <Menu.Trigger asChild>
+    <button>Open menu</button>
+  </Menu.Trigger>
+  
+  <Menu.Content>
+    <Menu.Item>Regular item</Menu.Item>
+    
+    <Menu.Submenu autocomplete>
+      <Menu.SubmenuTrigger>Search options</Menu.SubmenuTrigger>
+      <Menu.SubmenuContent>
+        <Menu.Item value="option1">Option 1</Menu.Item>
+        <Menu.Item value="option2">Option 2</Menu.Item>
+        <Menu.Item value="option3">Option 3</Menu.Item>
+        <Menu.EmptyState>No matches</Menu.EmptyState>
+      </Menu.SubmenuContent>
+    </Menu.Submenu>
+  </Menu.Content>
+</Menu>
+```
+
+### Disabled items
+
+```jsx
+<Menu>
+  <Menu.Trigger asChild>
+    <button>Open menu</button>
+  </Menu.Trigger>
+  
+  <Menu.Content>
+    <Menu.Item>Enabled item</Menu.Item>
+    <Menu.Item disabled>Disabled item</Menu.Item>
+    <Menu.Item>Another enabled item</Menu.Item>
+  </Menu.Content>
+</Menu>
+```
+
+## Autocomplete filtering
+
+The Menu component supports two autocomplete modes:
+
+### Auto mode (default)
+
+Automatically filters menu items based on the search input. Items that don't match are hidden:
+
+```jsx
+<Menu autocomplete autocompleteMode="auto">
+  {/* Menu content */}
+</Menu>
+```
+
+Filtering logic:
+- Matches against the `value` prop if provided
+- Falls back to matching against the item's text content
+- Case-insensitive matching
+- Shows `Menu.EmptyState` when no items match
+
+### Manual mode
+
+Provides the search input but doesn't filter items automatically. You control the filtering logic:
+
+```jsx
+function ManualFilterMenu() {
+  const [search, setSearch] = useState('');
+  const items = ['Apple', 'Banana', 'Cherry'];
+  
+  const filteredItems = items.filter(item =>
+    item.toLowerCase().includes(search.toLowerCase())
+  );
+  
+  return (
+    <Menu
+      autocomplete
+      autocompleteMode="manual"
+      inputValue={search}
+      onInputValueChange={setSearch}
+    >
+      <Menu.Trigger asChild>
+        <button>Open menu</button>
+      </Menu.Trigger>
+      
+      <Menu.Content>
+        {filteredItems.map(item => (
+          <Menu.Item key={item}>{item}</Menu.Item>
+        ))}
+        {filteredItems.length === 0 && (
+          <Menu.EmptyState>No results</Menu.EmptyState>
+        )}
+      </Menu.Content>
+    </Menu>
+  );
+}
+```
+
+## Accessibility features
+
+- **Keyboard navigation**: Arrow keys to navigate, Enter/Space to select
+- **Type-ahead**: Start typing to highlight matching items (when autocomplete is disabled)
+- **ESC to close**: Press Escape to close the menu
+- **Focus management**: Automatic focus handling between menu and submenus
+- **Arrow key submenu navigation**: Right arrow opens submenu, left arrow closes it
+- **ARIA attributes**: Proper ARIA roles and relationships
+- **Focus trap**: Focus stays within the menu when open
+
+## Trigger patterns
+
+The `Menu.Trigger` component can be used in two ways:
+
+1. **Default button**: Renders a button when no children are provided or `asChild` is false
+2. **Custom trigger**: Use `asChild` prop to merge menu functionality with your component
+
+```jsx
+{/* Default button */}
+<Menu.Trigger>Open menu</Menu.Trigger>
+
+{/* Custom trigger */}
+<Menu.Trigger asChild>
+  <button className="custom-button">Open menu</button>
+</Menu.Trigger>
+```

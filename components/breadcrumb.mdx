@@ -1,0 +1,249 @@
+---
+title: Breadcrumb
+description: A navigation component that displays the current page's location within a hierarchical structure.
+---
+
+## Overview
+
+The Breadcrumb component provides a way to show users their current location within a website or application hierarchy. It helps users understand their position and navigate back to parent pages efficiently.
+
+## Use cases
+
+- Display navigation hierarchy in multi-level applications
+- Help users understand their current location
+- Provide quick navigation to parent pages
+- Show page context in documentation sites
+- Display file system paths in file managers
+
+## Anatomy
+
+The Breadcrumb component is composed of several parts:
+
+- `Breadcrumb` - Root container with navigation semantics
+- `Breadcrumb.Item` - Individual breadcrumb link or dropdown
+- `Breadcrumb.Separator` - Visual separator between items
+- `Breadcrumb.Ellipsis` - Collapsed items indicator
+
+## Props
+
+### Breadcrumb (root)
+
+<ParamField path="size" type="'small' | 'medium'" default="'medium'">
+  Controls the size of the breadcrumb navigation.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the breadcrumb container.
+</ParamField>
+
+### Breadcrumb.Item
+
+<ParamField path="leadingIcon" type="ReactNode">
+  Icon to display before the breadcrumb label.
+</ParamField>
+
+<ParamField path="current" type="boolean" default="false">
+  Indicates whether this item represents the current page. When true, the item is styled as active.
+</ParamField>
+
+<ParamField path="dropdownItems" type="BreadcrumbDropdownItem[]">
+  Array of dropdown menu items. When provided, the breadcrumb item becomes a dropdown menu trigger.
+  
+  Each item should have:
+  - `label` (string) - The text to display
+  - `onClick` (function, optional) - Click handler for the item
+</ParamField>
+
+<ParamField path="href" type="string">
+  The URL to navigate to when the breadcrumb item is clicked.
+</ParamField>
+
+<ParamField path="as" type="ReactElement">
+  Custom element to render instead of the default anchor tag. Useful for integration with routing libraries.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the breadcrumb item.
+</ParamField>
+
+### Breadcrumb.Separator
+
+<ParamField path="children" type="ReactNode">
+  Custom separator content. Defaults to a chevron right icon.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the separator.
+</ParamField>
+
+### Breadcrumb.Ellipsis
+
+<ParamField path="children" type="ReactNode">
+  Custom ellipsis content. Defaults to a horizontal dots icon.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the ellipsis.
+</ParamField>
+
+## Usage
+
+### Basic breadcrumb
+
+```jsx
+import { Breadcrumb } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Breadcrumb>
+      <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+      <Breadcrumb.Separator />
+      <Breadcrumb.Item href="/products">Products</Breadcrumb.Item>
+      <Breadcrumb.Separator />
+      <Breadcrumb.Item current>Electronics</Breadcrumb.Item>
+    </Breadcrumb>
+  );
+}
+```
+
+### With icons
+
+```jsx
+import { Breadcrumb } from '@raystack/apsara';
+import { HomeIcon, FolderIcon, FileIcon } from '@radix-ui/react-icons';
+
+function App() {
+  return (
+    <Breadcrumb>
+      <Breadcrumb.Item href="/" leadingIcon={<HomeIcon />}>
+        Home
+      </Breadcrumb.Item>
+      <Breadcrumb.Separator />
+      <Breadcrumb.Item href="/documents" leadingIcon={<FolderIcon />}>
+        Documents
+      </Breadcrumb.Item>
+      <Breadcrumb.Separator />
+      <Breadcrumb.Item current leadingIcon={<FileIcon />}>
+        Report.pdf
+      </Breadcrumb.Item>
+    </Breadcrumb>
+  );
+}
+```
+
+### With dropdown menu
+
+```jsx
+import { Breadcrumb } from '@raystack/apsara';
+
+function App() {
+  const parentPages = [
+    { label: 'Projects', onClick: () => navigate('/projects') },
+    { label: 'Archive', onClick: () => navigate('/archive') },
+    { label: 'Templates', onClick: () => navigate('/templates') }
+  ];
+
+  return (
+    <Breadcrumb>
+      <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+      <Breadcrumb.Separator />
+      <Breadcrumb.Item dropdownItems={parentPages}>
+        More
+      </Breadcrumb.Item>
+      <Breadcrumb.Separator />
+      <Breadcrumb.Item current>Current Page</Breadcrumb.Item>
+    </Breadcrumb>
+  );
+}
+```
+
+### Collapsed breadcrumb
+
+```jsx
+import { Breadcrumb } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Breadcrumb>
+      <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+      <Breadcrumb.Separator />
+      <Breadcrumb.Ellipsis />
+      <Breadcrumb.Separator />
+      <Breadcrumb.Item href="/category">Category</Breadcrumb.Item>
+      <Breadcrumb.Separator />
+      <Breadcrumb.Item current>Current</Breadcrumb.Item>
+    </Breadcrumb>
+  );
+}
+```
+
+### Small size
+
+```jsx
+import { Breadcrumb } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Breadcrumb size="small">
+      <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+      <Breadcrumb.Separator />
+      <Breadcrumb.Item href="/settings">Settings</Breadcrumb.Item>
+      <Breadcrumb.Separator />
+      <Breadcrumb.Item current>Profile</Breadcrumb.Item>
+    </Breadcrumb>
+  );
+}
+```
+
+### With Next.js Link
+
+```jsx
+import { Breadcrumb } from '@raystack/apsara';
+import Link from 'next/link';
+
+function App() {
+  return (
+    <Breadcrumb>
+      <Breadcrumb.Item as={<Link href="/" />}>Home</Breadcrumb.Item>
+      <Breadcrumb.Separator />
+      <Breadcrumb.Item as={<Link href="/blog" />}>Blog</Breadcrumb.Item>
+      <Breadcrumb.Separator />
+      <Breadcrumb.Item current>Article</Breadcrumb.Item>
+    </Breadcrumb>
+  );
+}
+```
+
+## Accessibility
+
+- Uses semantic `<nav>` and `<ol>` elements for proper navigation structure
+- Current page is indicated with the `current` prop for visual styling
+- Screen readers can identify the breadcrumb navigation context
+- Keyboard navigable with standard tab navigation
+- Works with custom routing libraries through the `as` prop
+
+## Styling customization
+
+The Breadcrumb component can be customized using the `className` prop on any of its parts:
+
+```jsx
+<Breadcrumb className="custom-breadcrumb">
+  <Breadcrumb.Item className="custom-item" href="/">
+    Home
+  </Breadcrumb.Item>
+  <Breadcrumb.Separator className="custom-separator" />
+  <Breadcrumb.Item current>Current</Breadcrumb.Item>
+</Breadcrumb>
+```
+
+You can also customize the separator and ellipsis content:
+
+```jsx
+<Breadcrumb>
+  <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+  <Breadcrumb.Separator>/</Breadcrumb.Separator>
+  <Breadcrumb.Item href="/products">Products</Breadcrumb.Item>
+  <Breadcrumb.Separator>/</Breadcrumb.Separator>
+  <Breadcrumb.Ellipsis>...</Breadcrumb.Ellipsis>
+</Breadcrumb>
+```

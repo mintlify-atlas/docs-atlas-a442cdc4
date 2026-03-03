@@ -1,0 +1,463 @@
+---
+title: Command
+description: A command palette component for keyboard-driven navigation and actions.
+---
+
+## Overview
+
+The Command component provides a keyboard-centric interface for quickly finding and executing actions. It features fuzzy search, keyboard navigation, and can be used standalone or within a dialog for a command palette experience.
+
+## Use cases
+
+- Build command palettes (Cmd+K / Ctrl+K interfaces)
+- Create searchable action menus
+- Implement quick navigation interfaces
+- Build fuzzy search functionality
+- Provide keyboard-driven workflows
+- Create global search features
+
+## Anatomy
+
+The Command component consists of:
+
+- `Command` - Root container that manages search and filtering
+- `Command.Dialog` - Dialog wrapper for command palette UIs
+- `Command.Input` - Search input with icon
+- `Command.List` - Scrollable list of filtered results
+- `Command.Empty` - Empty state when no results found
+- `Command.Group` - Grouped command items with heading
+- `Command.Item` - Individual selectable command
+- `Command.Separator` - Visual separator between groups
+- `Command.Shortcut` - Keyboard shortcut display
+
+## Props
+
+### Command (root)
+
+Inherits all props from the cmdk Command component.
+
+<ParamField path="value" type="string">
+  Controlled search value. Use with `onValueChange` for controlled behavior.
+</ParamField>
+
+<ParamField path="onValueChange" type="(value: string) => void">
+  Callback fired when the search value changes.
+</ParamField>
+
+<ParamField path="filter" type="(value: string, search: string) => number">
+  Custom filter function. Return a number between 0 and 1, where 1 is a perfect match.
+</ParamField>
+
+<ParamField path="shouldFilter" type="boolean" default="true">
+  Whether to filter items automatically. Set to false for custom filtering.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the command container.
+</ParamField>
+
+### Command.Dialog
+
+<ParamField path="open" type="boolean">
+  Controlled open state of the dialog.
+</ParamField>
+
+<ParamField path="onOpenChange" type="(open: boolean) => void">
+  Callback fired when the dialog open state changes.
+</ParamField>
+
+### Command.Input
+
+Inherits all props from the cmdk Command.Input component.
+
+<ParamField path="placeholder" type="string">
+  Placeholder text for the search input.
+</ParamField>
+
+<ParamField path="value" type="string">
+  Controlled input value.
+</ParamField>
+
+<ParamField path="onValueChange" type="(value: string) => void">
+  Callback fired when the input value changes.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the input.
+</ParamField>
+
+### Command.List
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the list container.
+</ParamField>
+
+### Command.Empty
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the empty state.
+</ParamField>
+
+### Command.Group
+
+<ParamField path="heading" type="ReactNode">
+  The heading text or element for the group.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the group.
+</ParamField>
+
+### Command.Item
+
+<ParamField path="value" type="string">
+  The search value for this item. If not provided, children text content is used.
+</ParamField>
+
+<ParamField path="onSelect" type="(value: string) => void">
+  Callback fired when the item is selected.
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  When true, the item cannot be selected.
+</ParamField>
+
+<ParamField path="keywords" type="string[]">
+  Additional keywords to match against when searching.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the item.
+</ParamField>
+
+### Command.Separator
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the separator.
+</ParamField>
+
+### Command.Shortcut
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the shortcut display.
+</ParamField>
+
+## Usage
+
+### Basic command menu
+
+```jsx
+import { Command } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Command>
+      <Command.Input placeholder="Type a command or search..." />
+      <Command.List>
+        <Command.Empty>No results found.</Command.Empty>
+        
+        <Command.Group heading="Suggestions">
+          <Command.Item>Calendar</Command.Item>
+          <Command.Item>Search Emoji</Command.Item>
+          <Command.Item>Calculator</Command.Item>
+        </Command.Group>
+        
+        <Command.Separator />
+        
+        <Command.Group heading="Settings">
+          <Command.Item>Profile</Command.Item>
+          <Command.Item>Billing</Command.Item>
+          <Command.Item>Settings</Command.Item>
+        </Command.Group>
+      </Command.List>
+    </Command>
+  );
+}
+```
+
+### Command palette dialog
+
+```jsx
+import { Command } from '@raystack/apsara';
+import { useState, useEffect } from 'react';
+
+function App() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const down = (e) => {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((open) => !open);
+      }
+    };
+
+    document.addEventListener('keydown', down);
+    return () => document.removeEventListener('keydown', down);
+  }, []);
+
+  return (
+    <Command.Dialog open={open} onOpenChange={setOpen}>
+      <Command.Input placeholder="Type a command or search..." />
+      <Command.List>
+        <Command.Empty>No results found.</Command.Empty>
+        
+        <Command.Group heading="Actions">
+          <Command.Item onSelect={() => console.log('New File')}>
+            New File
+            <Command.Shortcut>⌘N</Command.Shortcut>
+          </Command.Item>
+          <Command.Item onSelect={() => console.log('New Folder')}>
+            New Folder
+            <Command.Shortcut>⌘⇧N</Command.Shortcut>
+          </Command.Item>
+        </Command.Group>
+      </Command.List>
+    </Command.Dialog>
+  );
+}
+```
+
+### With icons and shortcuts
+
+```jsx
+import { Command } from '@raystack/apsara';
+import {
+  FileIcon,
+  MagnifyingGlassIcon,
+  GearIcon,
+  PersonIcon
+} from '@radix-ui/react-icons';
+
+function App() {
+  return (
+    <Command>
+      <Command.Input placeholder="Search..." />
+      <Command.List>
+        <Command.Empty>No results found.</Command.Empty>
+        
+        <Command.Group heading="Quick Actions">
+          <Command.Item>
+            <FileIcon className="mr-2" />
+            New Document
+            <Command.Shortcut>⌘N</Command.Shortcut>
+          </Command.Item>
+          <Command.Item>
+            <MagnifyingGlassIcon className="mr-2" />
+            Search Files
+            <Command.Shortcut>⌘F</Command.Shortcut>
+          </Command.Item>
+        </Command.Group>
+        
+        <Command.Separator />
+        
+        <Command.Group heading="Account">
+          <Command.Item>
+            <PersonIcon className="mr-2" />
+            Profile
+          </Command.Item>
+          <Command.Item>
+            <GearIcon className="mr-2" />
+            Settings
+          </Command.Item>
+        </Command.Group>
+      </Command.List>
+    </Command>
+  );
+}
+```
+
+### With custom filtering
+
+```jsx
+import { Command } from '@raystack/apsara';
+import { useState } from 'react';
+
+function App() {
+  const [search, setSearch] = useState('');
+  
+  // Custom filter logic
+  const filteredItems = items.filter(item =>
+    item.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <Command shouldFilter={false}>
+      <Command.Input
+        placeholder="Search..."
+        value={search}
+        onValueChange={setSearch}
+      />
+      <Command.List>
+        {filteredItems.length === 0 && (
+          <Command.Empty>No results found.</Command.Empty>
+        )}
+        
+        {filteredItems.map((item) => (
+          <Command.Item key={item.id} value={item.id}>
+            {item.title}
+          </Command.Item>
+        ))}
+      </Command.List>
+    </Command>
+  );
+}
+```
+
+### Navigation command palette
+
+```jsx
+import { Command } from '@raystack/apsara';
+import { useRouter } from 'next/navigation';
+
+function App() {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+
+  const handleSelect = (callback) => {
+    setOpen(false);
+    callback();
+  };
+
+  return (
+    <Command.Dialog open={open} onOpenChange={setOpen}>
+      <Command.Input placeholder="Go to..." />
+      <Command.List>
+        <Command.Empty>No pages found.</Command.Empty>
+        
+        <Command.Group heading="Pages">
+          <Command.Item
+            onSelect={() => handleSelect(() => router.push('/dashboard'))}
+          >
+            Dashboard
+          </Command.Item>
+          <Command.Item
+            onSelect={() => handleSelect(() => router.push('/projects'))}
+          >
+            Projects
+          </Command.Item>
+          <Command.Item
+            onSelect={() => handleSelect(() => router.push('/team'))}
+          >
+            Team
+          </Command.Item>
+        </Command.Group>
+        
+        <Command.Group heading="Settings">
+          <Command.Item
+            onSelect={() => handleSelect(() => router.push('/settings'))}
+          >
+            Settings
+          </Command.Item>
+          <Command.Item
+            onSelect={() => handleSelect(() => router.push('/profile'))}
+          >
+            Profile
+          </Command.Item>
+        </Command.Group>
+      </Command.List>
+    </Command.Dialog>
+  );
+}
+```
+
+### With keywords for better search
+
+```jsx
+import { Command } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Command>
+      <Command.Input placeholder="Search commands..." />
+      <Command.List>
+        <Command.Empty>No results found.</Command.Empty>
+        
+        <Command.Group heading="Commands">
+          <Command.Item keywords={['create', 'add', 'plus']}>
+            New File
+          </Command.Item>
+          <Command.Item keywords={['find', 'query', 'lookup']}>
+            Search
+          </Command.Item>
+          <Command.Item keywords={['preferences', 'config', 'options']}>
+            Settings
+          </Command.Item>
+        </Command.Group>
+      </Command.List>
+    </Command>
+  );
+}
+```
+
+### Disabled items
+
+```jsx
+import { Command } from '@raystack/apsara';
+
+function App() {
+  return (
+    <Command>
+      <Command.Input placeholder="Search..." />
+      <Command.List>
+        <Command.Group heading="Features">
+          <Command.Item>Available Feature</Command.Item>
+          <Command.Item disabled>
+            Coming Soon
+          </Command.Item>
+          <Command.Item disabled>
+            Premium Feature (Upgrade Required)
+          </Command.Item>
+        </Command.Group>
+      </Command.List>
+    </Command>
+  );
+}
+```
+
+## Accessibility
+
+- Built on cmdk (Command Menu) library with full keyboard support
+- Keyboard navigation:
+  - Arrow up/down to navigate items
+  - Enter to select an item
+  - Escape to close (when in dialog)
+  - Tab/Shift+Tab for natural focus flow
+- Automatic filtering with fuzzy search
+- Screen reader friendly with proper ARIA attributes
+- Focus management handles list updates during search
+- Search input automatically focused when opened
+- Visual indicator shows selected/focused items
+
+## Styling customization
+
+Customize the command component using className props:
+
+```jsx
+<Command className="custom-command">
+  <Command.Input className="custom-input" />
+  <Command.List className="custom-list">
+    <Command.Empty className="custom-empty">
+      No results
+    </Command.Empty>
+    
+    <Command.Group className="custom-group" heading="Actions">
+      <Command.Item className="custom-item">
+        Action
+        <Command.Shortcut className="custom-shortcut">
+          ⌘K
+        </Command.Shortcut>
+      </Command.Item>
+    </Command.Group>
+    
+    <Command.Separator className="custom-separator" />
+  </Command.List>
+</Command>
+```
+
+The component uses CSS modules internally with the following base styles:
+- Search input includes a magnifying glass icon
+- Items have hover and selected states
+- Keyboard shortcuts are right-aligned with subtle styling
+- Empty state is centered with muted text
+- Dialog variant has specific padding and overflow handling

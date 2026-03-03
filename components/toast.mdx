@@ -1,0 +1,310 @@
+---
+title: Toast
+description: A non-blocking notification that appears temporarily to provide feedback about an operation.
+---
+
+## Import
+
+```tsx
+import { toast, ToastContainer } from '@raystack/apsara';
+```
+
+## Setup
+
+Add the `ToastContainer` component to your app root:
+
+```tsx
+function App() {
+  return (
+    <>
+      <ToastContainer />
+      {/* Your app content */}
+    </>
+  );
+}
+```
+
+## Usage
+
+### Basic toast
+
+```tsx
+import { toast } from '@raystack/apsara';
+
+function MyComponent() {
+  return (
+    <button onClick={() => toast('Hello World')}>
+      Show Toast
+    </button>
+  );
+}
+```
+
+### Toast types
+
+```tsx
+// Success toast
+toast.success('Operation completed successfully!');
+
+// Error toast
+toast.error('Something went wrong!');
+
+// Warning toast
+toast.warning('Please be careful!');
+
+// Info toast
+toast.info('Here is some information.');
+
+// Loading toast
+toast.loading('Processing...');
+```
+
+### Promise-based toast
+
+```tsx
+const myPromise = fetch('/api/data');
+
+toast.promise(myPromise, {
+  loading: 'Loading data...',
+  success: 'Data loaded successfully!',
+  error: 'Failed to load data',
+});
+```
+
+### With custom duration
+
+```tsx
+toast('This will disappear in 5 seconds', {
+  duration: 5000,
+});
+```
+
+### With description
+
+```tsx
+toast('Upload Complete', {
+  description: 'Your file has been uploaded successfully.',
+});
+```
+
+### With action button
+
+```tsx
+toast('File deleted', {
+  action: {
+    label: 'Undo',
+    onClick: () => console.log('Undo clicked'),
+  },
+});
+```
+
+### Dismissing toasts
+
+```tsx
+// Dismiss a specific toast
+const toastId = toast('This is a toast');
+toast.dismiss(toastId);
+
+// Dismiss all toasts
+toast.dismiss();
+```
+
+### With custom styling
+
+```tsx
+toast('Custom styled toast', {
+  style: {
+    background: 'red',
+    color: 'white',
+  },
+  className: 'my-custom-toast',
+});
+```
+
+### With callbacks
+
+```tsx
+toast('Toast with callbacks', {
+  onDismiss: () => console.log('Toast dismissed'),
+  onAutoClose: () => console.log('Toast auto-closed'),
+});
+```
+
+### JSX content
+
+```tsx
+toast(
+  <div>
+    <strong>Custom Content</strong>
+    <p>You can use JSX in toasts</p>
+  </div>
+);
+```
+
+## Loading states
+
+### Simple loading
+
+```tsx
+const loadingToast = toast.loading('Processing...');
+
+// Later, update to success
+toast.success('Done!', { id: loadingToast });
+```
+
+### Loading with promise
+
+```tsx
+const promise = new Promise((resolve) => {
+  setTimeout(() => resolve('Success!'), 2000);
+});
+
+toast.promise(promise, {
+  loading: 'Loading...',
+  success: (data) => `${data}`,
+  error: 'Error',
+});
+```
+
+## API reference
+
+### toast()
+
+The main function to display toast notifications.
+
+```tsx
+toast(message: string | ReactNode, options?: ToastOptions)
+```
+
+<ParamField path="message" type="string | React.ReactNode" required>
+  The content to display in the toast. Can be a string or JSX element.
+</ParamField>
+
+<ParamField path="options" type="ToastOptions">
+  Configuration options for the toast.
+</ParamField>
+
+### Toast options
+
+<ParamField path="duration" type="number" default="4000">
+  Time in milliseconds before the toast auto-dismisses. Set to Infinity to prevent auto-dismiss.
+</ParamField>
+
+<ParamField path="description" type="string">
+  Additional description text displayed below the main message.
+</ParamField>
+
+<ParamField path="action" type="{ label: string; onClick: () => void }">
+  Action button configuration with label and click handler.
+</ParamField>
+
+<ParamField path="id" type="string | number">
+  Custom identifier for the toast. Useful for updating or dismissing specific toasts.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the toast.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the toast.
+</ParamField>
+
+<ParamField path="onDismiss" type="() => void">
+  Callback function called when the toast is dismissed manually.
+</ParamField>
+
+<ParamField path="onAutoClose" type="() => void">
+  Callback function called when the toast auto-closes after the duration.
+</ParamField>
+
+### toast.success()
+
+Displays a success toast.
+
+```tsx
+toast.success(message: string | ReactNode, options?: ToastOptions)
+```
+
+### toast.error()
+
+Displays an error toast.
+
+```tsx
+toast.error(message: string | ReactNode, options?: ToastOptions)
+```
+
+### toast.warning()
+
+Displays a warning toast.
+
+```tsx
+toast.warning(message: string | ReactNode, options?: ToastOptions)
+```
+
+### toast.info()
+
+Displays an info toast.
+
+```tsx
+toast.info(message: string | ReactNode, options?: ToastOptions)
+```
+
+### toast.loading()
+
+Displays a loading toast.
+
+```tsx
+toast.loading(message: string | ReactNode, options?: ToastOptions)
+```
+
+### toast.promise()
+
+Displays a toast that updates based on promise state.
+
+```tsx
+toast.promise(
+  promise: Promise<T>,
+  options: {
+    loading: string | ReactNode;
+    success: string | ReactNode | ((data: T) => string | ReactNode);
+    error: string | ReactNode | ((error: Error) => string | ReactNode);
+  }
+)
+```
+
+### toast.dismiss()
+
+Dismisses one or all toasts.
+
+```tsx
+toast.dismiss(id?: string | number)
+```
+
+<ParamField path="id" type="string | number">
+  The ID of the toast to dismiss. If omitted, all toasts will be dismissed.
+</ParamField>
+
+### ToastContainer
+
+Container component that renders the toast notifications.
+
+<ParamField path="position" type="'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'">
+  Position where toasts appear on the screen.
+</ParamField>
+
+<ParamField path="theme" type="'light' | 'dark' | 'system'">
+  Color theme for toasts. Defaults to system preference.
+</ParamField>
+
+<ParamField path="richColors" type="boolean">
+  Whether to use rich colors for different toast types.
+</ParamField>
+
+<ParamField path="expand" type="boolean">
+  Whether toasts expand to show full content on hover.
+</ParamField>
+
+<ParamField path="visibleToasts" type="number" default="3">
+  Maximum number of toasts visible at once.
+</ParamField>

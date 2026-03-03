@@ -1,0 +1,199 @@
+---
+title: Theme provider
+description: A provider component for managing theme state and appearance across the application.
+---
+
+The ThemeProvider component manages theme state including dark mode, light mode, and system preference. It includes the ThemeSwitcher component for toggling themes and the useTheme hook for accessing theme state.
+
+## Usage
+
+```jsx
+import { ThemeProvider } from '@raystack/apsara';
+
+function App() {
+  return (
+    <ThemeProvider>
+      {/* Your app content */}
+    </ThemeProvider>
+  );
+}
+```
+
+## Theme configuration
+
+```jsx
+import { ThemeProvider } from '@raystack/apsara';
+
+<ThemeProvider
+  defaultTheme="dark"
+  storageKey="my-app-theme"
+  style="modern"
+  accentColor="indigo"
+  grayColor="slate"
+>
+  {/* Your app */}
+</ThemeProvider>
+```
+
+## Custom themes
+
+```jsx
+<ThemeProvider
+  themes={['light', 'dark', 'custom']}
+  defaultTheme="light"
+  enableSystem={false}
+>
+  {/* Your app */}
+</ThemeProvider>
+```
+
+## ThemeSwitcher
+
+A pre-built component for toggling between light and dark themes.
+
+```jsx
+import { ThemeProvider, ThemeSwitcher } from '@raystack/apsara';
+
+function App() {
+  return (
+    <ThemeProvider>
+      <header>
+        <ThemeSwitcher size={24} />
+      </header>
+      {/* Your app content */}
+    </ThemeProvider>
+  );
+}
+```
+
+## useTheme hook
+
+Access and control theme state from any component.
+
+```jsx
+import { useTheme } from '@raystack/apsara';
+
+function MyComponent() {
+  const { theme, setTheme, resolvedTheme, systemTheme } = useTheme();
+
+  return (
+    <div>
+      <p>Current theme: {theme}</p>
+      <p>Resolved theme: {resolvedTheme}</p>
+      <p>System theme: {systemTheme}</p>
+      
+      <button onClick={() => setTheme('light')}>Light</button>
+      <button onClick={() => setTheme('dark')}>Dark</button>
+      <button onClick={() => setTheme('system')}>System</button>
+    </div>
+  );
+}
+```
+
+## Forced theme
+
+Force a specific theme for certain pages or components.
+
+```jsx
+<ThemeProvider forcedTheme="dark">
+  {/* This section will always use dark theme */}
+</ThemeProvider>
+```
+
+## Disable transitions
+
+```jsx
+<ThemeProvider disableTransitionOnChange>
+  {/* Theme changes will not trigger CSS transitions */}
+</ThemeProvider>
+```
+
+## API reference
+
+### ThemeProvider
+
+<ParamField path="defaultTheme" type="string" default="system">
+  The default theme to use. If enableSystem is false, defaults to 'light'.
+</ParamField>
+
+<ParamField path="themes" type="string[]" default="['light', 'dark']">
+  List of all available theme names.
+</ParamField>
+
+<ParamField path="forcedTheme" type="string">
+  Force a specific theme for the current page or component tree.
+</ParamField>
+
+<ParamField path="enableSystem" type="boolean" default="true">
+  Whether to enable system theme preference (prefers-color-scheme).
+</ParamField>
+
+<ParamField path="enableColorScheme" type="boolean" default="true">
+  Whether to indicate to browsers which color scheme is used for built-in UI elements.
+</ParamField>
+
+<ParamField path="disableTransitionOnChange" type="boolean" default="false">
+  Disable all CSS transitions when switching themes to prevent flickering.
+</ParamField>
+
+<ParamField path="storageKey" type="string" default="theme">
+  Key used to store theme setting in localStorage.
+</ParamField>
+
+<ParamField path="attribute" type="string | 'class'" default="data-theme">
+  HTML attribute modified based on the active theme. Accepts 'class' or any data attribute like 'data-theme', 'data-mode', etc.
+</ParamField>
+
+<ParamField path="value" type="object">
+  Mapping of theme name to HTML attribute value. Object where key is theme name and value is the attribute value.
+</ParamField>
+
+<ParamField path="style" type="'modern' | 'traditional'" default="modern">
+  Style variant of the theme. Affects radius and font properties.
+</ParamField>
+
+<ParamField path="accentColor" type="'indigo' | 'orange' | 'mint'" default="indigo">
+  Accent color for the theme.
+</ParamField>
+
+<ParamField path="grayColor" type="'gray' | 'mauve' | 'slate'" default="gray">
+  Gray color variant for the theme.
+</ParamField>
+
+<ParamField path="nonce" type="string">
+  Nonce string to pass to the inline script for CSP headers.
+</ParamField>
+
+### ThemeSwitcher
+
+<ParamField path="size" type="number" default="30">
+  Size of the theme toggle icon in pixels.
+</ParamField>
+
+### useTheme
+
+Returns an object with the following properties:
+
+<ParamField path="theme" type="string">
+  The active theme name.
+</ParamField>
+
+<ParamField path="setTheme" type="(theme: string) => void">
+  Function to update the theme.
+</ParamField>
+
+<ParamField path="themes" type="string[]">
+  List of all available theme names.
+</ParamField>
+
+<ParamField path="forcedTheme" type="string | undefined">
+  The forced theme for the current page, if any.
+</ParamField>
+
+<ParamField path="resolvedTheme" type="string">
+  If enableSystem is true and the active theme is 'system', this returns the resolved system preference ('dark' or 'light'). Otherwise, identical to theme.
+</ParamField>
+
+<ParamField path="systemTheme" type="'dark' | 'light' | undefined">
+  If enableSystem is true, returns the system theme preference, regardless of the active theme.
+</ParamField>

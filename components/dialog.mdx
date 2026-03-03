@@ -1,0 +1,274 @@
+---
+title: Dialog
+description: A modal dialog component that displays content in an overlay with backdrop, supporting nested dialogs and keyboard navigation.
+---
+
+## Overview
+
+Dialog is a modal component that displays content in a centered overlay with a backdrop. It supports nested dialogs with automatic scaling animations, focus trapping, and keyboard controls.
+
+## Basic usage
+
+```jsx
+import { Dialog } from '@raystack/apsara';
+
+<Dialog>
+  <Dialog.Trigger asChild>
+    <button>Open dialog</button>
+  </Dialog.Trigger>
+  
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>Dialog title</Dialog.Title>
+    </Dialog.Header>
+    
+    <Dialog.Body>
+      <Dialog.Description>
+        This is the dialog content.
+      </Dialog.Description>
+    </Dialog.Body>
+    
+    <Dialog.Footer>
+      <Dialog.Close asChild>
+        <button>Cancel</button>
+      </Dialog.Close>
+      <button>Confirm</button>
+    </Dialog.Footer>
+  </Dialog.Content>
+</Dialog>
+```
+
+## Components
+
+### Dialog (Root)
+
+The root component that manages dialog state and context. Based on `@base-ui/react` Dialog.Root.
+
+<ParamField path="open" type="boolean">
+  Controls the open state of the dialog (controlled mode).
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean">
+  The initial open state in uncontrolled mode.
+</ParamField>
+
+<ParamField path="onOpenChange" type="(open: boolean) => void">
+  Callback fired when the open state changes.
+</ParamField>
+
+<ParamField path="modal" type="boolean" default="true">
+  Whether the dialog is modal (blocks interaction with content behind it).
+</ParamField>
+
+### Dialog.Trigger
+
+A button that opens the dialog when clicked.
+
+<ParamField path="asChild" type="boolean">
+  When true, merges props with the immediate child element instead of rendering a button.
+</ParamField>
+
+### Dialog.Content
+
+The content container rendered in a portal with backdrop and viewport.
+
+<ParamField path="showCloseButton" type="boolean" default="true">
+  Whether to show the close button in the top-right corner.
+</ParamField>
+
+<ParamField path="overlay" type="object">
+  Props for the backdrop overlay, including a `blur` property to enable backdrop blur.
+</ParamField>
+
+<ParamField path="width" type="string | number">
+  Custom width for the dialog content.
+</ParamField>
+
+<ParamField path="showNestedAnimation" type="boolean" default="true">
+  Toggles nested dialog animation (scaling and translation) when dialogs are stacked.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes for the dialog popup.
+</ParamField>
+
+### Dialog.Header
+
+A flex container for the dialog header, typically containing the title and description.
+
+### Dialog.Title
+
+The accessible title element for the dialog. Required for accessibility.
+
+### Dialog.Description
+
+An optional description element that provides additional context about the dialog.
+
+### Dialog.Body
+
+A flex column container for the main dialog content.
+
+### Dialog.Footer
+
+A flex container aligned to the right for action buttons.
+
+### Dialog.Close
+
+A button that closes the dialog when clicked.
+
+<ParamField path="asChild" type="boolean">
+  When true, merges props with the immediate child element instead of rendering a button.
+</ParamField>
+
+### Dialog.CloseButton
+
+A styled close button with an X icon, automatically positioned in the top-right corner.
+
+## Usage examples
+
+### Custom width dialog
+
+```jsx
+<Dialog>
+  <Dialog.Trigger asChild>
+    <button>Open wide dialog</button>
+  </Dialog.Trigger>
+  
+  <Dialog.Content width={800}>
+    <Dialog.Header>
+      <Dialog.Title>Wide dialog</Dialog.Title>
+    </Dialog.Header>
+    <Dialog.Body>
+      Content with custom width.
+    </Dialog.Body>
+  </Dialog.Content>
+</Dialog>
+```
+
+### Dialog with blurred backdrop
+
+```jsx
+<Dialog>
+  <Dialog.Trigger asChild>
+    <button>Open dialog</button>
+  </Dialog.Trigger>
+  
+  <Dialog.Content overlay={{ blur: true }}>
+    <Dialog.Header>
+      <Dialog.Title>Blurred background</Dialog.Title>
+    </Dialog.Header>
+    <Dialog.Body>
+      The backdrop behind this dialog is blurred.
+    </Dialog.Body>
+  </Dialog.Content>
+</Dialog>
+```
+
+### Nested dialogs
+
+```jsx
+<Dialog>
+  <Dialog.Trigger asChild>
+    <button>Open first dialog</button>
+  </Dialog.Trigger>
+  
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>First dialog</Dialog.Title>
+    </Dialog.Header>
+    <Dialog.Body>
+      <Dialog>
+        <Dialog.Trigger asChild>
+          <button>Open second dialog</button>
+        </Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Second dialog</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>
+            Nested dialog with automatic scaling animation.
+          </Dialog.Body>
+        </Dialog.Content>
+      </Dialog>
+    </Dialog.Body>
+  </Dialog.Content>
+</Dialog>
+```
+
+### Controlled dialog
+
+```jsx
+function ControlledDialog() {
+  const [open, setOpen] = useState(false);
+  
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog.Trigger asChild>
+        <button>Open dialog</button>
+      </Dialog.Trigger>
+      
+      <Dialog.Content>
+        <Dialog.Header>
+          <Dialog.Title>Controlled dialog</Dialog.Title>
+        </Dialog.Header>
+        <Dialog.Body>
+          This dialog's state is controlled externally.
+        </Dialog.Body>
+        <Dialog.Footer>
+          <button onClick={() => setOpen(false)}>Close</button>
+        </Dialog.Footer>
+      </Dialog.Content>
+    </Dialog>
+  );
+}
+```
+
+### Without close button
+
+```jsx
+<Dialog>
+  <Dialog.Trigger asChild>
+    <button>Open dialog</button>
+  </Dialog.Trigger>
+  
+  <Dialog.Content showCloseButton={false}>
+    <Dialog.Header>
+      <Dialog.Title>No close button</Dialog.Title>
+    </Dialog.Header>
+    <Dialog.Body>
+      Use the footer buttons to close.
+    </Dialog.Body>
+    <Dialog.Footer>
+      <Dialog.Close asChild>
+        <button>Close</button>
+      </Dialog.Close>
+    </Dialog.Footer>
+  </Dialog.Content>
+</Dialog>
+```
+
+## Accessibility features
+
+- **Focus trap**: Focus is trapped within the dialog when open
+- **ESC to close**: Press Escape to close the dialog
+- **Focus return**: Focus returns to the trigger element when closed
+- **ARIA labels**: Proper ARIA attributes for screen readers
+- **Close button**: Includes accessible `aria-label="Close dialog"`
+- **Modal behavior**: Blocks interaction with content behind the dialog
+
+## Trigger patterns
+
+The `Dialog.Trigger` component can be used in two ways:
+
+1. **Default button**: Renders a button element when no children are provided or `asChild` is false
+2. **Custom trigger**: Use `asChild` prop to merge dialog trigger functionality with your own button component
+
+```jsx
+{/* Default button */}
+<Dialog.Trigger>Open</Dialog.Trigger>
+
+{/* Custom trigger */}
+<Dialog.Trigger asChild>
+  <button className="custom-button">Open</button>
+</Dialog.Trigger>
+```

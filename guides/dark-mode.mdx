@@ -1,0 +1,417 @@
+---
+title: Dark mode
+description: Implement dark mode in your Apsara application with ThemeProvider
+---
+
+Apsara includes built-in dark mode support with automatic theme switching, system preference detection, and smooth transitions between themes.
+
+## Quick start
+
+Implement dark mode in three simple steps:
+
+<Steps>
+  <Step title="Import the stylesheet">
+    Import Apsara's CSS file which includes both light and dark theme variables:
+
+    ```jsx
+    import "@raystack/apsara/style.css";
+    ```
+  </Step>
+
+  <Step title="Wrap your app with ThemeProvider">
+    Add the ThemeProvider component at the root of your application:
+
+    ```jsx
+    import { ThemeProvider } from "@raystack/apsara";
+
+    function App() {
+      return (
+        <ThemeProvider>
+          <YourApp />
+        </ThemeProvider>
+      );
+    }
+    ```
+  </Step>
+
+  <Step title="Add a theme switcher">
+    Use the ThemeSwitcher component to let users toggle themes:
+
+    ```jsx
+    import { ThemeSwitcher } from "@raystack/apsara";
+
+    function Header() {
+      return (
+        <header>
+          <nav>{/* Your navigation */}</nav>
+          <ThemeSwitcher size={24} />
+        </header>
+      );
+    }
+    ```
+  </Step>
+</Steps>
+
+## ThemeProvider
+
+The `ThemeProvider` manages theme state, persists user preferences, and handles system theme detection.
+
+### Basic usage
+
+```jsx
+import { ThemeProvider } from "@raystack/apsara";
+
+function App() {
+  return (
+    <ThemeProvider
+      defaultTheme="system"
+      enableSystem
+      storageKey="apsara-theme"
+    >
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
+
+### Props
+
+<ResponseField name="themes" type="string[]" default='["light", "dark"]'>
+  List of available theme names.
+</ResponseField>
+
+<ResponseField name="defaultTheme" type="string" default='"light"'>
+  Default theme name. Use `"system"` to respect user's system preference.
+</ResponseField>
+
+<ResponseField name="enableSystem" type="boolean" default="true">
+  Enable system theme detection using `prefers-color-scheme`.
+</ResponseField>
+
+<ResponseField name="storageKey" type="string" default='"theme"'>
+  LocalStorage key for persisting theme preference.
+</ResponseField>
+
+<ResponseField name="attribute" type="string" default='"data-theme"'>
+  HTML attribute to set on `documentElement`. Use `"class"` for class-based theming.
+</ResponseField>
+
+<ResponseField name="enableColorScheme" type="boolean" default="true">
+  Update the `color-scheme` CSS property for native form elements.
+</ResponseField>
+
+<ResponseField name="disableTransitionOnChange" type="boolean" default="false">
+  Disable CSS transitions when switching themes to prevent flash.
+</ResponseField>
+
+<ResponseField name="forcedTheme" type="string">
+  Force a specific theme (useful for component previews or documentation).
+</ResponseField>
+
+<ResponseField name="style" type="'modern' | 'traditional'" default='"modern"'>
+  Style variant affecting border radius and typography.
+</ResponseField>
+
+<ResponseField name="accentColor" type="'indigo' | 'orange' | 'mint'" default='"indigo"'>
+  Accent color for interactive elements.
+</ResponseField>
+
+<ResponseField name="grayColor" type="'gray' | 'mauve' | 'slate'" default='"gray"'>
+  Gray color variant for neutral elements.
+</ResponseField>
+
+## useTheme hook
+
+Access and control the theme programmatically:
+
+```jsx
+import { useTheme } from "@raystack/apsara";
+
+function ThemeControls() {
+  const { theme, setTheme, resolvedTheme, systemTheme } = useTheme();
+
+  return (
+    <div>
+      <p>Current theme: {theme}</p>
+      <p>Resolved theme: {resolvedTheme}</p>
+      <p>System preference: {systemTheme}</p>
+      
+      <button onClick={() => setTheme("light")}>Light</button>
+      <button onClick={() => setTheme("dark")}>Dark</button>
+      <button onClick={() => setTheme("system")}>System</button>
+    </div>
+  );
+}
+```
+
+### Return values
+
+<ResponseField name="theme" type="string">
+  Current active theme name (e.g., `"light"`, `"dark"`, or `"system"`).
+</ResponseField>
+
+<ResponseField name="setTheme" type="(theme: string) => void">
+  Function to update the theme.
+</ResponseField>
+
+<ResponseField name="resolvedTheme" type="string">
+  The actual rendered theme. If theme is `"system"`, this returns `"light"` or `"dark"` based on system preference.
+</ResponseField>
+
+<ResponseField name="systemTheme" type="'light' | 'dark' | undefined">
+  System's theme preference (only available when `enableSystem` is true).
+</ResponseField>
+
+<ResponseField name="themes" type="string[]">
+  List of available theme names.
+</ResponseField>
+
+<ResponseField name="forcedTheme" type="string | undefined">
+  Forced theme if one is set.
+</ResponseField>
+
+## ThemeSwitcher component
+
+A pre-built toggle button for switching between light and dark themes:
+
+```jsx
+import { ThemeSwitcher } from "@raystack/apsara";
+
+function Navigation() {
+  return (
+    <nav>
+      <ThemeSwitcher size={30} />
+    </nav>
+  );
+}
+```
+
+The component automatically:
+- Shows a sun icon in dark mode
+- Shows a moon icon in light mode
+- Toggles between light and dark on click
+- Uses Radix UI icons for crisp rendering
+
+### Props
+
+<ResponseField name="size" type="number" default="30">
+  Size of the icon in pixels.
+</ResponseField>
+
+## Custom theme switcher
+
+Build your own theme switcher using the `useTheme` hook:
+
+```jsx
+import { useTheme } from "@raystack/apsara";
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+
+function CustomThemeSwitcher() {
+  const { theme, setTheme } = useTheme();
+  
+  return (
+    <button
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      aria-label="Toggle theme"
+    >
+      {theme === "dark" ? (
+        <SunIcon width={20} height={20} />
+      ) : (
+        <MoonIcon width={20} height={20} />
+      )}
+    </button>
+  );
+}
+```
+
+## Multi-theme support
+
+Support more than two themes:
+
+```jsx
+import { ThemeProvider, useTheme } from "@raystack/apsara";
+
+function App() {
+  return (
+    <ThemeProvider
+      themes={["light", "dark", "midnight", "sunset"]}
+      defaultTheme="light"
+    >
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+
+function ThemeSelector() {
+  const { theme, setTheme, themes } = useTheme();
+  
+  return (
+    <select value={theme} onChange={(e) => setTheme(e.target.value)}>
+      {themes.map((t) => (
+        <option key={t} value={t}>
+          {t}
+        </option>
+      ))}
+    </select>
+  );
+}
+```
+
+Define additional theme CSS:
+
+```css
+html[data-theme="midnight"] {
+  --foreground-base: #e0e7ff;
+  --background-base: #0f0f23;
+  --border-base: #1e1e3f;
+}
+
+html[data-theme="sunset"] {
+  --foreground-base: #1f2937;
+  --background-base: #fff7ed;
+  --border-base: #fed7aa;
+}
+```
+
+## Server-side rendering
+
+The ThemeProvider includes a script that prevents theme flashing on page load:
+
+```jsx
+import { ThemeProvider } from "@raystack/apsara";
+
+function App() {
+  return (
+    <ThemeProvider
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
+
+The provider automatically injects a blocking script in the `<head>` that:
+1. Reads the theme from localStorage
+2. Detects system preference if theme is "system"
+3. Applies the theme before React hydrates
+4. Prevents flash of wrong theme
+
+<Note>
+The `disableTransitionOnChange` prop prevents CSS transitions during theme changes, which is especially useful on initial page load.
+</Note>
+
+## Styling for dark mode
+
+Apsara's CSS automatically adapts based on the `data-theme` attribute:
+
+```css
+/* Light theme (default) */
+:root {
+  --foreground-base: #3c4347;
+  --background-base: #fbfcfd;
+}
+
+/* Dark theme */
+html[data-theme="dark"] {
+  --foreground-base: #ecedee;
+  --background-base: #151718;
+}
+```
+
+In your custom styles:
+
+```css
+.my-component {
+  /* These automatically adapt to the theme */
+  color: var(--foreground-base);
+  background-color: var(--background-base);
+  border-color: var(--border-base);
+}
+
+/* Or use attribute selectors for theme-specific styles */
+html[data-theme="dark"] .my-component {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+```
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Enable system preference by default">
+    Most users prefer apps that respect their system theme. Set `defaultTheme="system"` and `enableSystem={true}` for the best user experience.
+  </Accordion>
+
+  <Accordion title="Persist user choice">
+    The default `storageKey` saves the theme to localStorage. Users won't have to reselect their preference on each visit.
+  </Accordion>
+
+  <Accordion title="Test color contrast">
+    Ensure sufficient contrast in both themes. Aim for WCAG AA compliance (4.5:1 for normal text, 3:1 for large text).
+  </Accordion>
+
+  <Accordion title="Disable transitions on mount">
+    Use `disableTransitionOnChange` to prevent the flash of animations when the page first loads.
+  </Accordion>
+
+  <Accordion title="Provide visual feedback">
+    Make theme changes obvious with clear visual differences, not just subtle color shifts.
+  </Accordion>
+</AccordionGroup>
+
+## Examples
+
+### Next.js app
+
+```jsx app/layout.tsx
+import { ThemeProvider } from "@raystack/apsara";
+import "@raystack/apsara/style.css";
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider
+          attribute="data-theme"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+### Vite/React app
+
+```jsx main.tsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { ThemeProvider } from "@raystack/apsara";
+import "@raystack/apsara/style.css";
+import App from "./App";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <ThemeProvider defaultTheme="system" enableSystem>
+      <App />
+    </ThemeProvider>
+  </React.StrictMode>
+);
+```
+
+## Related resources
+
+<CardGroup cols={2}>
+  <Card title="Theming" icon="palette" href="/guides/theming">
+    Learn about CSS variables and design tokens
+  </Card>
+  <Card title="Styling" icon="paintbrush" href="/guides/styling">
+    Understand the vanilla CSS approach
+  </Card>
+</CardGroup>

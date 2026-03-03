@@ -1,0 +1,130 @@
+---
+title: Indicator
+description: A visual indicator that displays status, notifications, or presence information, typically shown as a badge or dot.
+---
+
+## Import
+
+```tsx
+import { Indicator } from '@raystack/apsara';
+```
+
+## Usage
+
+```tsx
+<Indicator />
+```
+
+## With label
+
+```tsx
+<Indicator label="3" />
+
+<Indicator label="99+" />
+
+<Indicator label="New" />
+```
+
+## Variants
+
+```tsx
+<Indicator variant="accent" />
+
+<Indicator variant="warning" />
+
+<Indicator variant="danger" />
+
+<Indicator variant="success" />
+
+<Indicator variant="neutral" />
+```
+
+## On elements
+
+```tsx
+import { Avatar } from '@raystack/apsara';
+
+<Indicator variant="success">
+  <Avatar src="/user.jpg" alt="User" />
+</Indicator>
+```
+
+## With buttons
+
+```tsx
+import { Button } from '@raystack/apsara';
+
+<Indicator label="5" variant="danger">
+  <Button>Notifications</Button>
+</Indicator>
+```
+
+## Online status
+
+```tsx
+<Indicator variant="success">
+  <Avatar src="/user.jpg" alt="John Doe" />
+</Indicator>
+
+<Indicator variant="neutral">
+  <Avatar src="/user2.jpg" alt="Jane Smith" />
+</Indicator>
+```
+
+## Notification count
+
+```tsx
+<Indicator label="12" variant="danger">
+  <IconButton>
+    <BellIcon />
+  </IconButton>
+</Indicator>
+```
+
+## Custom positioning
+
+```tsx
+<div style={{ position: 'relative' }}>
+  <Indicator label="New" variant="accent">
+    <Card>
+      <Text>Item with indicator</Text>
+    </Card>
+  </Indicator>
+</div>
+```
+
+## Accessibility
+
+```tsx
+<Indicator 
+  variant="danger" 
+  label="3"
+  aria-label="3 unread notifications"
+>
+  <Button>Messages</Button>
+</Indicator>
+```
+
+## API reference
+
+### Indicator
+
+<ParamField path="variant" type="'accent' | 'warning' | 'danger' | 'success' | 'neutral'" default="'accent'">
+  The color variant of the indicator.
+</ParamField>
+
+<ParamField path="label" type="string">
+  Optional text label to display inside the indicator. When provided, the indicator shows as a badge with the label text.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode">
+  The element to position the indicator relative to. If not provided, the indicator renders independently.
+</ParamField>
+
+<ParamField path="aria-label" type="string">
+  Accessible label for screen readers. If not provided, defaults to the label prop or a generated label based on the variant.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the indicator.
+</ParamField>

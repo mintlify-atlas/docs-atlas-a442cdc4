@@ -1,0 +1,223 @@
+---
+title: Container
+description: A responsive container component with predefined max-width sizes and alignment options
+---
+
+## Description
+
+The Container component provides a centered, responsive layout container with predefined maximum widths and horizontal padding. It's designed to constrain content width while maintaining responsive padding and alignment across different screen sizes.
+
+## Props
+
+Container extends all standard HTML div attributes and accepts the following props:
+
+<ParamField path="size" type="'small' | 'medium' | 'large' | 'none'" default="none">
+  Controls the maximum width of the container
+  - `small` - Max-width: 430px (100% on mobile < 480px)
+  - `medium` - Max-width: 715px (100% on mobile < 768px)
+  - `large` - Max-width: 1145px (100% on mobile < 1200px)
+  - `none` - No max-width constraint (default)
+</ParamField>
+
+<ParamField path="align" type="'left' | 'center' | 'right'" default="center">
+  Controls horizontal alignment of the container
+  - `left` - Aligns container to the left (margin-left: 0, margin-right: auto)
+  - `center` - Centers the container (margin-left: auto, margin-right: auto) (default)
+  - `right` - Aligns container to the right (margin-left: auto, margin-right: 0)
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode">
+  The content to be rendered inside the Container
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the Container
+</ParamField>
+
+<ParamField path="role" type="string" default="region">
+  ARIA role attribute for accessibility (defaults to "region")
+</ParamField>
+
+<ParamField path="aria-label" type="string">
+  Accessibility label for the container region
+</ParamField>
+
+<ParamField path="aria-labelledby" type="string">
+  ID of the element that labels this container
+</ParamField>
+
+<ParamField path="...props" type="HTMLAttributes<HTMLElement>">
+  All standard HTML div attributes are supported including:
+  - `id` - Element ID
+  - `data-*` - Data attributes
+  - Event handlers (`onClick`, `onMouseEnter`, etc.)
+</ParamField>
+
+## Usage examples
+
+### Basic usage
+
+```tsx
+import { Container } from '@raystack/apsara';
+
+function Example() {
+  return <Container>Content</Container>;
+}
+```
+
+### Small container
+
+```tsx
+import { Container } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Container size="small">
+      This content is constrained to 430px width
+    </Container>
+  );
+}
+```
+
+### Medium container
+
+```tsx
+import { Container } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Container size="medium">
+      This content is constrained to 715px width
+    </Container>
+  );
+}
+```
+
+### Large container
+
+```tsx
+import { Container } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Container size="large">
+      This content is constrained to 1145px width
+    </Container>
+  );
+}
+```
+
+### Left-aligned container
+
+```tsx
+import { Container } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Container size="medium" align="left">
+      Left-aligned content
+    </Container>
+  );
+}
+```
+
+### Right-aligned container
+
+```tsx
+import { Container } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Container size="medium" align="right">
+      Right-aligned content
+    </Container>
+  );
+}
+```
+
+### With accessibility attributes
+
+```tsx
+import { Container } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Container 
+      size="large"
+      aria-label="Main container"
+      role="main"
+    >
+      Main content area
+    </Container>
+  );
+}
+```
+
+### With labelledby reference
+
+```tsx
+import { Container } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <>
+      <h1 id="heading">Page Title</h1>
+      <Container aria-labelledby="heading">
+        Content related to the page title
+      </Container>
+    </>
+  );
+}
+```
+
+### With custom styling
+
+```tsx
+import { Container } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Container 
+      size="medium" 
+      className="custom-container"
+      id="main-container"
+    >
+      Content with custom styling
+    </Container>
+  );
+}
+```
+
+## Styling notes
+
+The Container component includes responsive padding and width constraints:
+
+### Base styles
+
+- `box-sizing: border-box` - Consistent box model
+- `flex-shrink: 0` - Prevents container from shrinking
+- `width: 100%` - Full width by default
+
+### Responsive padding
+
+- **Default (< 640px):** `padding-left` and `padding-right` use `--rs-space-3`
+- **≥ 640px:** `padding-left` and `padding-right` use `--rs-space-5`
+
+### Size variants (max-width)
+
+- `size="small"`: 430px (100% below 480px)
+- `size="medium"`: 715px (100% below 768px)
+- `size="large"`: 1145px (100% below 1200px)
+- `size="none"`: No max-width constraint
+
+### Alignment variants
+
+- `align="left"`: `margin-left: 0; margin-right: auto;`
+- `align="center"`: `margin-left: auto; margin-right: auto;`
+- `align="right"`: `margin-left: auto; margin-right: 0;`
+
+## Related components
+
+- [Box](/components/box) - For basic container needs
+- [Flex](/components/flex) - For flexbox layouts
+- [Grid](/components/grid) - For grid-based layouts

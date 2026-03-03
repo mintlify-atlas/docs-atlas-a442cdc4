@@ -1,0 +1,271 @@
+---
+title: Search
+description: A search input component with a magnifying glass icon and optional clear button.
+---
+
+The Search component provides a specialized input field for search functionality with a built-in search icon and optional clear button.
+
+## Basic usage
+
+```jsx
+import { Search } from '@raystack/apsara';
+
+function App() {
+  return <Search placeholder="Search..." />;
+}
+```
+
+## Props
+
+Inherits all props from InputField except `leadingIcon`.
+
+<ParamField path="placeholder" type="string" default="'Search'">
+  Placeholder text for the search input.
+</ParamField>
+
+<ParamField path="value" type="string">
+  The controlled value of the search input.
+</ParamField>
+
+<ParamField path="onChange" type="(event: React.ChangeEvent<HTMLInputElement>) => void">
+  Callback fired when the input value changes.
+</ParamField>
+
+<ParamField path="showClearButton" type="boolean">
+  Whether to show the clear button when there is a value.
+</ParamField>
+
+<ParamField path="onClear" type="() => void">
+  Callback fired when the clear button is clicked.
+</ParamField>
+
+<ParamField path="variant" type="'default' | 'borderless'" default="'default'">
+  The visual variant of the search input.
+</ParamField>
+
+<ParamField path="size" type="'small' | 'large'">
+  The size of the search input.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the search input is disabled.
+</ParamField>
+
+<ParamField path="width" type="string | number" default="'100%'">
+  Width of the search input.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the search input.
+</ParamField>
+
+## Controlled search
+
+```jsx
+function ControlledSearch() {
+  const [query, setQuery] = useState('');
+
+  return (
+    <Search
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      placeholder="Search items..."
+    />
+  );
+}
+```
+
+## With clear button
+
+```jsx
+function SearchWithClear() {
+  const [query, setQuery] = useState('');
+
+  return (
+    <Search
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      showClearButton
+      onClear={() => setQuery('')}
+      placeholder="Search..."
+    />
+  );
+}
+```
+
+## Size variants
+
+```jsx
+<Search size="small" placeholder="Small search" />
+<Search size="large" placeholder="Large search" />
+```
+
+## Borderless variant
+
+```jsx
+<Search variant="borderless" placeholder="Borderless search" />
+```
+
+## Custom width
+
+```jsx
+<Search width="300px" placeholder="Fixed width search" />
+```
+
+## Disabled state
+
+```jsx
+<Search disabled placeholder="Disabled search" />
+```
+
+## Search with live results
+
+```jsx
+function LiveSearch() {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    
+    // Simulate search
+    if (value) {
+      const filtered = items.filter(item =>
+        item.toLowerCase().includes(value.toLowerCase())
+      );
+      setResults(filtered);
+    } else {
+      setResults([]);
+    }
+  };
+
+  return (
+    <div>
+      <Search
+        value={query}
+        onChange={handleSearch}
+        showClearButton
+        onClear={() => {
+          setQuery('');
+          setResults([]);
+        }}
+        placeholder="Search items..."
+      />
+      {results.length > 0 && (
+        <ul>
+          {results.map((result, i) => (
+            <li key={i}>{result}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+```
+
+## Search with debouncing
+
+```jsx
+function DebouncedSearch() {
+  const [query, setQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  useEffect(() => {
+    if (debouncedQuery) {
+      // Perform search with debouncedQuery
+      console.log('Searching for:', debouncedQuery);
+    }
+  }, [debouncedQuery]);
+
+  return (
+    <Search
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      showClearButton
+      onClear={() => setQuery('')}
+      placeholder="Type to search..."
+    />
+  );
+}
+```
+
+## Search bar with filters
+
+```jsx
+function SearchWithFilters() {
+  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState('all');
+
+  return (
+    <div style={{ display: 'flex', gap: '1rem' }}>
+      <Search
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        showClearButton
+        onClear={() => setQuery('')}
+        placeholder="Search..."
+        width="300px"
+      />
+      <Select value={filter} onValueChange={setFilter}>
+        <Select.Trigger size="small">
+          <Select.Value />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="all">All</Select.Item>
+          <Select.Item value="active">Active</Select.Item>
+          <Select.Item value="archived">Archived</Select.Item>
+        </Select.Content>
+      </Select>
+    </div>
+  );
+}
+```
+
+## Searchable table
+
+```jsx
+function SearchableTable() {
+  const [search, setSearch] = useState('');
+  const data = [...]; // your data
+  
+  const filteredData = data.filter(row =>
+    Object.values(row).some(value =>
+      String(value).toLowerCase().includes(search.toLowerCase())
+    )
+  );
+
+  return (
+    <div>
+      <Search
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        showClearButton
+        onClear={() => setSearch('')}
+        placeholder="Search table..."
+        size="small"
+      />
+      <table>
+        {/* render filteredData */}
+      </table>
+    </div>
+  );
+}
+```
+
+## Accessibility
+
+- The Search component has `role="search"` for proper semantic meaning.
+- The magnifying glass icon is automatically included as a visual indicator.
+- The input has an `aria-label` set to the placeholder value.
+- The clear button has `aria-label="Clear search"` for screen reader users.
+- Keyboard navigation is fully supported.
+- The clear button can be activated with Enter or Space when focused.

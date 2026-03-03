@@ -1,0 +1,109 @@
+---
+title: Icon button
+description: A button designed to contain an icon without text.
+---
+
+The IconButton component is specifically designed for icon-only buttons. It provides consistent sizing and styling for icons across the application.
+
+## Usage
+
+```jsx
+import { IconButton } from '@raystack/apsara';
+import { Cross2Icon } from '@radix-ui/react-icons';
+
+export default function Example() {
+  return (
+    <IconButton aria-label="Close">
+      <Cross2Icon />
+    </IconButton>
+  );
+}
+```
+
+## Sizes
+
+```jsx
+import { IconButton } from '@raystack/apsara';
+import { PlusIcon } from '@radix-ui/react-icons';
+
+<IconButton size={1} aria-label="Add">
+  <PlusIcon />
+</IconButton>
+
+<IconButton size={2} aria-label="Add">
+  <PlusIcon />
+</IconButton>
+
+<IconButton size={3} aria-label="Add">
+  <PlusIcon />
+</IconButton>
+
+<IconButton size={4} aria-label="Add">
+  <PlusIcon />
+</IconButton>
+```
+
+## Disabled state
+
+```jsx
+<IconButton disabled aria-label="Disabled action">
+  <PlusIcon />
+</IconButton>
+```
+
+## With click handler
+
+```jsx
+import { IconButton } from '@raystack/apsara';
+import { TrashIcon } from '@radix-ui/react-icons';
+
+export default function Example() {
+  const handleDelete = () => {
+    console.log('Delete clicked');
+  };
+
+  return (
+    <IconButton onClick={handleDelete} aria-label="Delete item">
+      <TrashIcon />
+    </IconButton>
+  );
+}
+```
+
+## API reference
+
+### IconButton
+
+Extends all standard HTML button attributes.
+
+<ParamField path="size" type="1 | 2 | 3 | 4" default="2">
+  The size of the button. Larger numbers create larger buttons.
+</ParamField>
+
+<ParamField path="aria-label" type="string">
+  Accessible label for the button. Required for accessibility since icon buttons don't have visible text.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the button is disabled.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class for the button.
+</ParamField>
+
+<ParamField path="onClick" type="(event: MouseEvent) => void">
+  Click handler for the button.
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  The icon to display inside the button.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles for the button.
+</ParamField>
+
+<ParamField path="type" type="'button' | 'submit' | 'reset'" default="button">
+  The HTML button type.
+</ParamField>

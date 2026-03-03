@@ -1,0 +1,235 @@
+---
+title: Flex
+description: A flexbox container component with convenient props for controlling flex layout properties
+---
+
+## Description
+
+The Flex component is a layout component that provides a simple and intuitive API for creating flexbox layouts. It offers props for all common flexbox properties including direction, alignment, justification, wrapping, and gap spacing.
+
+## Props
+
+Flex extends all standard HTML div attributes through Base UI's `useRender` hook and accepts the following variant props:
+
+<ParamField path="direction" type="'row' | 'column' | 'rowReverse' | 'columnReverse'" default="row">
+  Controls the direction of flex items
+  - `row` - Items are placed horizontally (default)
+  - `column` - Items are placed vertically
+  - `rowReverse` - Items are placed horizontally in reverse order
+  - `columnReverse` - Items are placed vertically in reverse order
+</ParamField>
+
+<ParamField path="align" type="'start' | 'center' | 'end' | 'stretch' | 'baseline'" default="stretch">
+  Controls alignment of items along the cross axis
+  - `start` - Items align to the start of the cross axis
+  - `center` - Items are centered along the cross axis
+  - `end` - Items align to the end of the cross axis
+  - `stretch` - Items stretch to fill the container (default)
+  - `baseline` - Items align along their baseline
+</ParamField>
+
+<ParamField path="justify" type="'start' | 'center' | 'end' | 'between'" default="start">
+  Controls alignment of items along the main axis
+  - `start` - Items align to the start (default)
+  - `center` - Items are centered
+  - `end` - Items align to the end
+  - `between` - Items have space distributed between them
+</ParamField>
+
+<ParamField path="wrap" type="'noWrap' | 'wrap' | 'wrapReverse'" default="noWrap">
+  Controls whether flex items wrap to new lines
+  - `noWrap` - All items stay on one line (default)
+  - `wrap` - Items wrap to new lines as needed
+  - `wrapReverse` - Items wrap to new lines in reverse order
+</ParamField>
+
+<ParamField path="gap" type="1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 'extra-small' | 'small' | 'medium' | 'large' | 'extra-large'">
+  Controls spacing between flex items using design system tokens
+  
+  **Numeric values** (1-9):
+  - Maps to `--rs-space-1` through `--rs-space-9`
+  
+  **Named values**:
+  - `extra-small` - Uses `--rs-space-2`
+  - `small` - Uses `--rs-space-3`
+  - `medium` - Uses `--rs-space-5`
+  - `large` - Uses `--rs-space-9`
+  - `extra-large` - Uses `--rs-space-11`
+</ParamField>
+
+<ParamField path="width" type="'full'">
+  Controls the width of the flex container
+  - `full` - Sets width to 100%
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the Flex container
+</ParamField>
+
+<ParamField path="render" type="(props: React.ComponentPropsWithRef<'div'>) => React.ReactElement">
+  Custom render function from Base UI for advanced rendering control
+</ParamField>
+
+<ParamField path="ref" type="React.Ref<HTMLDivElement>">
+  A ref to access the underlying div element
+</ParamField>
+
+## Usage examples
+
+### Basic horizontal layout
+
+```tsx
+import { Flex } from '@raystack/apsara';
+
+function Example() {
+  return <Flex>Content</Flex>;
+}
+```
+
+### Vertical layout
+
+```tsx
+import { Flex } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Flex direction="column">
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+    </Flex>
+  );
+}
+```
+
+### Centered content
+
+```tsx
+import { Flex } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Flex align="center" justify="center">
+      Centered content
+    </Flex>
+  );
+}
+```
+
+### With gap spacing
+
+```tsx
+import { Flex } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Flex gap="medium">
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+    </Flex>
+  );
+}
+```
+
+### Space between items
+
+```tsx
+import { Flex } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Flex justify="between">
+      <div>Left</div>
+      <div>Right</div>
+    </Flex>
+  );
+}
+```
+
+### Wrapping layout
+
+```tsx
+import { Flex } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Flex wrap="wrap" gap={3}>
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+    </Flex>
+  );
+}
+```
+
+### Full width container
+
+```tsx
+import { Flex } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Flex width="full" justify="between">
+      <div>Left</div>
+      <div>Right</div>
+    </Flex>
+  );
+}
+```
+
+### Reverse direction
+
+```tsx
+import { Flex } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Flex direction="rowReverse">
+      <div>First</div>
+      <div>Second</div>
+      <div>Third</div>
+    </Flex>
+  );
+}
+```
+
+## Styling notes
+
+The Flex component uses CSS modules and applies the following base styles:
+
+- `display: flex` - Base flexbox display
+- `box-sizing: border-box` - Consistent box model
+
+All variant props are mapped to corresponding CSS classes:
+
+**Direction variants:**
+- `direction="row"` → `flex-direction: row`
+- `direction="column"` → `flex-direction: column`
+- `direction="rowReverse"` → `flex-direction: row-reverse`
+- `direction="columnReverse"` → `flex-direction: column-reverse`
+
+**Alignment variants:**
+- `align="start"` → `align-items: flex-start`
+- `align="center"` → `align-items: center`
+- `align="end"` → `align-items: flex-end`
+- `align="stretch"` → `align-items: stretch`
+- `align="baseline"` → `align-items: baseline`
+
+**Justification variants:**
+- `justify="start"` → `justify-content: flex-start`
+- `justify="center"` → `justify-content: center`
+- `justify="end"` → `justify-content: end`
+- `justify="between"` → `justify-content: space-between`
+
+**Wrap variants:**
+- `wrap="noWrap"` → `flex-wrap: nowrap`
+- `wrap="wrap"` → `flex-wrap: wrap`
+- `wrap="wrapReverse"` → `flex-wrap: wrap-reverse`
+
+## Related components
+
+- [Box](/components/box) - For basic container needs
+- [Grid](/components/grid) - For grid-based layouts
+- [Container](/components/container) - For constrained-width containers

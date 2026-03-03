@@ -1,0 +1,361 @@
+---
+title: Grid
+description: A CSS Grid layout component with support for template areas, auto-flow, and flexible sizing
+---
+
+## Description
+
+The Grid component provides a powerful and flexible API for creating CSS Grid layouts. It supports all major grid properties including template areas, automatic column/row sizing, gap spacing, and alignment controls. The component also includes a companion GridItem component for positioning items within the grid.
+
+## Props
+
+### Grid
+
+Grid extends all standard HTML div attributes through Base UI's `useRender` hook and accepts the following props:
+
+<ParamField path="columns" type="string | number">
+  Defines the grid template columns
+  - When a **number** is provided, creates columns using `repeat(n, 1fr)`
+  - When a **string** is provided, uses standard CSS Grid template syntax
+  
+  ```tsx
+  <Grid columns={3} /> // Creates 3 equal columns
+  <Grid columns="1fr 2fr 1fr" /> // Custom column sizes
+  ```
+</ParamField>
+
+<ParamField path="rows" type="string | number">
+  Defines the grid template rows
+  - When a **number** is provided, creates rows using `repeat(n, 1fr)`
+  - When a **string** is provided, uses standard CSS Grid template syntax
+  
+  ```tsx
+  <Grid rows={3} /> // Creates 3 equal rows
+  <Grid rows="auto 1fr auto" /> // Header, content, footer
+  ```
+</ParamField>
+
+<ParamField path="templateAreas" type="string | string[]">
+  Defines named grid areas using CSS Grid template areas syntax
+  - Accepts a single string or an array of strings
+  - Array format automatically adds quotes around each row
+  
+  ```tsx
+  <Grid templateAreas="header header header" />
+  <Grid templateAreas={[
+    "header header header",
+    "sidebar main main",
+    "footer footer footer"
+  ]} />
+  ```
+</ParamField>
+
+<ParamField path="autoFlow" type="'row' | 'column' | 'dense' | 'row dense' | 'column dense'">
+  Controls how auto-placed items flow into the grid
+  - `row` - Fill rows first
+  - `column` - Fill columns first
+  - `dense` - Fill holes in the grid
+  - `row dense` - Fill rows first with dense packing
+  - `column dense` - Fill columns first with dense packing
+</ParamField>
+
+<ParamField path="autoColumns" type="string">
+  Defines the size of implicitly-created columns
+  
+  ```tsx
+  <Grid autoColumns="minmax(100px, auto)" />
+  ```
+</ParamField>
+
+<ParamField path="autoRows" type="string">
+  Defines the size of implicitly-created rows
+  
+  ```tsx
+  <Grid autoRows="minmax(50px, 1fr)" />
+  ```
+</ParamField>
+
+<ParamField path="gap" type="'extra-small' | 'small' | 'medium' | 'large' | 'extra-large'">
+  Controls spacing between all grid items
+  - `extra-small` - Uses `--rs-space-2`
+  - `small` - Uses `--rs-space-3`
+  - `medium` - Uses `--rs-space-5`
+  - `large` - Uses `--rs-space-9`
+  - `extra-large` - Uses `--rs-space-11`
+</ParamField>
+
+<ParamField path="columnGap" type="'extra-small' | 'small' | 'medium' | 'large' | 'extra-large'">
+  Controls spacing between columns only (same values as gap)
+</ParamField>
+
+<ParamField path="rowGap" type="'extra-small' | 'small' | 'medium' | 'large' | 'extra-large'">
+  Controls spacing between rows only (same values as gap)
+</ParamField>
+
+<ParamField path="justifyItems" type="'start' | 'end' | 'center' | 'stretch'">
+  Aligns grid items along the inline (row) axis
+</ParamField>
+
+<ParamField path="alignItems" type="'start' | 'end' | 'center' | 'stretch'">
+  Aligns grid items along the block (column) axis
+</ParamField>
+
+<ParamField path="justifyContent" type="'start' | 'end' | 'center' | 'stretch' | 'space-around' | 'space-between' | 'space-evenly'">
+  Aligns the grid along the inline (row) axis within its container
+</ParamField>
+
+<ParamField path="alignContent" type="'start' | 'end' | 'center' | 'stretch' | 'space-around' | 'space-between' | 'space-evenly'">
+  Aligns the grid along the block (column) axis within its container
+</ParamField>
+
+<ParamField path="inline" type="boolean" default="false">
+  When true, uses `display: inline-grid` instead of `display: grid`
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties">
+  Additional inline styles (merged with grid styles)
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply
+</ParamField>
+
+<ParamField path="render" type="(props: React.ComponentPropsWithRef<'div'>) => React.ReactElement">
+  Custom render function from Base UI
+</ParamField>
+
+<ParamField path="ref" type="React.Ref<HTMLDivElement>">
+  A ref to access the underlying div element
+</ParamField>
+
+### GridItem
+
+GridItem is a companion component for positioning items within a Grid. It extends all standard HTML div attributes.
+
+<ParamField path="area" type="string">
+  The name of the grid area to place this item in (must match a templateAreas name)
+  
+  ```tsx
+  <GridItem area="header">Header content</GridItem>
+  ```
+</ParamField>
+
+<ParamField path="colStart" type="number | string">
+  The grid column line where the item starts
+</ParamField>
+
+<ParamField path="colEnd" type="number | string">
+  The grid column line where the item ends
+</ParamField>
+
+<ParamField path="rowStart" type="number | string">
+  The grid row line where the item starts
+</ParamField>
+
+<ParamField path="rowEnd" type="number | string">
+  The grid row line where the item ends
+</ParamField>
+
+<ParamField path="colSpan" type="number | string">
+  How many columns the item should span
+  
+  ```tsx
+  <GridItem colSpan={2}>Spans 2 columns</GridItem>
+  ```
+</ParamField>
+
+<ParamField path="rowSpan" type="number | string">
+  How many rows the item should span
+</ParamField>
+
+<ParamField path="justifySelf" type="'start' | 'end' | 'center' | 'stretch'">
+  Aligns this item along the inline (row) axis
+</ParamField>
+
+<ParamField path="alignSelf" type="'start' | 'end' | 'center' | 'stretch'">
+  Aligns this item along the block (column) axis
+</ParamField>
+
+## Usage examples
+
+### Basic grid with numeric columns
+
+```tsx
+import { Grid } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Grid columns={3} gap="medium">
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+    </Grid>
+  );
+}
+```
+
+### Custom column sizes
+
+```tsx
+import { Grid } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Grid columns="1fr 2fr 1fr" gap="small">
+      <div>Sidebar</div>
+      <div>Main content</div>
+      <div>Sidebar</div>
+    </Grid>
+  );
+}
+```
+
+### Using template areas
+
+```tsx
+import { Grid, GridItem } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Grid
+      templateAreas={[
+        "header header header",
+        "sidebar main main",
+        "footer footer footer"
+      ]}
+      columns="200px 1fr 1fr"
+      rows="auto 1fr auto"
+      gap="medium"
+    >
+      <GridItem area="header">Header</GridItem>
+      <GridItem area="sidebar">Sidebar</GridItem>
+      <GridItem area="main">Main content</GridItem>
+      <GridItem area="footer">Footer</GridItem>
+    </Grid>
+  );
+}
+```
+
+### Column and row spanning
+
+```tsx
+import { Grid, GridItem } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Grid columns={3} rows={2} gap="small">
+      <GridItem colSpan={2}>Spans 2 columns</GridItem>
+      <div>Regular item</div>
+      <GridItem rowSpan={2}>Spans 2 rows</GridItem>
+      <div>Item</div>
+      <div>Item</div>
+    </Grid>
+  );
+}
+```
+
+### Auto-flow grid
+
+```tsx
+import { Grid } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Grid
+      autoFlow="dense"
+      autoColumns="minmax(100px, auto)"
+      gap="medium"
+    >
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+    </Grid>
+  );
+}
+```
+
+### Responsive grid
+
+```tsx
+import { Grid } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Grid
+      columns="repeat(auto-fit, minmax(250px, 1fr))"
+      gap="large"
+    >
+      <div>Card 1</div>
+      <div>Card 2</div>
+      <div>Card 3</div>
+      <div>Card 4</div>
+    </Grid>
+  );
+}
+```
+
+### Centered grid items
+
+```tsx
+import { Grid } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Grid
+      columns={3}
+      justifyItems="center"
+      alignItems="center"
+      gap="medium"
+    >
+      <div>Centered 1</div>
+      <div>Centered 2</div>
+      <div>Centered 3</div>
+    </Grid>
+  );
+}
+```
+
+### Different row and column gaps
+
+```tsx
+import { Grid } from '@raystack/apsara';
+
+function Example() {
+  return (
+    <Grid
+      columns={3}
+      rows={2}
+      columnGap="large"
+      rowGap="small"
+    >
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+      <div>Item 5</div>
+      <div>Item 6</div>
+    </Grid>
+  );
+}
+```
+
+## Styling notes
+
+The Grid component applies inline styles directly to the element, making it highly flexible:
+
+- `display: grid` (or `inline-grid` when `inline` is true)
+- All grid properties are applied as inline styles
+- Custom styles passed via the `style` prop are merged with grid styles
+
+The GridItem component also uses inline styles for grid placement properties:
+
+- `gridArea`, `gridColumnStart`, `gridColumnEnd`, `gridRowStart`, `gridRowEnd`
+- `gridColumn` and `gridRow` for span values
+- `justifySelf` and `alignSelf` for individual item alignment
+
+## Related components
+
+- [Box](/components/box) - For basic container needs
+- [Flex](/components/flex) - For flexbox layouts
+- [Container](/components/container) - For constrained-width containers

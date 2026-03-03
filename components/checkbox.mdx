@@ -1,0 +1,217 @@
+---
+title: Checkbox
+description: A checkbox input component for binary choices and selection lists.
+---
+
+The Checkbox component allows users to select one or more items from a set. It supports individual checkboxes and checkbox groups with support for indeterminate states.
+
+## Basic usage
+
+```jsx
+import { Checkbox } from '@raystack/apsara';
+
+function App() {
+  return <Checkbox />;
+}
+```
+
+## Props
+
+### Checkbox
+
+<ParamField path="checked" type="boolean | 'indeterminate'">
+  The controlled checked state. Can be true, false, or 'indeterminate'.
+</ParamField>
+
+<ParamField path="defaultChecked" type="boolean">
+  The default checked state for uncontrolled usage.
+</ParamField>
+
+<ParamField path="onCheckedChange" type="(checked: boolean | 'indeterminate') => void">
+  Callback fired when the checked state changes.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the checkbox is disabled.
+</ParamField>
+
+<ParamField path="required" type="boolean">
+  Whether the checkbox is required.
+</ParamField>
+
+<ParamField path="name" type="string">
+  The name of the checkbox input for form submission.
+</ParamField>
+
+<ParamField path="value" type="string">
+  The value of the checkbox input for form submission.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the checkbox.
+</ParamField>
+
+### Checkbox.Group
+
+<ParamField path="value" type="string[]">
+  The controlled array of checked values.
+</ParamField>
+
+<ParamField path="defaultValue" type="string[]">
+  The default array of checked values for uncontrolled usage.
+</ParamField>
+
+<ParamField path="onValueChange" type="(value: string[]) => void">
+  Callback fired when the checked values change.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether all checkboxes in the group are disabled.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the group container.
+</ParamField>
+
+## Single checkbox
+
+```jsx
+function SingleCheckbox() {
+  const [checked, setChecked] = useState(false);
+
+  return (
+    <label>
+      <Checkbox checked={checked} onCheckedChange={setChecked} />
+      <span>Accept terms and conditions</span>
+    </label>
+  );
+}
+```
+
+## Checkbox group
+
+```jsx
+function CheckboxGroup() {
+  const [values, setValues] = useState([]);
+
+  return (
+    <Checkbox.Group value={values} onValueChange={setValues}>
+      <label>
+        <Checkbox value="react" />
+        <span>React</span>
+      </label>
+      <label>
+        <Checkbox value="vue" />
+        <span>Vue</span>
+      </label>
+      <label>
+        <Checkbox value="angular" />
+        <span>Angular</span>
+      </label>
+    </Checkbox.Group>
+  );
+}
+```
+
+## Indeterminate state
+
+```jsx
+function IndeterminateCheckbox() {
+  const [checked, setChecked] = useState('indeterminate');
+
+  return (
+    <label>
+      <Checkbox checked={checked} onCheckedChange={setChecked} />
+      <span>Select all</span>
+    </label>
+  );
+}
+```
+
+## Disabled state
+
+```jsx
+<label>
+  <Checkbox disabled />
+  <span>Disabled checkbox</span>
+</label>
+
+<label>
+  <Checkbox disabled checked />
+  <span>Disabled and checked</span>
+</label>
+```
+
+## With form integration
+
+```jsx
+<form>
+  <label>
+    <Checkbox name="subscribe" value="newsletter" />
+    <span>Subscribe to newsletter</span>
+  </label>
+  <button type="submit">Submit</button>
+</form>
+```
+
+## Required checkbox
+
+```jsx
+<label>
+  <Checkbox required />
+  <span>I agree to the terms *</span>
+</label>
+```
+
+## Select all pattern
+
+```jsx
+function SelectAllCheckboxes() {
+  const [selectedItems, setSelectedItems] = useState([]);
+  const allItems = ['item1', 'item2', 'item3'];
+  
+  const allSelected = selectedItems.length === allItems.length;
+  const someSelected = selectedItems.length > 0 && !allSelected;
+  const selectAllState = allSelected ? true : someSelected ? 'indeterminate' : false;
+
+  const handleSelectAll = (checked) => {
+    setSelectedItems(checked ? allItems : []);
+  };
+
+  return (
+    <div>
+      <label>
+        <Checkbox
+          checked={selectAllState}
+          onCheckedChange={handleSelectAll}
+        />
+        <span>Select all</span>
+      </label>
+      
+      <Checkbox.Group value={selectedItems} onValueChange={setSelectedItems}>
+        <label>
+          <Checkbox value="item1" />
+          <span>Item 1</span>
+        </label>
+        <label>
+          <Checkbox value="item2" />
+          <span>Item 2</span>
+        </label>
+        <label>
+          <Checkbox value="item3" />
+          <span>Item 3</span>
+        </label>
+      </Checkbox.Group>
+    </div>
+  );
+}
+```
+
+## Accessibility
+
+- Built on Base UI Checkbox primitive with full accessibility support.
+- Proper ARIA attributes are automatically applied.
+- Supports keyboard navigation with Space to toggle.
+- Indeterminate state is properly communicated to screen readers.
+- Works seamlessly within forms with proper name/value attributes.
+- Label association ensures the entire label is clickable.

@@ -1,0 +1,696 @@
+---
+title: Data table
+description: Enterprise-grade data table with TanStack Table integration, sorting, filtering, pagination, and virtualization.
+---
+
+The DataTable component is a powerful enterprise feature built on [TanStack Table](https://tanstack.com/table) that provides sorting, filtering, pagination, column visibility, grouping, and virtualization out of the box.
+
+## Basic usage
+
+```tsx
+import { DataTable, DataTableColumnDef } from '@raystack/apsara';
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  status: 'active' | 'inactive';
+}
+
+const columns: DataTableColumnDef<User, unknown>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    enableSorting: true
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+    enableSorting: true
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    enableColumnFilter: true,
+    filterType: 'select'
+  }
+];
+
+function UserTable() {
+  const data: User[] = [
+    { id: '1', name: 'John Doe', email: 'john@example.com', status: 'active' },
+    { id: '2', name: 'Jane Smith', email: 'jane@example.com', status: 'inactive' }
+  ];
+
+  return (
+    <DataTable
+      data={data}
+      columns={columns}
+      defaultSort={{ name: 'name', order: 'asc' }}
+    >
+      <DataTable.Toolbar>
+        <DataTable.Search placeholder="Search users..." />
+        <DataTable.Filters />
+        <DataTable.DisplayControls />
+      </DataTable.Toolbar>
+      <DataTable.Content />
+    </DataTable>
+  );
+}
+```
+
+## Server-side mode
+
+Use server-side mode for large datasets with backend pagination and filtering.
+
+```tsx
+import { DataTable, DataTableQuery } from '@raystack/apsara';
+import { useState } from 'react';
+
+function ServerDataTable() {
+  const [data, setData] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleQueryChange = async (query: DataTableQuery) => {
+    setIsLoading(true);
+    const response = await fetch('/api/users', {
+      method: 'POST',
+      body: JSON.stringify(query)
+    });
+    const result = await response.json();
+    setData(result.data);
+    setIsLoading(false);
+  };
+
+  return (
+    <DataTable
+      data={data}
+      columns={columns}
+      mode="server"
+      isLoading={isLoading}
+      onTableQueryChange={handleQueryChange}
+      defaultSort={{ name: 'name', order: 'asc' }}
+    >
+      <DataTable.Toolbar>
+        <DataTable.Search />
+        <DataTable.Filters />
+      </DataTable.Toolbar>
+      <DataTable.Content />
+    </DataTable>
+  );
+}
+```
+
+## With virtualization
+
+Use `VirtualizedContent` for rendering large datasets efficiently.
+
+```tsx
+import { DataTable } from '@raystack/apsara';
+
+function VirtualizedTable() {
+  const largeDataset = Array.from({ length: 10000 }, (_, i) => ({
+    id: String(i),
+    name: `User ${i}`,
+    email: `user${i}@example.com`,
+    status: i % 2 === 0 ? 'active' : 'inactive'
+  }));
+
+  return (
+    <DataTable data={largeDataset} columns={columns} defaultSort={{ name: 'name', order: 'asc' }}>
+      <DataTable.Toolbar>
+        <DataTable.Search />
+        <DataTable.Filters />
+      </DataTable.Toolbar>
+      <DataTable.VirtualizedContent
+        rowHeight={48}
+        overscan={10}
+      />
+    </DataTable>
+  );
+}
+```
+
+## Column definitions
+
+Define columns with rich configuration options.
+
+```tsx
+import { DataTableColumnDef } from '@raystack/apsara';
+import { Badge } from '@raystack/apsara';
+
+const columns: DataTableColumnDef<User, unknown>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    enableSorting: true,
+    enableColumnFilter: true,
+    filterType: 'text',
+    classNames: {
+      header: 'font-bold',
+      cell: 'text-gray-900'
+    },
+    cell: ({ getValue }) => {
+      return <span className="font-medium">{getValue() as string}</span>;
+    }
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+    enableSorting: true,
+    enableColumnFilter: true,
+    filterType: 'text'
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    enableColumnFilter: true,
+    filterType: 'select',
+    filterOptions: [
+      { label: 'Active', value: 'active' },
+      { label: 'Inactive', value: 'inactive' }
+    ],
+    cell: ({ getValue }) => {
+      const status = getValue() as string;
+      return (
+        <Badge variant={status === 'active' ? 'success' : 'neutral'}>
+          {status}
+        </Badge>
+      );
+    }
+  },
+  {
+    accessorKey: 'actions',
+    header: 'Actions',
+    enableSorting: false,
+    enableHiding: false,
+    cell: ({ row }) => {
+      return (
+        <Button
+          size="small"
+          variant="outline"
+          onClick={() => console.log('Edit', row.original)}
+        >
+          Edit
+        </Button>
+      );
+    }
+  }
+];
+```
+
+## Filtering
+
+Enable column filters with various filter types.
+
+```tsx
+const columns: DataTableColumnDef<Product, unknown>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    enableColumnFilter: true,
+    filterType: 'text' // Text input filter
+  },
+  {
+    accessorKey: 'price',
+    header: 'Price',
+    enableColumnFilter: true,
+    filterType: 'number', // Number input filter
+    dataType: 'number'
+  },
+  {
+    accessorKey: 'category',
+    header: 'Category',
+    enableColumnFilter: true,
+    filterType: 'select', // Dropdown select filter
+    filterOptions: [
+      { label: 'Electronics', value: 'electronics' },
+      { label: 'Clothing', value: 'clothing' },
+      { label: 'Books', value: 'books' }
+    ]
+  },
+  {
+    accessorKey: 'inStock',
+    header: 'In Stock',
+    enableColumnFilter: true,
+    filterType: 'boolean', // Boolean toggle filter
+    dataType: 'boolean'
+  },
+  {
+    accessorKey: 'releaseDate',
+    header: 'Release Date',
+    enableColumnFilter: true,
+    filterType: 'date', // Date picker filter
+    dataType: 'date'
+  }
+];
+```
+
+## Sorting
+
+Enable sorting on columns.
+
+```tsx
+const columns: DataTableColumnDef<User, unknown>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    enableSorting: true
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'Created',
+    enableSorting: true,
+    sortingFn: (rowA, rowB) => {
+      return new Date(rowA.original.createdAt).getTime() - 
+             new Date(rowB.original.createdAt).getTime();
+    }
+  }
+];
+
+<DataTable
+  data={data}
+  columns={columns}
+  defaultSort={{ name: 'createdAt', order: 'desc' }}
+>
+  <DataTable.Content />
+</DataTable>
+```
+
+## Grouping
+
+Group rows by a column value.
+
+```tsx
+const columns: DataTableColumnDef<Task, unknown>[] = [
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    enableGrouping: true,
+    showGroupCount: true,
+    groupLabelsMap: {
+      'todo': 'To Do',
+      'in_progress': 'In Progress',
+      'done': 'Done'
+    }
+  },
+  {
+    accessorKey: 'title',
+    header: 'Title'
+  }
+];
+
+function GroupedTable() {
+  return (
+    <DataTable
+      data={tasks}
+      columns={columns}
+      defaultSort={{ name: 'title', order: 'asc' }}
+      query={{ group_by: ['status'] }}
+    >
+      <DataTable.Content />
+    </DataTable>
+  );
+}
+```
+
+## Column visibility
+
+Control which columns are visible.
+
+```tsx
+function TableWithColumnToggle() {
+  const [columnVisibility, setColumnVisibility] = useState({
+    email: true,
+    phone: false
+  });
+
+  return (
+    <DataTable
+      data={data}
+      columns={columns}
+      defaultSort={{ name: 'name', order: 'asc' }}
+      onColumnVisibilityChange={setColumnVisibility}
+    >
+      <DataTable.Toolbar>
+        <DataTable.DisplayControls />
+      </DataTable.Toolbar>
+      <DataTable.Content />
+    </DataTable>
+  );
+}
+```
+
+## Custom empty states
+
+Customize empty and zero states.
+
+```tsx
+import { EmptyState } from '@raystack/apsara';
+import { MagnifyingGlassIcon, PlusIcon } from '@heroicons/react/24/outline';
+
+function TableWithStates() {
+  return (
+    <DataTable data={data} columns={columns} defaultSort={{ name: 'name', order: 'asc' }}>
+      <DataTable.Toolbar>
+        <DataTable.Search />
+        <DataTable.Filters />
+      </DataTable.Toolbar>
+      <DataTable.Content
+        zeroState={
+          <EmptyState
+            icon={<PlusIcon />}
+            heading="No users yet"
+            subHeading="Get started by creating your first user"
+            primaryAction={<Button>Create User</Button>}
+          />
+        }
+        emptyState={
+          <EmptyState
+            icon={<MagnifyingGlassIcon />}
+            heading="No results found"
+            subHeading="Try adjusting your search or filters"
+          />
+        }
+      />
+    </DataTable>
+  );
+}
+```
+
+## Row click handling
+
+Handle row clicks for navigation or actions.
+
+```tsx
+import { useRouter } from 'next/router';
+
+function ClickableTable() {
+  const router = useRouter();
+
+  return (
+    <DataTable
+      data={data}
+      columns={columns}
+      defaultSort={{ name: 'name', order: 'asc' }}
+      onRowClick={(row) => {
+        router.push(`/users/${row.id}`);
+      }}
+    >
+      <DataTable.Content />
+    </DataTable>
+  );
+}
+```
+
+## Using the useDataTable hook
+
+Access table context from child components.
+
+```tsx
+import { useDataTable } from '@raystack/apsara';
+
+function CustomToolbarButton() {
+  const { table, tableQuery, updateTableQuery } = useDataTable();
+  
+  const clearFilters = () => {
+    updateTableQuery((prev) => ({
+      ...prev,
+      filters: []
+    }));
+  };
+
+  return (
+    <Button onClick={clearFilters}>
+      Clear All Filters
+    </Button>
+  );
+}
+
+function TableWithCustomButton() {
+  return (
+    <DataTable data={data} columns={columns} defaultSort={{ name: 'name', order: 'asc' }}>
+      <DataTable.Toolbar>
+        <DataTable.Filters />
+        <CustomToolbarButton />
+      </DataTable.Toolbar>
+      <DataTable.Content />
+    </DataTable>
+  );
+}
+```
+
+## Infinite loading
+
+Implement infinite scroll loading for server-side data.
+
+```tsx
+function InfiniteTable() {
+  const [data, setData] = useState<User[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+
+  const loadMore = async () => {
+    if (!hasMore) return;
+    
+    const response = await fetch(`/api/users?offset=${data.length}`);
+    const newData = await response.json();
+    
+    setData([...data, ...newData]);
+    setHasMore(newData.length > 0);
+  };
+
+  return (
+    <DataTable
+      data={data}
+      columns={columns}
+      mode="server"
+      defaultSort={{ name: 'name', order: 'asc' }}
+      onLoadMore={loadMore}
+    >
+      <DataTable.Content />
+    </DataTable>
+  );
+}
+```
+
+## Custom styling
+
+Apply custom styles to table elements.
+
+```tsx
+function StyledTable() {
+  return (
+    <DataTable data={data} columns={columns} defaultSort={{ name: 'name', order: 'asc' }}>
+      <DataTable.Content
+        classNames={{
+          root: 'custom-table-root',
+          table: 'custom-table',
+          header: 'custom-header',
+          body: 'custom-body',
+          row: 'custom-row'
+        }}
+      />
+    </DataTable>
+  );
+}
+```
+
+## API reference
+
+### DataTable (root)
+
+<ParamField path="data" type="TData[]" required>
+  Array of data objects to display in the table.
+</ParamField>
+
+<ParamField path="columns" type="DataTableColumnDef<TData, TValue>[]" required>
+  Column definitions for the table.
+</ParamField>
+
+<ParamField path="defaultSort" type="DataTableSort" required>
+  Default sort configuration with `name` (column accessor) and `order` ('asc' | 'desc').
+</ParamField>
+
+<ParamField path="mode" type="'client' | 'server'" default="'client'">
+  Data fetching mode. Use 'server' for backend pagination and filtering.
+</ParamField>
+
+<ParamField path="query" type="DataTableQuery">
+  Initial query state for filters, sorting, grouping, and pagination.
+</ParamField>
+
+<ParamField path="isLoading" type="boolean" default="false">
+  Whether data is currently loading.
+</ParamField>
+
+<ParamField path="loadingRowCount" type="number" default="3">
+  Number of skeleton rows to show while loading.
+</ParamField>
+
+<ParamField path="onTableQueryChange" type="(query: DataTableQuery) => void">
+  Callback fired when the query changes (server mode only).
+</ParamField>
+
+<ParamField path="onLoadMore" type="() => Promise<void>">
+  Callback for infinite scroll loading (server mode only).
+</ParamField>
+
+<ParamField path="onRowClick" type="(row: TData) => void">
+  Callback fired when a row is clicked.
+</ParamField>
+
+<ParamField path="onColumnVisibilityChange" type="(columnVisibility: VisibilityState) => void">
+  Callback fired when column visibility changes.
+</ParamField>
+
+### DataTableColumnDef
+
+<ParamField path="accessorKey" type="string" required>
+  Key to access the data in each row object.
+</ParamField>
+
+<ParamField path="header" type="string | ((props) => ReactNode)" required>
+  Column header text or render function.
+</ParamField>
+
+<ParamField path="cell" type="(props) => ReactNode">
+  Custom cell render function.
+</ParamField>
+
+<ParamField path="enableSorting" type="boolean">
+  Whether sorting is enabled for this column.
+</ParamField>
+
+<ParamField path="enableColumnFilter" type="boolean">
+  Whether filtering is enabled for this column.
+</ParamField>
+
+<ParamField path="enableHiding" type="boolean">
+  Whether the column can be hidden.
+</ParamField>
+
+<ParamField path="defaultHidden" type="boolean">
+  Whether the column is hidden by default.
+</ParamField>
+
+<ParamField path="filterType" type="'text' | 'number' | 'select' | 'boolean' | 'date'">
+  Type of filter input to use.
+</ParamField>
+
+<ParamField path="dataType" type="'string' | 'number' | 'boolean' | 'date'">
+  Data type for type-specific filtering.
+</ParamField>
+
+<ParamField path="filterOptions" type="FilterSelectOption[]">
+  Options for select-type filters. Each option has `label` and `value`.
+</ParamField>
+
+<ParamField path="enableGrouping" type="boolean">
+  Whether the column can be used for grouping.
+</ParamField>
+
+<ParamField path="showGroupCount" type="boolean">
+  Whether to show count badge in group headers.
+</ParamField>
+
+<ParamField path="groupLabelsMap" type="Record<string, string>">
+  Map of data values to display labels for group headers.
+</ParamField>
+
+<ParamField path="classNames" type="{ header?: string; cell?: string }">
+  Custom CSS classes for header and cell elements.
+</ParamField>
+
+<ParamField path="styles" type="{ header?: React.CSSProperties; cell?: React.CSSProperties }">
+  Inline styles for header and cell elements.
+</ParamField>
+
+### DataTable.Content
+
+<ParamField path="emptyState" type="ReactNode">
+  Component to show when no data matches the current filters/search.
+</ParamField>
+
+<ParamField path="zeroState" type="ReactNode">
+  Component to show when there is no data and no filters are applied.
+</ParamField>
+
+<ParamField path="classNames" type="{ root?: string; table?: string; header?: string; body?: string; row?: string }">
+  Custom CSS classes for various table elements.
+</ParamField>
+
+### DataTable.VirtualizedContent
+
+Extends `DataTable.Content` props with additional virtualization options.
+
+<ParamField path="rowHeight" type="number" default="40">
+  Height of each row in pixels.
+</ParamField>
+
+<ParamField path="groupHeaderHeight" type="number">
+  Height of group header rows in pixels. Falls back to `rowHeight` if not set.
+</ParamField>
+
+<ParamField path="overscan" type="number" default="5">
+  Number of rows to render outside the visible area for smooth scrolling.
+</ParamField>
+
+<ParamField path="loadMoreOffset" type="number" default="100">
+  Distance in pixels from bottom to trigger `onLoadMore`.
+</ParamField>
+
+### DataTable.Toolbar
+
+Container for toolbar elements like search, filters, and display controls.
+
+<ParamField path="children" type="ReactNode" required>
+  Toolbar content.
+</ParamField>
+
+### DataTable.Search
+
+<ParamField path="placeholder" type="string">
+  Placeholder text for the search input.
+</ParamField>
+
+### DataTable.Filters
+
+Renders filter controls for columns with `enableColumnFilter: true`.
+
+### DataTable.DisplayControls
+
+Renders column visibility controls and other display settings.
+
+### useDataTable hook
+
+Hook to access the data table context from child components.
+
+**Returns:**
+
+<ParamField path="table" type="Table<TData>">
+  TanStack Table instance with full API access.
+</ParamField>
+
+<ParamField path="columns" type="DataTableColumnDef<TData, TValue>[]">
+  Column definitions.
+</ParamField>
+
+<ParamField path="tableQuery" type="InternalQuery">
+  Current table query state including filters, sorting, and pagination.
+</ParamField>
+
+<ParamField path="updateTableQuery" type="(fn: (query: InternalQuery) => InternalQuery) => void">
+  Function to update the table query.
+</ParamField>
+
+<ParamField path="mode" type="'client' | 'server'">
+  Current data fetching mode.
+</ParamField>
+
+<ParamField path="isLoading" type="boolean">
+  Whether data is currently loading.
+</ParamField>
+
+<ParamField path="onDisplaySettingsReset" type="() => void">
+  Function to reset display settings to defaults.
+</ParamField>

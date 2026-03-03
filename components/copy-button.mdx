@@ -1,0 +1,95 @@
+---
+title: Copy button
+description: A button that copies text to the clipboard with visual feedback.
+---
+
+The CopyButton component provides a one-click solution for copying text to the clipboard. It shows visual feedback when text is successfully copied.
+
+## Usage
+
+```jsx
+import { CopyButton } from '@raystack/apsara';
+
+export default function Example() {
+  return (
+    <CopyButton 
+      text="Text to copy" 
+      aria-label="Copy to clipboard"
+    />
+  );
+}
+```
+
+## With code snippet
+
+```jsx
+import { CopyButton } from '@raystack/apsara';
+import { Flex } from '@raystack/apsara';
+
+export default function CodeExample() {
+  const code = `npm install @raystack/apsara`;
+  
+  return (
+    <Flex align="center" gap="2">
+      <code>{code}</code>
+      <CopyButton text={code} size={2} />
+    </Flex>
+  );
+}
+```
+
+## Custom timeout
+
+```jsx
+{/* Reset icon after 3 seconds */}
+<CopyButton 
+  text="Custom timeout" 
+  resetTimeout={3000}
+  aria-label="Copy"
+/>
+```
+
+## Disable icon reset
+
+```jsx
+{/* Keep success icon after copying */}
+<CopyButton 
+  text="No reset" 
+  resetIcon={false}
+  aria-label="Copy"
+/>
+```
+
+## API reference
+
+### CopyButton
+
+Extends all props from [IconButton](/components/icon-button).
+
+<ParamField path="text" type="string" required>
+  The text to copy to clipboard when the button is clicked.
+</ParamField>
+
+<ParamField path="resetTimeout" type="number" default="1000">
+  Time in milliseconds before the icon resets to the copy icon after successful copy.
+</ParamField>
+
+<ParamField path="resetIcon" type="boolean" default="true">
+  Whether to reset the icon back to the copy icon after the timeout. If false, the success icon persists.
+</ParamField>
+
+<ParamField path="size" type="1 | 2 | 3 | 4" default="2">
+  The size of the button.
+</ParamField>
+
+<ParamField path="aria-label" type="string">
+  Accessible label for the button. Recommended for accessibility.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class for the button.
+</ParamField>
+
+<ParamField path="onClick" type="(event: MouseEvent) => void">
+  Click handler. The copy action is handled automatically.
+</ParamField>

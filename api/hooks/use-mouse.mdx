@@ -1,0 +1,283 @@
+---
+title: useMouse
+description: A React hook for tracking mouse position relative to an element or the viewport.
+---
+
+## Usage
+
+The `useMouse` hook tracks the mouse position and provides a ref to attach to any element. The position is calculated relative to that element.
+
+```tsx
+import { useMouse } from '@raystack/apsara';
+
+function MouseTracker() {
+  const { ref, value } = useMouse();
+
+  return (
+    <div ref={ref} style={{ height: '400px', border: '1px solid black' }}>
+      {value && (
+        <div>
+          <p>X: {value.x}px</p>
+          <p>Y: {value.y}px</p>
+          <p>Element width: {value.width}px</p>
+          <p>Element height: {value.height}px</p>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Type signature
+
+```typescript
+type PositionType = {
+  x: number;
+  y: number;
+};
+
+type SizeType = {
+  width: number;
+  height: number;
+};
+
+type UseMouseValue = PositionType & SizeType;
+
+type UseMouseOptions = {
+  /** Reset position to null when mouse leaves the element */
+  resetOnExit?: boolean;
+  /** Enable or disable mouse tracking */
+  enabled?: boolean;
+};
+
+interface UseMouseReturn<T extends HTMLElement> {
+  /** Ref to attach to the element you want to track mouse position relative to */
+  ref: React.MutableRefObject<T | null>;
+  /** Current mouse position and element dimensions, or null if not tracking */
+  value: UseMouseValue | null;
+  /** Function to manually reset the mouse position */
+  reset: () => void;
+}
+
+function useMouse<T extends HTMLElement = HTMLElement>(
+  options?: UseMouseOptions
+): UseMouseReturn<T>
+```
+
+## Parameters
+
+<ParamField path="options" type="UseMouseOptions">
+  Configuration options for mouse tracking.
+  
+  <ParamField path="options.resetOnExit" type="boolean" default="false">
+    If `true`, the mouse position will be reset to `null` when the mouse leaves the element.
+  </ParamField>
+  
+  <ParamField path="options.enabled" type="boolean" default="true">
+    Enable or disable mouse tracking. When `false`, the hook stops listening to mouse events.
+  </ParamField>
+</ParamField>
+
+## Return value
+
+The hook returns an object with the following properties:
+
+<ResponseField name="ref" type="React.MutableRefObject<T | null>">
+  A ref to attach to the element you want to track mouse position relative to. If not attached to any element, tracks global mouse position relative to the viewport.
+</ResponseField>
+
+<ResponseField name="value" type="UseMouseValue | null">
+  An object containing the mouse position and element dimensions:
+  - `x`: Horizontal position in pixels (relative to element or viewport)
+  - `y`: Vertical position in pixels (relative to element or viewport)
+  - `width`: Width of the element (or 0 if tracking globally)
+  - `height`: Height of the element (or 0 if tracking globally)
+  
+  Returns `null` if tracking is disabled or before the first mouse movement.
+</ResponseField>
+
+<ResponseField name="reset" type="() => void">
+  A function to manually reset the mouse position to `null`.
+</ResponseField>
+
+## Examples
+
+### Cursor follower
+
+```tsx
+import { useMouse } from '@raystack/apsara';
+
+function CursorFollower() {
+  const { ref, value } = useMouse();
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        height: '500px',
+        background: '#f0f0f0',
+        position: 'relative'
+      }}
+    >
+      {value && (
+        <div
+          style={{
+            position: 'absolute',
+            left: value.x,
+            top: value.y,
+            width: '20px',
+            height: '20px',
+            background: 'blue',
+            borderRadius: '50%',
+            transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none'
+          }}
+        />
+      )}
+    </div>
+  );
+}
+```
+
+### With reset on exit
+
+```tsx
+import { useMouse } from '@raystack/apsara';
+
+function HoverCard() {
+  const { ref, value } = useMouse({ resetOnExit: true });
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        width: '300px',
+        height: '200px',
+        border: '2px solid #ccc',
+        borderRadius: '8px',
+        padding: '20px'
+      }}
+    >
+      <h3>Hover over this card</h3>
+      {value ? (
+        <div>
+          <p>Mouse position:</p>
+          <p>X: {value.x}px, Y: {value.y}px</p>
+        </div>
+      ) : (
+        <p>Move your mouse over the card</p>
+      )}
+    </div>
+  );
+}
+```
+
+### Global mouse tracking
+
+```tsx
+import { useMouse } from '@raystack/apsara';
+
+function GlobalMouseTracker() {
+  // Don't attach ref to any element - tracks globally
+  const { value } = useMouse();
+
+  return (
+    <div style={{ position: 'fixed', top: 10, left: 10, background: 'white', padding: '10px' }}>
+      <h4>Global Mouse Position</h4>
+      {value && (
+        <div>
+          <p>X: {value.x}px</p>
+          <p>Y: {value.y}px</p>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### Conditional tracking
+
+```tsx
+import { useMouse } from '@raystack/apsara';
+
+function ConditionalTracking() {
+  const [isTracking, setIsTracking] = React.useState(false);
+  const { ref, value } = useMouse({ enabled: isTracking });
+
+  return (
+    <div>
+      <button onClick={() => setIsTracking(!isTracking)}>
+        {isTracking ? 'Stop' : 'Start'} Tracking
+      </button>
+      <div
+        ref={ref}
+        style={{
+          height: '300px',
+          border: '1px solid black',
+          marginTop: '10px'
+        }}
+      >
+        {isTracking && value ? (
+          <p>Position: {value.x}, {value.y}</p>
+        ) : (
+          <p>Tracking disabled</p>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+### Interactive spotlight effect
+
+```tsx
+import { useMouse } from '@raystack/apsara';
+
+function Spotlight() {
+  const { ref, value } = useMouse();
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        height: '400px',
+        background: '#000',
+        position: 'relative',
+        overflow: 'hidden'
+      }}
+    >
+      {value && (
+        <div
+          style={{
+            position: 'absolute',
+            left: value.x,
+            top: value.y,
+            width: '200px',
+            height: '200px',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)',
+            transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none'
+          }}
+        />
+      )}
+      <div style={{ padding: '20px', color: 'white', position: 'relative' }}>
+        <h2>Move your mouse around</h2>
+        <p>Experience the spotlight effect</p>
+      </div>
+    </div>
+  );
+}
+```
+
+## Notes
+
+- Mouse coordinates are calculated relative to the element's bounding rectangle
+- Coordinates are clamped to be non-negative (minimum 0)
+- If no element is provided via ref, the hook tracks the mouse position globally relative to the document
+- The hook automatically cleans up event listeners when the component unmounts or when tracking is disabled
+- Element dimensions (`width` and `height`) are updated on each mouse move to account for potential element resizing
+
+## Related
+
+- [useIsomorphicLayoutEffect](/api/hooks/use-isomorphic-layout-effect)
+- [useDebouncedState](/api/hooks/use-debounced-state)

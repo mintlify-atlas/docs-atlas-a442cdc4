@@ -1,0 +1,119 @@
+---
+title: Announcement bar
+description: A horizontal bar component for displaying announcements and notifications.
+---
+
+The AnnouncementBar component is used to display important messages, updates, or calls-to-action across the top of a page or section.
+
+## Usage
+
+```jsx
+import { AnnouncementBar } from '@raystack/apsara';
+
+export default function Example() {
+  return (
+    <AnnouncementBar text="New features available! Check out our latest updates." />
+  );
+}
+```
+
+## With action button
+
+```jsx
+import { AnnouncementBar } from '@raystack/apsara';
+
+export default function WithAction() {
+  return (
+    <AnnouncementBar
+      text="New version available"
+      actionLabel="Update now"
+      onActionClick={() => console.log('Update clicked')}
+    />
+  );
+}
+```
+
+## With leading icon
+
+```jsx
+import { AnnouncementBar } from '@raystack/apsara';
+import { InfoCircledIcon } from '@radix-ui/react-icons';
+
+export default function WithIcon() {
+  return (
+    <AnnouncementBar
+      text="Maintenance scheduled for tonight"
+      leadingIcon={<InfoCircledIcon />}
+    />
+  );
+}
+```
+
+## Variants
+
+```jsx
+import { AnnouncementBar } from '@raystack/apsara';
+
+{/* Normal variant */}
+<AnnouncementBar
+  variant="normal"
+  text="Standard announcement"
+/>
+
+{/* Gradient variant */}
+<AnnouncementBar
+  variant="gradient"
+  text="Special announcement with gradient background"
+/>
+
+{/* Error variant */}
+<AnnouncementBar
+  variant="error"
+  text="Critical system alert"
+/>
+```
+
+## With action icon
+
+```jsx
+import { AnnouncementBar } from '@raystack/apsara';
+import { ArrowRightIcon } from '@radix-ui/react-icons';
+
+<AnnouncementBar
+  text="Learn more about our new features"
+  actionIcon={<ArrowRightIcon />}
+  onActionClick={() => window.location.href = '/features'}
+/>
+```
+
+## API reference
+
+### AnnouncementBar
+
+<ParamField path="text" type="string" required>
+  The main text content of the announcement.
+</ParamField>
+
+<ParamField path="variant" type="'normal' | 'gradient' | 'error'" default="normal">
+  The visual style variant of the announcement bar.
+</ParamField>
+
+<ParamField path="leadingIcon" type="ReactNode">
+  An icon to display before the text.
+</ParamField>
+
+<ParamField path="actionLabel" type="string">
+  Text label for the action button. If provided, renders an action button.
+</ParamField>
+
+<ParamField path="actionIcon" type="ReactNode">
+  An icon to display in the action area. Can be used with or without actionLabel.
+</ParamField>
+
+<ParamField path="onActionClick" type="() => void">
+  Callback fired when the action button or icon is clicked.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class for the announcement bar.
+</ParamField>

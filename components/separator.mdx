@@ -1,0 +1,74 @@
+---
+title: Separator
+description: Visually separates content sections with a horizontal or vertical line.
+---
+
+The Separator component is used to visually divide content in an interface. It supports both horizontal and vertical orientations, as well as different sizes and colors.
+
+## Usage
+
+```jsx
+import { Separator } from '@raystack/apsara';
+
+export default function Example() {
+  return (
+    <div>
+      <p>Content above</p>
+      <Separator />
+      <p>Content below</p>
+    </div>
+  );
+}
+```
+
+## Vertical separator
+
+```jsx
+import { Separator } from '@raystack/apsara';
+
+export default function VerticalExample() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      <span>Left content</span>
+      <Separator orientation="vertical" />
+      <span>Right content</span>
+    </div>
+  );
+}
+```
+
+## Sizes
+
+```jsx
+<Separator size="small" />
+<Separator size="half" />
+<Separator size="full" />
+```
+
+## Colors
+
+```jsx
+<Separator color="primary" />
+<Separator color="secondary" />
+<Separator color="tertiary" />
+```
+
+## API reference
+
+### Separator
+
+<ParamField path="orientation" type="'horizontal' | 'vertical'" default="horizontal">
+  The orientation of the separator.
+</ParamField>
+
+<ParamField path="size" type="'small' | 'half' | 'full'" default="full">
+  The size of the separator. Controls the width (horizontal) or height (vertical).
+</ParamField>
+
+<ParamField path="color" type="'primary' | 'secondary' | 'tertiary'" default="primary">
+  The color variant of the separator.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class for the separator.
+</ParamField>

@@ -1,0 +1,121 @@
+---
+title: useCopyToClipboard
+description: A React hook for copying text to the clipboard with state management.
+---
+
+## Usage
+
+The `useCopyToClipboard` hook provides a simple interface to copy text to the clipboard and track the last copied text.
+
+```tsx
+import { useCopyToClipboard } from '@raystack/apsara';
+
+function App() {
+  const { copiedText, copy } = useCopyToClipboard();
+
+  const handleCopy = async () => {
+    const success = await copy('Hello, World!');
+    if (success) {
+      console.log('Copied successfully!');
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={handleCopy}>Copy Text</button>
+      {copiedText && <p>Last copied: {copiedText}</p>}
+    </div>
+  );
+}
+```
+
+## Type signature
+
+```typescript
+type CopyFn = (text: string) => Promise<boolean>;
+
+interface UseCopyToClipboardReturn {
+  copiedText: string;
+  copy: CopyFn;
+}
+
+function useCopyToClipboard(): UseCopyToClipboardReturn
+```
+
+## Return value
+
+The hook returns an object with the following properties:
+
+<ResponseField name="copiedText" type="string">
+  The last successfully copied text. Empty string if nothing has been copied or if the last copy failed.
+</ResponseField>
+
+<ResponseField name="copy" type="(text: string) => Promise<boolean>">
+  A function that copies the provided text to the clipboard. Returns a Promise that resolves to `true` if successful, `false` otherwise.
+</ResponseField>
+
+## Examples
+
+### Basic copy button
+
+```tsx
+import { useCopyToClipboard } from '@raystack/apsara';
+
+function CopyButton({ text }: { text: string }) {
+  const { copy } = useCopyToClipboard();
+  const [isCopied, setIsCopied] = React.useState(false);
+
+  const handleCopy = async () => {
+    const success = await copy(text);
+    if (success) {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    }
+  };
+
+  return (
+    <button onClick={handleCopy}>
+      {isCopied ? 'Copied!' : 'Copy'}
+    </button>
+  );
+}
+```
+
+### Copy with feedback
+
+```tsx
+import { useCopyToClipboard } from '@raystack/apsara';
+
+function CopyWithFeedback() {
+  const { copiedText, copy } = useCopyToClipboard();
+
+  return (
+    <div>
+      <input id="textInput" type="text" defaultValue="Copy me!" />
+      <button onClick={() => {
+        const input = document.getElementById('textInput') as HTMLInputElement;
+        copy(input.value);
+      }}>
+        Copy
+      </button>
+      {copiedText && (
+        <div>
+          Successfully copied: {copiedText}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Notes
+
+- The hook checks for clipboard API availability before attempting to copy
+- If the clipboard API is not supported, the copy function returns `false` and logs a warning
+- The `copiedText` state is cleared if a copy operation fails
+- This hook requires HTTPS context in production environments (browser security requirement)
+
+## Related
+
+- [Button](/components/button)
+- [IconButton](/components/icon-button)

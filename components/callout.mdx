@@ -1,0 +1,187 @@
+---
+title: Callout
+description: A component for displaying important messages, alerts, or highlighted information with optional actions.
+---
+
+## Import
+
+```tsx
+import { Callout } from '@raystack/apsara';
+```
+
+## Usage
+
+```tsx
+<Callout>
+  This is a basic callout message.
+</Callout>
+```
+
+## Types
+
+```tsx
+<Callout type="grey">
+  Grey callout for general information.
+</Callout>
+
+<Callout type="success">
+  Success callout for positive feedback.
+</Callout>
+
+<Callout type="alert">
+  Alert callout for warnings or errors.
+</Callout>
+
+<Callout type="attention">
+  Attention callout for important notices.
+</Callout>
+
+<Callout type="accent">
+  Accent callout for highlighted information.
+</Callout>
+
+<Callout type="gradient">
+  Gradient callout for special emphasis.
+</Callout>
+
+<Callout type="normal">
+  Normal callout with minimal styling.
+</Callout>
+```
+
+## With custom icon
+
+```tsx
+import { CheckCircledIcon } from '@radix-ui/react-icons';
+
+<Callout icon={<CheckCircledIcon />} type="success">
+  Task completed successfully!
+</Callout>
+```
+
+## Without icon
+
+```tsx
+<Callout icon={null}>
+  Callout without an icon.
+</Callout>
+```
+
+## Outline variant
+
+```tsx
+<Callout type="accent" outline>
+  This callout has an outline style.
+</Callout>
+```
+
+## High contrast
+
+```tsx
+<Callout type="success" highContrast>
+  High contrast callout for better visibility.
+</Callout>
+```
+
+## With action
+
+```tsx
+<Callout 
+  type="alert"
+  action={
+    <button onClick={() => console.log('Action clicked')}>
+      View Details
+    </button>
+  }
+>
+  Action required. Please review the details.
+</Callout>
+```
+
+## Dismissible
+
+```tsx
+const [isVisible, setIsVisible] = useState(true);
+
+if (!isVisible) return null;
+
+return (
+  <Callout
+    dismissible
+    onDismiss={() => setIsVisible(false)}
+  >
+    This callout can be dismissed.
+  </Callout>
+);
+```
+
+## Custom width
+
+```tsx
+<Callout width={400}>
+  Callout with fixed width of 400px.
+</Callout>
+
+<Callout width="50%">
+  Callout with 50% width.
+</Callout>
+```
+
+## Complex content
+
+```tsx
+<Callout type="gradient">
+  <div>
+    <strong>New Feature Available</strong>
+    <p>Check out our latest updates and improvements.</p>
+  </div>
+</Callout>
+```
+
+## API reference
+
+### Callout
+
+<ParamField path="type" type="'grey' | 'success' | 'alert' | 'gradient' | 'accent' | 'attention' | 'normal'" default="'grey'">
+  The visual style variant of the callout.
+</ParamField>
+
+<ParamField path="outline" type="boolean">
+  When true, displays the callout with an outline style instead of filled background.
+</ParamField>
+
+<ParamField path="highContrast" type="boolean">
+  When true, increases the contrast for better visibility.
+</ParamField>
+
+<ParamField path="icon" type="React.ReactNode">
+  Custom icon to display. Defaults to InfoCircledIcon. Pass null to hide the icon.
+</ParamField>
+
+<ParamField path="action" type="React.ReactNode">
+  Optional action element (like a button or link) to display on the right side.
+</ParamField>
+
+<ParamField path="dismissible" type="boolean">
+  When true, shows a dismiss button that allows users to close the callout.
+</ParamField>
+
+<ParamField path="onDismiss" type="() => void">
+  Callback function called when the dismiss button is clicked. Required when dismissible is true.
+</ParamField>
+
+<ParamField path="width" type="string | number">
+  Custom width for the callout. Can be a number (px) or string (e.g., "50%", "400px").
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the callout.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the callout container.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode" required>
+  The content to display inside the callout.
+</ParamField>

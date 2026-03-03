@@ -1,0 +1,316 @@
+---
+title: useTheme
+description: A React hook for accessing and managing theme state in Apsara applications.
+---
+
+## Usage
+
+The `useTheme` hook provides access to the current theme state and functions to update it. It must be used within a `ThemeProvider` component.
+
+```tsx
+import { useTheme, ThemeProvider } from '@raystack/apsara';
+
+function ThemeSwitcher() {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+      Current theme: {theme}
+    </button>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <ThemeSwitcher />
+    </ThemeProvider>
+  );
+}
+```
+
+## Type signature
+
+```typescript
+interface UseThemeProps {
+  /** List of all available theme names */
+  themes: string[];
+  /** Forced theme name for the current page */
+  forcedTheme?: string;
+  /** Update the theme */
+  setTheme: (theme: string) => void;
+  /** Active theme name */
+  theme?: string;
+  /** If `enableSystem` is true and the active theme is "system", this returns whether the system preference resolved to "dark" or "light". Otherwise, identical to `theme` */
+  resolvedTheme?: string;
+  /** If enableSystem is true, returns the System theme preference ("dark" or "light"), regardless what the active theme is */
+  systemTheme?: "dark" | "light";
+  /** Style variant of the theme */
+  style?: 'modern' | 'traditional';
+  /** Accent color for the theme */
+  accentColor?: 'indigo' | 'orange' | 'mint';
+  /** Gray color variant for the theme */
+  grayColor?: 'gray' | 'mauve' | 'slate';
+}
+
+function useTheme(): UseThemeProps
+```
+
+## Return value
+
+The hook returns an object with the following properties:
+
+<ResponseField name="theme" type="string | undefined">
+  The currently active theme name. This can be any theme name from the `themes` array, or `"system"` if system theme detection is enabled.
+</ResponseField>
+
+<ResponseField name="setTheme" type="(theme: string) => void">
+  Function to update the current theme. The theme value is persisted to localStorage.
+</ResponseField>
+
+<ResponseField name="themes" type="string[]">
+  Array of all available theme names. If `enableSystem` is true, this includes `"system"` in addition to the custom themes.
+</ResponseField>
+
+<ResponseField name="forcedTheme" type="string | undefined">
+  If set, this theme is forced for the current page and cannot be changed by the user. Useful for preventing theme changes on specific pages.
+</ResponseField>
+
+<ResponseField name="resolvedTheme" type="string | undefined">
+  The actual theme being displayed. If the active theme is `"system"`, this returns either `"dark"` or `"light"` based on the system preference. Otherwise, it returns the same value as `theme`.
+</ResponseField>
+
+<ResponseField name="systemTheme" type="'dark' | 'light' | undefined">
+  The current system color scheme preference (`"dark"` or `"light"`), regardless of the active theme. Only available if `enableSystem` is true.
+</ResponseField>
+
+<ResponseField name="style" type="'modern' | 'traditional' | undefined">
+  The current style variant, affecting radius and font properties.
+</ResponseField>
+
+<ResponseField name="accentColor" type="'indigo' | 'orange' | 'mint' | undefined">
+  The current accent color being used in the theme.
+</ResponseField>
+
+<ResponseField name="grayColor" type="'gray' | 'mauve' | 'slate' | undefined">
+  The current gray color variant being used in the theme.
+</ResponseField>
+
+## Examples
+
+### Basic theme switcher
+
+```tsx
+import { useTheme } from '@raystack/apsara';
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+      Switch to {theme === 'dark' ? 'light' : 'dark'} mode
+    </button>
+  );
+}
+```
+
+### Theme selector with system option
+
+```tsx
+import { useTheme } from '@raystack/apsara';
+
+function ThemeSelector() {
+  const { theme, themes, setTheme } = useTheme();
+
+  return (
+    <select value={theme} onChange={(e) => setTheme(e.target.value)}>
+      {themes.map((t) => (
+        <option key={t} value={t}>
+          {t.charAt(0).toUpperCase() + t.slice(1)}
+        </option>
+      ))}
+    </select>
+  );
+}
+```
+
+### Display resolved theme
+
+```tsx
+import { useTheme } from '@raystack/apsara';
+
+function ThemeInfo() {
+  const { theme, resolvedTheme, systemTheme } = useTheme();
+
+  return (
+    <div>
+      <p>Selected theme: {theme}</p>
+      <p>Resolved theme: {resolvedTheme}</p>
+      {systemTheme && <p>System preference: {systemTheme}</p>}
+    </div>
+  );
+}
+```
+
+### Theme-aware component
+
+```tsx
+import { useTheme } from '@raystack/apsara';
+
+function ThemedCard() {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
+  return (
+    <div
+      style={{
+        background: isDark ? '#1a1a1a' : '#ffffff',
+        color: isDark ? '#ffffff' : '#000000',
+        padding: '20px',
+        borderRadius: '8px'
+      }}
+    >
+      <h3>Theme-aware card</h3>
+      <p>This card adapts to the current theme</p>
+    </div>
+  );
+}
+```
+
+### Customization controls
+
+```tsx
+import { useTheme, ThemeProvider } from '@raystack/apsara';
+
+function ThemeCustomizer() {
+  const { style, accentColor, grayColor, setTheme } = useTheme();
+
+  return (
+    <div>
+      <div>
+        <label>Style:</label>
+        <select value={style} onChange={(e) => {
+          // Note: You'd need to update ThemeProvider props to change these
+          console.log('Style:', e.target.value);
+        }}>
+          <option value="modern">Modern</option>
+          <option value="traditional">Traditional</option>
+        </select>
+      </div>
+      <div>
+        <label>Accent Color:</label>
+        <select value={accentColor}>
+          <option value="indigo">Indigo</option>
+          <option value="orange">Orange</option>
+          <option value="mint">Mint</option>
+        </select>
+      </div>
+      <div>
+        <label>Gray Color:</label>
+        <select value={grayColor}>
+          <option value="gray">Gray</option>
+          <option value="mauve">Mauve</option>
+          <option value="slate">Slate</option>
+        </select>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider
+      style="modern"
+      accentColor="indigo"
+      grayColor="gray"
+    >
+      <ThemeCustomizer />
+    </ThemeProvider>
+  );
+}
+```
+
+### Forced theme for specific pages
+
+```tsx
+import { useTheme, ThemeProvider } from '@raystack/apsara';
+
+function LandingPage() {
+  const { forcedTheme } = useTheme();
+
+  if (forcedTheme) {
+    return <p>This page is locked to {forcedTheme} theme</p>;
+  }
+
+  return <p>Regular themed page</p>;
+}
+
+function App() {
+  return (
+    <ThemeProvider forcedTheme="light">
+      <LandingPage />
+    </ThemeProvider>
+  );
+}
+```
+
+## ThemeProvider configuration
+
+The `useTheme` hook must be used within a `ThemeProvider`. Here are the available props:
+
+<ParamField path="themes" type="string[]" default="['light', 'dark']">
+  List of all available theme names.
+</ParamField>
+
+<ParamField path="defaultTheme" type="string" default="'system' | 'light'">
+  The default theme. If `enableSystem` is true, defaults to `'system'`, otherwise `'light'`.
+</ParamField>
+
+<ParamField path="forcedTheme" type="string">
+  Force a specific theme for the current page, preventing user changes.
+</ParamField>
+
+<ParamField path="enableSystem" type="boolean" default="true">
+  Whether to enable system theme detection based on `prefers-color-scheme`.
+</ParamField>
+
+<ParamField path="enableColorScheme" type="boolean" default="true">
+  Whether to set the `color-scheme` CSS property for built-in browser UI elements.
+</ParamField>
+
+<ParamField path="storageKey" type="string" default="'theme'">
+  The localStorage key used to persist the theme selection.
+</ParamField>
+
+<ParamField path="attribute" type="string | 'class'" default="'data-theme'">
+  The HTML attribute to use for theme switching. Use `'class'` for class-based themes or any `data-*` attribute.
+</ParamField>
+
+<ParamField path="disableTransitionOnChange" type="boolean" default="false">
+  Disable CSS transitions when switching themes to prevent unwanted animations.
+</ParamField>
+
+<ParamField path="style" type="'modern' | 'traditional'" default="'modern'">
+  Style variant affecting radius and font properties.
+</ParamField>
+
+<ParamField path="accentColor" type="'indigo' | 'orange' | 'mint'" default="'indigo'">
+  The accent color for the theme.
+</ParamField>
+
+<ParamField path="grayColor" type="'gray' | 'mauve' | 'slate'" default="'gray'">
+  The gray color variant for the theme.
+</ParamField>
+
+## Notes
+
+- The theme selection is automatically persisted to localStorage
+- The hook handles system theme preference changes automatically
+- If used outside of a `ThemeProvider`, returns a default object with empty values
+- Theme changes are applied by setting HTML attributes on the document element
+- The hook supports SSR with a script injected to prevent flash of unstyled content
+
+## Related
+
+- [ThemeProvider](/components/theme-provider)
+- [useIsomorphicLayoutEffect](/api/hooks/use-isomorphic-layout-effect)

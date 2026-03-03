@@ -1,0 +1,149 @@
+---
+title: Tooltip
+description: A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
+---
+
+## Import
+
+```tsx
+import { Tooltip } from '@raystack/apsara';
+```
+
+## Usage
+
+```tsx
+<Tooltip>
+  <Tooltip.Trigger render={<button>Hover me</button>} />
+  <Tooltip.Content>Helpful information</Tooltip.Content>
+</Tooltip>
+```
+
+## With arrow
+
+```tsx
+<Tooltip>
+  <Tooltip.Trigger render={<button>Hover me</button>} />
+  <Tooltip.Content showArrow>This tooltip has an arrow</Tooltip.Content>
+</Tooltip>
+```
+
+## Positioning
+
+```tsx
+<Tooltip>
+  <Tooltip.Trigger render={<button>Hover me</button>} />
+  <Tooltip.Content side="bottom" align="start">
+    Positioned at bottom-start
+  </Tooltip.Content>
+</Tooltip>
+```
+
+## Multiple tooltips with provider
+
+```tsx
+<Tooltip.Provider delay={500}>
+  <Tooltip>
+    <Tooltip.Trigger render={<button>First</button>} />
+    <Tooltip.Content>First tooltip</Tooltip.Content>
+  </Tooltip>
+  
+  <Tooltip>
+    <Tooltip.Trigger render={<button>Second</button>} />
+    <Tooltip.Content>Second tooltip</Tooltip.Content>
+  </Tooltip>
+</Tooltip.Provider>
+```
+
+## Custom delay
+
+```tsx
+<Tooltip delay={1000}>
+  <Tooltip.Trigger render={<button>Slow to appear</button>} />
+  <Tooltip.Content>This tooltip has a 1 second delay</Tooltip.Content>
+</Tooltip>
+```
+
+## Controlled tooltip
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<Tooltip open={open} onOpenChange={setOpen}>
+  <Tooltip.Trigger render={<button>Controlled</button>} />
+  <Tooltip.Content>Controlled tooltip content</Tooltip.Content>
+</Tooltip>
+```
+
+## API reference
+
+### Tooltip
+
+The root component that manages tooltip state.
+
+<ParamField path="open" type="boolean">
+  Controls the open state of the tooltip.
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean">
+  The initial open state in uncontrolled mode.
+</ParamField>
+
+<ParamField path="onOpenChange" type="(open: boolean) => void">
+  Callback fired when the open state changes.
+</ParamField>
+
+<ParamField path="delay" type="number" default="200">
+  The delay in milliseconds before the tooltip appears.
+</ParamField>
+
+### Tooltip.Trigger
+
+The trigger element that activates the tooltip on hover or focus.
+
+<ParamField path="render" type="React.ReactElement" required>
+  The element that triggers the tooltip. Must be a renderable element.
+</ParamField>
+
+<ParamField path="delay" type="number" default="200">
+  Override the delay for this specific trigger.
+</ParamField>
+
+### Tooltip.Content
+
+The content displayed inside the tooltip popup.
+
+<ParamField path="showArrow" type="boolean" default="false">
+  Controls whether to show the arrow pointing to the trigger.
+</ParamField>
+
+<ParamField path="side" type="'top' | 'right' | 'bottom' | 'left'" default="'top'">
+  The preferred side of the trigger to render against.
+</ParamField>
+
+<ParamField path="align" type="'start' | 'center' | 'end'" default="'center'">
+  The alignment of the tooltip relative to the trigger.
+</ParamField>
+
+<ParamField path="sideOffset" type="number">
+  The distance in pixels from the trigger. Defaults to 4 when showArrow is false, or 10 when showArrow is true.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the tooltip content.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the tooltip content.
+</ParamField>
+
+### Tooltip.Provider
+
+Provides shared configuration for multiple tooltips.
+
+<ParamField path="delay" type="number" default="200">
+  The delay in milliseconds before tooltips appear for all tooltips within the provider.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode" required>
+  The tooltip components to be wrapped by the provider.
+</ParamField>

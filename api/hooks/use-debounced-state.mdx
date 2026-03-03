@@ -1,0 +1,200 @@
+---
+title: useDebouncedState
+description: A React hook that debounces state updates with optional leading edge execution.
+---
+
+## Usage
+
+The `useDebouncedState` hook delays state updates until after a specified delay period has passed since the last update call.
+
+```tsx
+import { useDebouncedState } from '@raystack/apsara';
+
+function SearchInput() {
+  const [value, setValue] = useDebouncedState('', 500);
+
+  return (
+    <div>
+      <input
+        type="text"
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Search..."
+      />
+      <p>Debounced value: {value}</p>
+    </div>
+  );
+}
+```
+
+## Type signature
+
+```typescript
+interface UseDebouncedStateOptions {
+  /**
+   * If `true`, the state will be updated immediately on the first call (leading edge).
+   * Subsequent calls within the delay period will be debounced.
+   * @default false
+   */
+  leading?: boolean;
+}
+
+type UseDebouncedStateReturnValue<T> = [
+  T,
+  (newValue: SetStateAction<T>) => void
+];
+
+function useDebouncedState<T = any>(
+  defaultValue: T,
+  delay: number,
+  options?: UseDebouncedStateOptions
+): UseDebouncedStateReturnValue<T>
+```
+
+## Parameters
+
+<ParamField path="defaultValue" type="T" required>
+  The initial value of the state.
+</ParamField>
+
+<ParamField path="delay" type="number" required>
+  The delay time in milliseconds before the state update is applied.
+</ParamField>
+
+<ParamField path="options" type="UseDebouncedStateOptions">
+  Configuration options for the hook.
+  
+  <ParamField path="options.leading" type="boolean" default="false">
+    If `true`, the state will be updated immediately on the first call (leading edge). Subsequent calls within the delay period will be debounced.
+  </ParamField>
+</ParamField>
+
+## Return value
+
+The hook returns a tuple similar to `useState`:
+
+<ResponseField name="[0]" type="T">
+  The current debounced value.
+</ResponseField>
+
+<ResponseField name="[1]" type="(newValue: SetStateAction<T>) => void">
+  A function to update the state. The update will be debounced according to the specified delay.
+</ResponseField>
+
+## Examples
+
+### Search input with debounced API calls
+
+```tsx
+import { useDebouncedState } from '@raystack/apsara';
+
+function SearchComponent() {
+  const [searchTerm, setSearchTerm] = useDebouncedState('', 500);
+
+  React.useEffect(() => {
+    if (searchTerm) {
+      // API call only happens 500ms after user stops typing
+      fetch(`/api/search?q=${searchTerm}`)
+        .then(res => res.json())
+        .then(data => console.log(data));
+    }
+  }, [searchTerm]);
+
+  return (
+    <input
+      type="search"
+      onChange={(e) => setSearchTerm(e.target.value)}
+      placeholder="Search..."
+    />
+  );
+}
+```
+
+### With leading edge
+
+```tsx
+import { useDebouncedState } from '@raystack/apsara';
+
+function Counter() {
+  const [count, setCount] = useDebouncedState(0, 1000, { leading: true });
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(c => c + 1)}>
+        Increment (updates immediately on first click)
+      </button>
+    </div>
+  );
+}
+```
+
+### Form input with validation
+
+```tsx
+import { useDebouncedState } from '@raystack/apsara';
+
+function EmailInput() {
+  const [email, setEmail] = useDebouncedState('', 300);
+  const [isValid, setIsValid] = React.useState(true);
+
+  React.useEffect(() => {
+    // Validation runs 300ms after user stops typing
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setIsValid(emailRegex.test(email));
+  }, [email]);
+
+  return (
+    <div>
+      <input
+        type="email"
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email"
+      />
+      {!isValid && email && (
+        <span style={{ color: 'red' }}>Invalid email</span>
+      )}
+    </div>
+  );
+}
+```
+
+### Autosave functionality
+
+```tsx
+import { useDebouncedState } from '@raystack/apsara';
+
+function AutoSaveEditor() {
+  const [content, setContent] = useDebouncedState('', 2000);
+
+  React.useEffect(() => {
+    if (content) {
+      // Auto-save 2 seconds after user stops typing
+      fetch('/api/save', {
+        method: 'POST',
+        body: JSON.stringify({ content })
+      });
+    }
+  }, [content]);
+
+  return (
+    <textarea
+      onChange={(e) => setContent(e.target.value)}
+      placeholder="Start typing... (auto-saves after 2s)"
+      rows={10}
+      style={{ width: '100%' }}
+    />
+  );
+}
+```
+
+## Notes
+
+- The debounce timer is automatically cleaned up when the component unmounts
+- When `leading` is `true`, the first call updates immediately, then subsequent calls within the delay period are debounced
+- The hook supports functional updates like `setState` (e.g., `setValue(prev => prev + 1)`)
+- Useful for performance optimization when dealing with expensive operations or API calls
+
+## Related
+
+- [useCopyToClipboard](/api/hooks/use-copy-to-clipboard)
+- [useIsomorphicLayoutEffect](/api/hooks/use-isomorphic-layout-effect)

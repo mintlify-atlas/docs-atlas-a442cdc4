@@ -1,0 +1,222 @@
+---
+title: Avatar
+description: Display user profile images with automatic fallbacks and color variants.
+---
+
+The Avatar component displays user profile images with built-in fallback support and customizable styling. Use `AvatarGroup` to show multiple avatars with overflow handling.
+
+## Basic usage
+
+```tsx
+import { Avatar } from '@raystack/apsara';
+
+function UserProfile() {
+  return (
+    <Avatar
+      src="https://images.unsplash.com/photo-1511485977113-f34c92461ad9"
+      alt="John Doe"
+      fallback="JD"
+    />
+  );
+}
+```
+
+## With fallback text
+
+When the image fails to load or no src is provided, the fallback is displayed.
+
+```tsx
+import { Avatar } from '@raystack/apsara';
+
+function InitialsAvatar() {
+  return (
+    <Avatar 
+      fallback="JD" 
+      color="indigo"
+      variant="soft"
+    />
+  );
+}
+```
+
+## Sizes
+
+Avatar supports 13 size variants from 1 to 13.
+
+```tsx
+import { Avatar } from '@raystack/apsara';
+
+function AvatarSizes() {
+  return (
+    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+      <Avatar size={1} fallback="1" />
+      <Avatar size={3} fallback="3" />
+      <Avatar size={5} fallback="5" />
+      <Avatar size={7} fallback="7" />
+      <Avatar size={9} fallback="9" />
+    </div>
+  );
+}
+```
+
+## Colors
+
+Choose from 13 color variants.
+
+```tsx
+import { Avatar } from '@raystack/apsara';
+
+function ColoredAvatars() {
+  return (
+    <div style={{ display: 'flex', gap: '8px' }}>
+      <Avatar fallback="IN" color="indigo" />
+      <Avatar fallback="OR" color="orange" />
+      <Avatar fallback="MI" color="mint" />
+      <Avatar fallback="SK" color="sky" />
+      <Avatar fallback="PU" color="purple" />
+    </div>
+  );
+}
+```
+
+## Variants
+
+Avatar supports `solid` and `soft` variants.
+
+```tsx
+import { Avatar } from '@raystack/apsara';
+
+function AvatarVariants() {
+  return (
+    <div style={{ display: 'flex', gap: '8px' }}>
+      <Avatar fallback="SO" variant="solid" color="indigo" />
+      <Avatar fallback="SF" variant="soft" color="indigo" />
+    </div>
+  );
+}
+```
+
+## Border radius
+
+Control the border radius with the `radius` prop.
+
+```tsx
+import { Avatar } from '@raystack/apsara';
+
+function AvatarRadius() {
+  return (
+    <div style={{ display: 'flex', gap: '8px' }}>
+      <Avatar fallback="SM" radius="small" />
+      <Avatar fallback="FL" radius="full" />
+    </div>
+  );
+}
+```
+
+## Avatar group
+
+Display multiple avatars with automatic overflow handling.
+
+```tsx
+import { Avatar, AvatarGroup } from '@raystack/apsara';
+
+function TeamAvatars() {
+  return (
+    <AvatarGroup max={3}>
+      <Avatar fallback="JD" color="indigo" />
+      <Avatar fallback="JS" color="orange" />
+      <Avatar fallback="BW" color="mint" />
+      <Avatar fallback="AM" color="sky" />
+      <Avatar fallback="KL" color="purple" />
+    </AvatarGroup>
+  );
+}
+```
+
+The example above will show the first 3 avatars and display "+2" for the remaining count.
+
+## Automatic color selection
+
+Use the `getAvatarColor` utility to generate consistent colors based on a string.
+
+```tsx
+import { Avatar, getAvatarColor } from '@raystack/apsara';
+
+function DynamicAvatar({ email, name }: { email: string; name: string }) {
+  const color = getAvatarColor(email);
+  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+  
+  return (
+    <Avatar 
+      fallback={initials} 
+      color={color}
+    />
+  );
+}
+```
+
+## API reference
+
+### Avatar
+
+<ParamField path="src" type="string">
+  Image source URL.
+</ParamField>
+
+<ParamField path="alt" type="string">
+  Alternative text for the image.
+</ParamField>
+
+<ParamField path="fallback" type="ReactNode">
+  Content to display when the image fails to load or is not provided.
+</ParamField>
+
+<ParamField path="size" type="1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13" default="3">
+  Size of the avatar.
+</ParamField>
+
+<ParamField path="radius" type="'small' | 'full'" default="'small'">
+  Border radius of the avatar.
+</ParamField>
+
+<ParamField path="variant" type="'solid' | 'soft'" default="'soft'">
+  Visual style variant.
+</ParamField>
+
+<ParamField path="color" type="'indigo' | 'orange' | 'mint' | 'neutral' | 'sky' | 'lime' | 'grass' | 'cyan' | 'iris' | 'purple' | 'pink' | 'crimson' | 'gold'" default="'indigo'">
+  Color theme for the avatar fallback.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the avatar should appear disabled.
+</ParamField>
+
+### AvatarGroup
+
+<ParamField path="children" type="React.ReactElement<AvatarProps>[]" required>
+  Array of Avatar components to display.
+</ParamField>
+
+<ParamField path="max" type="number">
+  Maximum number of avatars to display before showing overflow count.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the group container.
+</ParamField>
+
+### getAvatarColor
+
+Utility function to generate a consistent color based on a string input.
+
+<ParamField path="str" type="string" required>
+  Input string (e.g., email or username) to generate color from.
+</ParamField>
+
+<ParamField type="AVATAR_COLORS">
+  Returns one of the 13 available avatar colors.
+</ParamField>

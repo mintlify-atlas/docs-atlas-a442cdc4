@@ -1,0 +1,293 @@
+---
+title: Styling
+description: CSS variables, design tokens, and styling utilities in the Apsara design system.
+---
+
+## Overview
+
+Apsara provides a comprehensive set of CSS variables and design tokens that ensure visual consistency across your application. These variables are defined in the root stylesheet and automatically adapt to the selected theme.
+
+## CSS variables
+
+### Colors
+
+Color variables are organized by purpose and semantic meaning. All color variables automatically adapt to light and dark themes.
+
+#### Foreground colors
+
+```css
+var(--foreground-base)      /* Primary text color */
+var(--foreground-muted)     /* Secondary text color */
+var(--foreground-subtle)    /* Tertiary text color */
+var(--foreground-inverted)  /* Inverted text color (for dark backgrounds) */
+```
+
+#### Semantic foreground colors
+
+```css
+var(--foreground-accent)    /* Accent color for links, buttons */
+var(--foreground-attention) /* Warning/attention color */
+var(--foreground-danger)    /* Error/danger color */
+var(--foreground-success)   /* Success color */
+```
+
+#### Background colors
+
+```css
+var(--background-base)                    /* Primary background */
+var(--background-base-hover)              /* Hover state for base background */
+var(--background-inset)                   /* Inset/recessed background */
+var(--background-inset-hover)             /* Hover state for inset */
+var(--background-subtle)                  /* Subtle background */
+var(--background-highlight)               /* Highlighted background */
+var(--background-inverted)                /* Inverted background */
+```
+
+#### Semantic backgrounds
+
+```css
+var(--background-accent)                  /* Accent background */
+var(--background-accent-inverted)         /* Inverted accent background */
+var(--background-accent-inverted-hover)   /* Hover state */
+var(--background-attention)               /* Attention background */
+var(--background-attention-inverted)      /* Inverted attention background */
+var(--background-danger)                  /* Danger background */
+var(--background-danger-inverted)         /* Inverted danger background */
+var(--background-danger-inverted-hover)   /* Hover state */
+var(--background-success)                 /* Success background */
+var(--background-success-inverted)        /* Inverted success background */
+```
+
+#### Border colors
+
+```css
+var(--border-base)                        /* Primary border color */
+var(--border-base-hover)                  /* Hover state */
+var(--border-muted)                       /* Muted border color */
+var(--border-subtle)                      /* Subtle border color */
+```
+
+#### Semantic borders
+
+```css
+var(--border-accent)                      /* Accent border */
+var(--border-accent-inverted)             /* Inverted accent border */
+var(--border-accent-inverted-hover)       /* Hover state */
+var(--border-attention)                   /* Attention border */
+var(--border-attention-inverted)          /* Inverted attention border */
+var(--border-danger)                      /* Danger border */
+var(--border-danger-inverted)             /* Inverted danger border */
+var(--border-danger-inverted-hover)       /* Hover state */
+var(--border-success)                     /* Success border */
+var(--border-success-inverted)            /* Inverted success border */
+```
+
+### Typography
+
+#### Font families
+
+```css
+var(--ff-inter)  /* Inter font family (default) */
+var(--ff-mono)   /* Söhne Mono font family (monospace) */
+```
+
+#### Font sizes
+
+```css
+var(--fs-100)  /* 0.688rem - 11px */
+var(--fs-200)  /* 0.75rem - 12px */
+var(--fs-300)  /* 0.813rem - 13px */
+var(--fs-400)  /* 0.875rem - 14px */
+var(--fs-500)  /* 0.938rem - 15px */
+var(--fs-600)  /* 1rem - 16px */
+```
+
+### Spacing
+
+Apsara uses a consistent spacing scale:
+
+```css
+var(--space-1)   /* 2px */
+var(--space-2)   /* 4px */
+var(--space-3)   /* 8px */
+var(--space-4)   /* 12px */
+var(--space-5)   /* 16px */
+var(--space-6)   /* 20px */
+var(--space-7)   /* 24px */
+var(--space-8)   /* 28px */
+var(--space-9)   /* 32px */
+var(--space-10)  /* 40px */
+var(--space-11)  /* 48px */
+var(--space-12)  /* 56px */
+var(--space-13)  /* 64px */
+var(--space-14)  /* 72px */
+var(--space-15)  /* 80px */
+var(--space-16)  /* 96px */
+var(--space-17)  /* 120px */
+```
+
+### Border radius
+
+```css
+var(--radius-1)     /* 2px */
+var(--radius-2)     /* 4px */
+var(--radius-3)     /* 6px */
+var(--radius-4)     /* 8px */
+var(--radius-5)     /* 12px */
+var(--radius-6)     /* 16px */
+var(--radius-full)  /* 800px - circular */
+```
+
+### Shadows
+
+```css
+var(--shadow-xs)  /* Extra small shadow */
+var(--shadow-sm)  /* Small shadow */
+var(--shadow-md)  /* Medium shadow */
+var(--shadow-lg)  /* Large shadow */
+var(--shadow-xl)  /* Extra large shadow */
+```
+
+## Data attributes
+
+Apsara uses data attributes to control theming and styling at the document level.
+
+### Theme attribute
+
+```html
+<html data-theme="light">  <!-- Light theme -->
+<html data-theme="dark">   <!-- Dark theme -->
+```
+
+### Style attribute
+
+```html
+<html data-style="modern">       <!-- Modern style (default) -->
+<html data-style="traditional">  <!-- Traditional style -->
+```
+
+### Color attributes
+
+```html
+<html data-accent-color="indigo">  <!-- Indigo accent -->
+<html data-accent-color="orange">  <!-- Orange accent -->
+<html data-accent-color="mint">    <!-- Mint accent -->
+
+<html data-gray-color="gray">      <!-- Gray variant -->
+<html data-gray-color="mauve">     <!-- Mauve variant -->
+<html data-gray-color="slate">     <!-- Slate variant -->
+```
+
+## Usage examples
+
+### Using CSS variables
+
+```css
+.custom-component {
+  background: var(--background-base);
+  color: var(--foreground-base);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-3);
+  padding: var(--space-4);
+  font-family: var(--ff-inter);
+  font-size: var(--fs-400);
+  box-shadow: var(--shadow-sm);
+}
+
+.custom-component:hover {
+  background: var(--background-base-hover);
+  border-color: var(--border-base-hover);
+}
+```
+
+### Semantic color usage
+
+```css
+.success-message {
+  background: var(--background-success);
+  color: var(--foreground-success);
+  border: 1px solid var(--border-success);
+}
+
+.error-message {
+  background: var(--background-danger);
+  color: var(--foreground-danger);
+  border: 1px solid var(--border-danger);
+}
+
+.warning-message {
+  background: var(--background-attention);
+  color: var(--foreground-attention);
+  border: 1px solid var(--border-attention);
+}
+```
+
+### Responsive spacing
+
+```css
+.container {
+  padding: var(--space-5);
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: var(--space-7);
+    gap: var(--space-6);
+  }
+}
+```
+
+### Typography styling
+
+```css
+.heading {
+  font-family: var(--ff-inter);
+  font-size: var(--fs-600);
+  font-weight: 600;
+  color: var(--foreground-base);
+}
+
+.code {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-300);
+  background: var(--background-inset);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-2);
+}
+```
+
+### Component with inverted colors
+
+```css
+.hero-section {
+  background: var(--background-inverted);
+  color: var(--foreground-inverted);
+  padding: var(--space-10);
+}
+
+.hero-button {
+  background: var(--background-accent-inverted);
+  color: var(--ascent-contrast);
+  border: none;
+}
+
+.hero-button:hover {
+  background: var(--background-accent-inverted-hover);
+}
+```
+
+## Best practices
+
+1. **Always use semantic color variables** for consistent theming across light and dark modes
+2. **Use spacing variables** instead of hardcoded pixel values for consistent spacing
+3. **Reference border radius variables** to maintain consistent corner rounding
+4. **Apply shadow variables** for elevation and depth
+5. **Use font size variables** for consistent typography scaling
+6. **Leverage data attributes** when you need to style based on theme, style variant, or accent color
+
+## Related
+
+- [Colors](/api/utilities/colors)
+- [useTheme](/api/hooks/use-theme)
+- [ThemeProvider](/components/theme-provider)
