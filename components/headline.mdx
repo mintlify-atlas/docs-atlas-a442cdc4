@@ -1,0 +1,185 @@
+---
+title: Headline
+description: Display headings with consistent typography and semantic HTML.
+---
+
+The Headline component provides semantic heading elements with consistent styling and flexible size options. It supports different heading levels while maintaining visual hierarchy.
+
+## Basic usage
+
+```tsx
+import { Headline } from '@raystack/apsara';
+
+function PageTitle() {
+  return <Headline>Welcome to the Dashboard</Headline>;
+}
+```
+
+## Props
+
+<ParamField path="size" type="'t1' | 't2' | 't3' | 't4' | 'small' | 'medium' | 'large'" default="'t2'">
+  Visual size of the headline. Use `'t1' | 't2' | 't3' | 't4'` for recommended sizes.
+</ParamField>
+
+<ParamField path="weight" type="'regular' | 'medium'" default="'medium'">
+  Font weight of the headline.
+</ParamField>
+
+<ParamField path="align" type="'left' | 'center' | 'right'" default="'left'">
+  Text alignment.
+</ParamField>
+
+<ParamField path="truncate" type="boolean" default="false">
+  Whether to truncate text with ellipsis when it overflows.
+</ParamField>
+
+<ParamField path="as" type="'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'" default="'h2'">
+  The semantic HTML element to render.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The headline content.
+</ParamField>
+
+## Sizes
+
+Use the `t1` through `t4` sizes for consistent typography hierarchy.
+
+```tsx
+import { Headline } from '@raystack/apsara';
+
+function HeadlineSizes() {
+  return (
+    <div>
+      <Headline size="t1">Title 1 - Largest</Headline>
+      <Headline size="t2">Title 2 - Default</Headline>
+      <Headline size="t3">Title 3</Headline>
+      <Headline size="t4">Title 4 - Smallest</Headline>
+    </div>
+  );
+}
+```
+
+## Semantic HTML
+
+Separate visual presentation from semantic meaning using the `as` prop.
+
+```tsx
+import { Headline } from '@raystack/apsara';
+
+function SemanticHeadlines() {
+  return (
+    <article>
+      <Headline as="h1" size="t1">
+        Page Title
+      </Headline>
+      
+      <Headline as="h2" size="t3">
+        Section Heading
+      </Headline>
+      
+      {/* Visually large but semantically h3 */}
+      <Headline as="h3" size="t2">
+        Subsection
+      </Headline>
+    </article>
+  );
+}
+```
+
+## Font weights
+
+```tsx
+import { Headline } from '@raystack/apsara';
+
+function HeadlineWeights() {
+  return (
+    <div>
+      <Headline weight="regular">Regular Weight</Headline>
+      <Headline weight="medium">Medium Weight</Headline>
+    </div>
+  );
+}
+```
+
+## Text alignment
+
+```tsx
+import { Headline } from '@raystack/apsara';
+
+function AlignedHeadlines() {
+  return (
+    <div>
+      <Headline align="left">Left Aligned</Headline>
+      <Headline align="center">Center Aligned</Headline>
+      <Headline align="right">Right Aligned</Headline>
+    </div>
+  );
+}
+```
+
+## Truncated text
+
+Prevent long headlines from breaking layout.
+
+```tsx
+import { Headline } from '@raystack/apsara';
+
+function TruncatedHeadline() {
+  return (
+    <div style={{ maxWidth: '300px' }}>
+      <Headline truncate>
+        This is a very long headline that will be truncated with an ellipsis
+      </Headline>
+    </div>
+  );
+}
+```
+
+## Page header
+
+```tsx
+import { Headline } from '@raystack/apsara';
+
+function PageHeader() {
+  return (
+    <header>
+      <Headline as="h1" size="t1" align="center">
+        Documentation
+      </Headline>
+    </header>
+  );
+}
+```
+
+## Card title
+
+```tsx
+import { Headline } from '@raystack/apsara';
+
+function CardTitle() {
+  return (
+    <div className="card">
+      <Headline as="h3" size="t3">
+        Feature Overview
+      </Headline>
+      <p>Card content goes here...</p>
+    </div>
+  );
+}
+```
+
+## Accessibility
+
+- Use semantic heading levels (`h1` through `h6`) in logical order
+- Don't skip heading levels (e.g., don't jump from `h2` to `h4`)
+- Use the `as` prop to maintain semantic structure while achieving desired visual hierarchy
+- Ensure sufficient color contrast for readability
+
+## Related components
+
+- [Text](/components/text) - For body text and inline content

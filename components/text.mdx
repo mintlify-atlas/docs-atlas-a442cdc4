@@ -1,0 +1,266 @@
+---
+title: Text
+description: Flexible text component with extensive typography controls and variant styles.
+---
+
+The Text component is a versatile typography primitive that supports multiple variants, sizes, weights, and text styling options. It can render as different HTML elements while maintaining consistent styling.
+
+## Basic usage
+
+```tsx
+import { Text } from '@raystack/apsara';
+
+function Example() {
+  return <Text>This is some text</Text>;
+}
+```
+
+## Props
+
+<ParamField path="variant" type="'primary' | 'secondary' | 'tertiary' | 'emphasis' | 'accent' | 'attention' | 'danger' | 'success'" default="'primary'">
+  Visual style variant that conveys semantic meaning through color.
+</ParamField>
+
+<ParamField path="size" type="'micro' | 'mini' | 'small' | 'regular' | 'large' | 1-10" default="'small'">
+  Text size. Use named sizes ('micro', 'mini', 'small', 'regular', 'large') for recommended options.
+</ParamField>
+
+<ParamField path="weight" type="'regular' | 'medium' | 'bold' | 'bolder' | 'normal' | 'lighter' | 100-900" default="'regular'">
+  Font weight. Use 'regular' or 'medium' for recommended options.
+</ParamField>
+
+<ParamField path="transform" type="'capitalize' | 'uppercase' | 'lowercase'">
+  Text transformation.
+</ParamField>
+
+<ParamField path="align" type="'center' | 'start' | 'end' | 'justify'">
+  Text alignment.
+</ParamField>
+
+<ParamField path="lineClamp" type="1 | 2 | 3 | 4 | 5">
+  Limit text to specified number of lines with ellipsis.
+</ParamField>
+
+<ParamField path="underline" type="boolean">
+  Whether to underline the text.
+</ParamField>
+
+<ParamField path="strikeThrough" type="boolean">
+  Whether to add strikethrough styling.
+</ParamField>
+
+<ParamField path="italic" type="boolean">
+  Whether to italicize the text.
+</ParamField>
+
+<ParamField path="as" type="'span' | 'div' | 'p' | 'label' | 'a'" default="'span'">
+  The HTML element to render.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The text content.
+</ParamField>
+
+## Variants
+
+Different semantic color styles for various use cases.
+
+```tsx
+import { Text } from '@raystack/apsara';
+
+function TextVariants() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <Text variant="primary">Primary text</Text>
+      <Text variant="secondary">Secondary text</Text>
+      <Text variant="tertiary">Tertiary text</Text>
+      <Text variant="emphasis">Emphasis text</Text>
+      <Text variant="accent">Accent text</Text>
+      <Text variant="attention">Attention text</Text>
+      <Text variant="danger">Danger text</Text>
+      <Text variant="success">Success text</Text>
+    </div>
+  );
+}
+```
+
+## Sizes
+
+Use named sizes for consistent typography.
+
+```tsx
+import { Text } from '@raystack/apsara';
+
+function TextSizes() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <Text size="micro">Micro text</Text>
+      <Text size="mini">Mini text</Text>
+      <Text size="small">Small text (default)</Text>
+      <Text size="regular">Regular text</Text>
+      <Text size="large">Large text</Text>
+    </div>
+  );
+}
+```
+
+## Font weights
+
+```tsx
+import { Text } from '@raystack/apsara';
+
+function TextWeights() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <Text weight="regular">Regular weight (default)</Text>
+      <Text weight="medium">Medium weight</Text>
+      <Text weight="bold">Bold weight</Text>
+      <Text weight={700}>Numeric weight (700)</Text>
+    </div>
+  );
+}
+```
+
+## Text transformations
+
+```tsx
+import { Text } from '@raystack/apsara';
+
+function TextTransforms() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <Text transform="capitalize">capitalize this text</Text>
+      <Text transform="uppercase">uppercase this text</Text>
+      <Text transform="lowercase">LOWERCASE THIS TEXT</Text>
+    </div>
+  );
+}
+```
+
+## Text alignment
+
+```tsx
+import { Text } from '@raystack/apsara';
+
+function TextAlignment() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <Text align="start" as="div">Start aligned</Text>
+      <Text align="center" as="div">Center aligned</Text>
+      <Text align="end" as="div">End aligned</Text>
+      <Text align="justify" as="div">Justified text that spans multiple lines to show the justification effect.</Text>
+    </div>
+  );
+}
+```
+
+## Line clamping
+
+Limit text to a specific number of lines with ellipsis.
+
+```tsx
+import { Text } from '@raystack/apsara';
+
+function ClampedText() {
+  return (
+    <div style={{ maxWidth: '300px' }}>
+      <Text lineClamp={2}>
+        This is a long piece of text that will be clamped to two lines. 
+        Any content beyond two lines will be hidden and replaced with an ellipsis.
+      </Text>
+    </div>
+  );
+}
+```
+
+## Text styling
+
+```tsx
+import { Text } from '@raystack/apsara';
+
+function StyledText() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <Text underline>Underlined text</Text>
+      <Text strikeThrough>Strikethrough text</Text>
+      <Text italic>Italic text</Text>
+      <Text weight="bold" underline>Bold and underlined</Text>
+    </div>
+  );
+}
+```
+
+## HTML elements
+
+Render as different HTML elements while maintaining styling.
+
+```tsx
+import { Text } from '@raystack/apsara';
+
+function DifferentElements() {
+  return (
+    <div>
+      <Text as="span">Inline span (default)</Text>
+      <Text as="div">Block div</Text>
+      <Text as="p">Paragraph element</Text>
+      <Text as="label" htmlFor="input-id">Label element</Text>
+    </div>
+  );
+}
+```
+
+## Status messages
+
+```tsx
+import { Text } from '@raystack/apsara';
+
+function StatusMessages() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <Text variant="success" size="small">
+        ✓ Your changes have been saved
+      </Text>
+      <Text variant="danger" size="small">
+        ✗ An error occurred while processing your request
+      </Text>
+      <Text variant="attention" size="small">
+        ⚠ This action cannot be undone
+      </Text>
+    </div>
+  );
+}
+```
+
+## With other components
+
+Text works well as a wrapper for inline components.
+
+```tsx
+import { Text, Amount } from '@raystack/apsara';
+
+function ComposedText() {
+  return (
+    <Text size="regular" variant="emphasis">
+      Total amount: <Amount value={1299} currency="USD" />
+    </Text>
+  );
+}
+```
+
+## Accessibility
+
+- Use semantic HTML elements via the `as` prop for proper document structure
+- Ensure sufficient color contrast between text and background
+- Use appropriate variant colors that convey semantic meaning
+- When using line clamping, consider providing a way to view the full text
+
+## Related components
+
+- [Headline](/components/headline) - For larger headings and titles
+- [Link](/components/link) - Extends Text with link functionality
+- [Amount](/components/amount) - Inherits Text styling for monetary values
+- [Label](/components/label) - For form field labels

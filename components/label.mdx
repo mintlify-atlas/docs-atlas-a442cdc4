@@ -1,0 +1,206 @@
+---
+title: Label
+description: Accessible labels for form inputs with support for required field indicators.
+---
+
+The Label component provides accessible labels for form controls with built-in support for required field indicators and consistent sizing.
+
+## Basic usage
+
+```tsx
+import { Label } from '@raystack/apsara';
+
+function FormField() {
+  return (
+    <div>
+      <Label htmlFor="email">Email address</Label>
+      <input id="email" type="email" />
+    </div>
+  );
+}
+```
+
+## Props
+
+<ParamField path="size" type="'small' | 'medium' | 'large'" default="'small'">
+  Size of the label text.
+</ParamField>
+
+<ParamField path="required" type="boolean" default="false">
+  Whether to display a required field indicator.
+</ParamField>
+
+<ParamField path="requiredIndicator" type="string" default="'*'">
+  The character or text to display for required fields.
+</ParamField>
+
+<ParamField path="htmlFor" type="string">
+  The ID of the form control this label is associated with.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The label text content.
+</ParamField>
+
+## Required fields
+
+Indicate required fields with an asterisk or custom indicator.
+
+```tsx
+import { Label } from '@raystack/apsara';
+
+function RequiredField() {
+  return (
+    <div>
+      <Label htmlFor="username" required>
+        Username
+      </Label>
+      <input id="username" type="text" required />
+    </div>
+  );
+}
+```
+
+## Custom required indicator
+
+```tsx
+import { Label } from '@raystack/apsara';
+
+function CustomIndicator() {
+  return (
+    <div>
+      <Label 
+        htmlFor="password" 
+        required 
+        requiredIndicator=" (required)"
+      >
+        Password
+      </Label>
+      <input id="password" type="password" required />
+    </div>
+  );
+}
+```
+
+## Sizes
+
+Three size options for different form layouts.
+
+```tsx
+import { Label } from '@raystack/apsara';
+
+function LabelSizes() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div>
+        <Label htmlFor="small-input" size="small">
+          Small Label
+        </Label>
+        <input id="small-input" type="text" />
+      </div>
+      
+      <div>
+        <Label htmlFor="medium-input" size="medium">
+          Medium Label
+        </Label>
+        <input id="medium-input" type="text" />
+      </div>
+      
+      <div>
+        <Label htmlFor="large-input" size="large">
+          Large Label
+        </Label>
+        <input id="large-input" type="text" />
+      </div>
+    </div>
+  );
+}
+```
+
+## Complete form field
+
+```tsx
+import { Label } from '@raystack/apsara';
+
+function CompleteField() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <Label htmlFor="full-name" required>
+        Full name
+      </Label>
+      <input 
+        id="full-name" 
+        type="text" 
+        placeholder="Enter your full name"
+        required 
+      />
+      <span style={{ fontSize: '12px', color: 'gray' }}>
+        This will be displayed on your profile
+      </span>
+    </div>
+  );
+}
+```
+
+## With checkbox
+
+```tsx
+import { Label } from '@raystack/apsara';
+
+function CheckboxField() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <input id="terms" type="checkbox" />
+      <Label htmlFor="terms" size="medium">
+        I agree to the terms and conditions
+      </Label>
+    </div>
+  );
+}
+```
+
+## With radio buttons
+
+```tsx
+import { Label } from '@raystack/apsara';
+
+function RadioGroup() {
+  return (
+    <fieldset>
+      <legend>Select a plan</legend>
+      
+      <div style={{ display: 'flex', gap: '4px' }}>
+        <input id="plan-free" type="radio" name="plan" value="free" />
+        <Label htmlFor="plan-free">Free</Label>
+      </div>
+      
+      <div style={{ display: 'flex', gap: '4px' }}>
+        <input id="plan-pro" type="radio" name="plan" value="pro" />
+        <Label htmlFor="plan-pro">Pro</Label>
+      </div>
+      
+      <div style={{ display: 'flex', gap: '4px' }}>
+        <input id="plan-enterprise" type="radio" name="plan" value="enterprise" />
+        <Label htmlFor="plan-enterprise">Enterprise</Label>
+      </div>
+    </fieldset>
+  );
+}
+```
+
+## Accessibility
+
+- Always use the `htmlFor` prop to associate labels with their form controls
+- The required indicator includes `aria-hidden="true"` and `role="presentation"` to prevent redundant screen reader announcements
+- Ensure the associated input has the `required` attribute when using the required indicator
+- Use clear, descriptive label text that explains the purpose of the form control
+
+## Related components
+
+- [InputField](/components/input-field) - Text input component with built-in label support
+- [Checkbox](/components/checkbox) - Checkbox component with label support
+- [Radio](/components/radio) - Radio button component

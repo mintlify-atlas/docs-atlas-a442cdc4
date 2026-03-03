@@ -67,6 +67,7 @@
               "components/avatar",
               "components/badge",
               "components/chip",
+              "components/amount",
               "components/empty-state",
               "components/code-block",
               "components/image",
@@ -87,7 +88,8 @@
               "components/slider",
               "components/calendar",
               "components/color-picker",
-              "components/search"
+              "components/search",
+              "components/label"
             ]
           },
           {
@@ -122,7 +124,10 @@
               "components/icon-button",
               "components/filter-chip",
               "components/announcement-bar",
-              "components/theme-provider"
+              "components/theme-provider",
+              "components/headline",
+              "components/text",
+              "components/link"
             ]
           }
         ]

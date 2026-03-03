@@ -1,0 +1,178 @@
+---
+title: Amount
+description: Display formatted monetary values with automatic currency conversion and localization.
+---
+
+The Amount component formats and displays monetary values using Intl.NumberFormat, with automatic handling of currency codes, locales, and minor units. It inherits styling from parent Text components.
+
+## Basic usage
+
+```tsx
+import { Amount } from '@raystack/apsara';
+
+function ProductPrice() {
+  return <Amount value={1299} />; // Shows as "$12.99"
+}
+```
+
+## Props
+
+<ParamField path="value" type="number | string" required>
+  The monetary value to display. For large numbers (> 2^53), pass as string to maintain precision.
+  
+  When `valueInMinorUnits` is true: 1299 → "$12.99"
+  
+  When `valueInMinorUnits` is false: 12.99 → "$12.99"
+</ParamField>
+
+<ParamField path="currency" type="string" default="'USD'">
+  ISO 4217 currency code (e.g., 'USD', 'EUR', 'JPY', 'GBP').
+</ParamField>
+
+<ParamField path="valueInMinorUnits" type="boolean" default="true">
+  Whether the value is in minor units (cents, paise, etc.). If true, the value will be converted based on the currency's decimal places. If false, the value will be used as is.
+  
+  Examples:
+  - USD: 1299 → $12.99 (2 decimals)
+  - JPY: 1299 → ¥1,299 (0 decimals)
+  - BHD: 1299 → BHD 1.299 (3 decimals)
+</ParamField>
+
+<ParamField path="locale" type="string" default="'en-US'">
+  BCP 47 language tag for localization (e.g., 'en-US', 'de-DE', 'ja-JP', 'fr-FR').
+</ParamField>
+
+<ParamField path="hideDecimals" type="boolean" default="false">
+  Truncates decimal places when true.
+</ParamField>
+
+<ParamField path="currencyDisplay" type="'symbol' | 'code' | 'name'" default="'symbol'">
+  Currency display format:
+  - `'symbol'`: $12.99
+  - `'code'`: USD 12.99
+  - `'name'`: 12.99 US Dollars
+</ParamField>
+
+<ParamField path="minimumFractionDigits" type="number">
+  Number of minimum fraction digits. Uses currency's default when undefined.
+</ParamField>
+
+<ParamField path="maximumFractionDigits" type="number">
+  Number of maximum fraction digits. Uses currency's default when undefined.
+</ParamField>
+
+<ParamField path="groupDigits" type="boolean" default="true">
+  Group digits with thousand separators.
+</ParamField>
+
+## Different currencies
+
+```tsx
+import { Amount } from '@raystack/apsara';
+
+function InternationalPrices() {
+  return (
+    <div>
+      <Amount value={1299} currency="USD" /> {/* $12.99 */}
+      <Amount value={1299} currency="EUR" /> {/* €12.99 */}
+      <Amount value={1299} currency="GBP" /> {/* £12.99 */}
+      <Amount value={1299} currency="JPY" /> {/* ¥1,299 */}
+    </div>
+  );
+}
+```
+
+## Localization
+
+Format amounts according to different locales.
+
+```tsx
+import { Amount } from '@raystack/apsara';
+
+function LocalizedPrices() {
+  return (
+    <div>
+      <Amount value={1299} currency="EUR" locale="en-US" /> {/* €12.99 */}
+      <Amount value={1299} currency="EUR" locale="de-DE" /> {/* 12,99 € */}
+      <Amount value={1299} currency="EUR" locale="fr-FR" /> {/* 12,99 € */}
+    </div>
+  );
+}
+```
+
+## Currency display formats
+
+```tsx
+import { Amount } from '@raystack/apsara';
+
+function CurrencyDisplayFormats() {
+  return (
+    <div>
+      <Amount value={1299} currencyDisplay="symbol" /> {/* $12.99 */}
+      <Amount value={1299} currencyDisplay="code" /> {/* USD 12.99 */}
+      <Amount value={1299} currencyDisplay="name" /> {/* 12.99 US dollars */}
+    </div>
+  );
+}
+```
+
+## Hide decimals
+
+```tsx
+import { Amount } from '@raystack/apsara';
+
+function IntegerAmount() {
+  return <Amount value={1299} hideDecimals />; // Shows as "$12"
+}
+```
+
+## Major units
+
+Work with values already in major units (dollars, euros, etc.).
+
+```tsx
+import { Amount } from '@raystack/apsara';
+
+function MajorUnitAmount() {
+  return <Amount value={12.99} valueInMinorUnits={false} />; // Shows as "$12.99"
+}
+```
+
+## Large numbers
+
+For precision with large numbers, pass values as strings.
+
+```tsx
+import { Amount } from '@raystack/apsara';
+
+function LargeAmount() {
+  return (
+    <Amount 
+      value="999999999999999" 
+      valueInMinorUnits={false}
+      groupDigits 
+    /> // Shows as "$999,999,999,999,999.00"
+  );
+}
+```
+
+## Within text
+
+The Amount component inherits styling from parent Text components.
+
+```tsx
+import { Amount, Text } from '@raystack/apsara';
+
+function PriceDisplay() {
+  return (
+    <Text size="large" variant="emphasis">
+      Total: <Amount value={1299} />
+    </Text>
+  );
+}
+```
+
+## Related components
+
+- [Text](/components/text) - The Amount component inherits styling from Text
+- [Badge](/components/badge) - Display amounts in status badges

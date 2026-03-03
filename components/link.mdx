@@ -1,0 +1,215 @@
+---
+title: Link
+description: Navigational links with text styling variants and external link handling.
+---
+
+The Link component provides styled anchor elements that inherit from the Text component, with built-in support for external links and downloads.
+
+## Basic usage
+
+```tsx
+import { Link } from '@raystack/apsara';
+
+function Navigation() {
+  return <Link href="/about">About Us</Link>;
+}
+```
+
+## Props
+
+<ParamField path="href" type="string" required>
+  The URL the link points to.
+</ParamField>
+
+<ParamField path="variant" type="'primary' | 'secondary' | 'tertiary' | 'emphasis' | 'accent' | 'attention' | 'danger' | 'success'" default="'accent'">
+  Visual style variant inherited from Text component.
+</ParamField>
+
+<ParamField path="size" type="'micro' | 'mini' | 'small' | 'regular' | 'large' | 1-10" default="'small'">
+  Text size inherited from Text component.
+</ParamField>
+
+<ParamField path="external" type="boolean">
+  Whether the link opens in a new tab. Automatically adds `target="_blank"` and `rel="noopener noreferrer"`.
+</ParamField>
+
+<ParamField path="download" type="boolean | string">
+  Whether the link triggers a download. Pass a string to specify the download filename.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The link text content.
+</ParamField>
+
+## External links
+
+Links that open in a new tab with proper security attributes.
+
+```tsx
+import { Link } from '@raystack/apsara';
+
+function ExternalLink() {
+  return (
+    <Link href="https://example.com" external>
+      Visit Example.com
+    </Link>
+  );
+}
+```
+
+The `external` prop automatically adds:
+- `target="_blank"` to open in a new tab
+- `rel="noopener noreferrer"` for security
+- Accessible aria-label indicating it opens in a new tab
+
+## Download links
+
+```tsx
+import { Link } from '@raystack/apsara';
+
+function DownloadLink() {
+  return (
+    <>
+      {/* Simple download */}
+      <Link href="/files/document.pdf" download>
+        Download PDF
+      </Link>
+      
+      {/* With custom filename */}
+      <Link href="/files/report.pdf" download="2024-annual-report.pdf">
+        Download Report
+      </Link>
+    </>
+  );
+}
+```
+
+## Variants
+
+Inherit all Text component variants for different semantic meanings.
+
+```tsx
+import { Link } from '@raystack/apsara';
+
+function LinkVariants() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <Link href="#" variant="accent">Accent Link (default)</Link>
+      <Link href="#" variant="primary">Primary Link</Link>
+      <Link href="#" variant="secondary">Secondary Link</Link>
+      <Link href="#" variant="danger">Danger Link</Link>
+      <Link href="#" variant="success">Success Link</Link>
+    </div>
+  );
+}
+```
+
+## Sizes
+
+```tsx
+import { Link } from '@raystack/apsara';
+
+function LinkSizes() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <Link href="#" size="micro">Micro Link</Link>
+      <Link href="#" size="mini">Mini Link</Link>
+      <Link href="#" size="small">Small Link (default)</Link>
+      <Link href="#" size="regular">Regular Link</Link>
+      <Link href="#" size="large">Large Link</Link>
+    </div>
+  );
+}
+```
+
+## In text content
+
+```tsx
+import { Link, Text } from '@raystack/apsara';
+
+function InlineLink() {
+  return (
+    <Text>
+      Read our <Link href="/privacy">privacy policy</Link> for more information.
+    </Text>
+  );
+}
+```
+
+## Navigation menu
+
+```tsx
+import { Link } from '@raystack/apsara';
+
+function NavigationMenu() {
+  return (
+    <nav>
+      <ul style={{ display: 'flex', gap: '24px', listStyle: 'none' }}>
+        <li><Link href="/">Home</Link></li>
+        <li><Link href="/products">Products</Link></li>
+        <li><Link href="/about">About</Link></li>
+        <li><Link href="/contact">Contact</Link></li>
+      </ul>
+    </nav>
+  );
+}
+```
+
+## Footer links
+
+```tsx
+import { Link } from '@raystack/apsara';
+
+function FooterLinks() {
+  return (
+    <footer>
+      <div style={{ display: 'flex', gap: '16px' }}>
+        <Link href="/terms" variant="secondary" size="small">
+          Terms
+        </Link>
+        <Link href="/privacy" variant="secondary" size="small">
+          Privacy
+        </Link>
+        <Link href="https://twitter.com" external variant="secondary" size="small">
+          Twitter
+        </Link>
+      </div>
+    </footer>
+  );
+}
+```
+
+## With router libraries
+
+Use with Next.js Link or React Router.
+
+```tsx
+import NextLink from 'next/link';
+import { Link as ApsaraLink } from '@raystack/apsara';
+
+function NextJsLink() {
+  // Wrap or compose with your router's Link component
+  return (
+    <NextLink href="/dashboard" passHref legacyBehavior>
+      <ApsaraLink>Dashboard</ApsaraLink>
+    </NextLink>
+  );
+}
+```
+
+## Accessibility
+
+- Uses semantic `<a>` element for proper navigation
+- External links include descriptive aria-labels
+- Download links include accessible labels
+- Maintains proper focus states for keyboard navigation
+- Ensure link text is descriptive and indicates the destination
+
+## Related components
+
+- [Text](/components/text) - Link inherits all Text component props and styling
+- [Button](/components/button) - For primary actions instead of navigation
