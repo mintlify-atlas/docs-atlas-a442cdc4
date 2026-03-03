@@ -1,0 +1,223 @@
+{
+  "projectType": "frontend",
+  "projectName": "Apsara",
+  "projectDescription": "Open-source React UI component library built on Radix UI primitives and vanilla CSS for building accessible, enterprise-grade data interfaces",
+  "theme": "willow",
+  "primaryColor": "#3e63dd",
+  "lightColor": "#e6edfe",
+  "darkColor": "#1c274f",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/theming",
+              "guides/styling",
+              "guides/dark-mode",
+              "guides/accessibility"
+            ]
+          },
+          {
+            "group": "Layout Components",
+            "pages": [
+              "components/box",
+              "components/flex",
+              "components/grid",
+              "components/container"
+            ]
+          },
+          {
+            "group": "Navigation Components",
+            "pages": [
+              "components/breadcrumb",
+              "components/navbar",
+              "components/sidebar",
+              "components/tabs",
+              "components/command"
+            ]
+          },
+          {
+            "group": "Data Display",
+            "pages": [
+              "components/table",
+              "components/data-table",
+              "components/avatar",
+              "components/badge",
+              "components/chip",
+              "components/empty-state",
+              "components/code-block",
+              "components/image",
+              "components/list"
+            ]
+          },
+          {
+            "group": "Form Components",
+            "pages": [
+              "components/button",
+              "components/input-field",
+              "components/text-area",
+              "components/select",
+              "components/combobox",
+              "components/checkbox",
+              "components/radio",
+              "components/switch",
+              "components/slider",
+              "components/calendar",
+              "components/color-picker",
+              "components/search"
+            ]
+          },
+          {
+            "group": "Feedback Components",
+            "pages": [
+              "components/tooltip",
+              "components/callout",
+              "components/toast",
+              "components/indicator",
+              "components/spinner",
+              "components/skeleton"
+            ]
+          },
+          {
+            "group": "Overlay Components",
+            "pages": [
+              "components/dialog",
+              "components/drawer",
+              "components/popover",
+              "components/menu",
+              "components/side-panel"
+            ]
+          },
+          {
+            "group": "Utility Components",
+            "pages": [
+              "components/accordion",
+              "components/collapsible",
+              "components/separator",
+              "components/scroll-area",
+              "components/copy-button",
+              "components/icon-button",
+              "components/filter-chip",
+              "components/announcement-bar",
+              "components/theme-provider"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Hooks",
+            "pages": [
+              "api/hooks/use-copy-to-clipboard",
+              "api/hooks/use-debounced-state",
+              "api/hooks/use-mouse",
+              "api/hooks/use-isomorphic-layout-effect",
+              "api/hooks/use-theme"
+            ]
+          },
+          {
+            "group": "Icons",
+            "pages": [
+              "api/icons"
+            ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "api/utilities/styling",
+              "api/utilities/colors"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "55+ accessible React components built on Radix UI primitives",
+    "Vanilla CSS styling with HTML data-attributes for flexible theming",
+    "Enterprise-ready data tables with sorting, filtering, and virtualization",
+    "Full TypeScript support with comprehensive type definitions",
+    "Dark mode support with theme provider and switcher components",
+    "Comprehensive icon set and reusable hooks library"
+  ],
+  "publicApiSurface": [
+    "Accordion",
+    "Amount",
+    "AnnouncementBar",
+    "Avatar",
+    "AvatarGroup",
+    "Badge",
+    "Box",
+    "Breadcrumb",
+    "Button",
+    "Calendar",
+    "DatePicker",
+    "RangePicker",
+    "Callout",
+    "Checkbox",
+    "Chip",
+    "CodeBlock",
+    "Collapsible",
+    "ColorPicker",
+    "Combobox",
+    "Command",
+    "Container",
+    "CopyButton",
+    "DataTable",
+    "Dialog",
+    "Drawer",
+    "EmptyState",
+    "FilterChip",
+    "Flex",
+    "Grid",
+    "Headline",
+    "IconButton",
+    "Image",
+    "Indicator",
+    "InputField",
+    "Label",
+    "Link",
+    "List",
+    "Menu",
+    "Navbar",
+    "Popover",
+    "Radio",
+    "ScrollArea",
+    "Search",
+    "Select",
+    "Separator",
+    "SidePanel",
+    "Sidebar",
+    "Skeleton",
+    "Slider",
+    "Spinner",
+    "Switch",
+    "Table",
+    "Tabs",
+    "Text",
+    "TextArea",
+    "ThemeProvider",
+    "ThemeSwitcher",
+    "Toast",
+    "Tooltip",
+    "useCopyToClipboard",
+    "useDebouncedState",
+    "useMouse",
+    "useIsomorphicLayoutEffect",
+    "useTheme",
+    "useDataTable"
+  ]
+}
